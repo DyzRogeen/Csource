@@ -1,0 +1,10 @@
+﻿  Matrix.c
+C:\Users\Adrie\Desktop\mathlib\Matrix.c(114,32): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\mathlib\Matrix.c(139,58): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+  Vector.c
+C:\Users\Adrie\Desktop\mathlib\Vector.c(57,10): warning C4101: 'v' : variable locale non référencée
+C:\Users\Adrie\Desktop\mathlib\Vector.c(66,10): warning C4101: 'v' : variable locale non référencée
+C:\Users\Adrie\Desktop\mathlib\Vector.c(97,51): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+  Génération de code en cours...
+MSVCRTD.lib(exe_main.obj) : error LNK2019: symbole externe non résolu _main référencé dans la fonction "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+C:\Users\Adrie\source\repos\Math\Debug\Math.exe : fatal error LNK1120: 1 externes non résolus

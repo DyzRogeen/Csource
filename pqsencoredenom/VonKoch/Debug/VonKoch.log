@@ -1,0 +1,10 @@
+﻿  main.c
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(18,36): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(86,16): error C2065: 'l' : identificateur non déclaré
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(86,16): warning C4133: 'fonction' : types incompatibles - de 'int *' à 'list *'
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(98,25): error C2065: 'l' : identificateur non déclaré
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(98,25): warning C4047: 'fonction' : les niveaux d'indirection de 'list *' et de 'int' sont différents
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(98,24): warning C4024: 'displayRect' : types différents pour le paramètre formel et réel 2
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(108,12): error C2065: 'l' : identificateur non déclaré
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(108,12): warning C4047: 'fonction' : les niveaux d'indirection de 'list *' et de 'int' sont différents
+C:\Users\Adrie\source\pqsencoredenom\VonKoch\main.c(108,11): warning C4024: 'freeList' : types différents pour le paramètre formel et réel 1

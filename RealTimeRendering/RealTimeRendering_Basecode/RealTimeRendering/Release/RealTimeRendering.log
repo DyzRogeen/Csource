@@ -1,0 +1,30 @@
+﻿  Camera.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  main.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Material.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Matrix.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Mesh.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Object.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Graphics.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Renderer.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Scene.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Settings.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Shader.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Tools.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Timer.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Vector.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory
+  Window.c
+C:\Users\Adrie\Desktop\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Settings.h(5,12): fatal error C1083: Impossible d'ouvrir le fichier include : 'SDL.h' : No such file or directory

@@ -1,0 +1,8 @@
+﻿  exo.c
+  main.c
+C:\Users\Adrie\source\repos\Project2\Project2\main.c(14,33): warning C4133: 'fonction' : types incompatibles - de 'void **' à 'treeNode **'
+  Pixel.c
+C:\Users\Adrie\source\repos\Project2\Project2\Pixel.c(8,24): warning C4047: '=' : les niveaux d'indirection de 'void *' et de 'int' sont différents
+  Génération de code en cours...
+Pixel.obj : error LNK2005: _addNode déjà défini(e) dans main.obj
+C:\Users\Adrie\source\repos\Project2\Debug\Pixels.exe : fatal error LNK1169: un ou plusieurs symboles définis à différentes reprises ont été rencontrés

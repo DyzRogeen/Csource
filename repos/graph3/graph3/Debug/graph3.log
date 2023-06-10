@@ -1,0 +1,3 @@
+﻿  graph.c
+C:\Users\Adrie\source\repos\graph3\graph3\graph.c(80,10): warning C4477: 'printf' : la chaîne de format '%s' nécessite un argument de type 'char *', mais l'argument variadique 1 est de type 'int'
+  graph3.vcxproj -> C:\Users\Adrie\source\repos\graph3\Debug\graph3.exe

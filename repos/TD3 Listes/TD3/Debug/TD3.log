@@ -1,0 +1,5 @@
+﻿  main.c
+C:\Users\Adrie\source\repos\TD3 Listes\TD3\main.c(208,18): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+  liste.c
+  Génération de code en cours...
+  TD3.vcxproj -> C:\Users\Adrie\source\repos\TD3 Listes\Debug\TD3.exe

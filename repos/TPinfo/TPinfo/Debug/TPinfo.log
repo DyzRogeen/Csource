@@ -1,0 +1,6 @@
+﻿  fonc.c
+  main.c
+C:\Users\Adrie\source\repos\TPinfo\TPinfo\main.c(35,26): warning C4013: 'SDL_ExitWithError' non défini(e) ; extern retournant int pris par défaut
+  Génération de code en cours...
+main.obj : error LNK2019: symbole externe non résolu _SDL_ExitWithError référencé dans la fonction _SDL_main
+C:\Users\Adrie\source\repos\TPinfo\Debug\TPinfo.exe : fatal error LNK1120: 1 externes non résolus

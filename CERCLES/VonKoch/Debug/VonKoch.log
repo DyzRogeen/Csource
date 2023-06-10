@@ -1,0 +1,12 @@
+﻿  circle.c
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(15,24): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(16,20): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(32,79): warning C4244: 'fonction' : conversion de 'double' en 'const Uint8', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(32,131): warning C4244: 'fonction' : conversion de 'double' en 'const Uint8', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(32,182): warning C4244: 'fonction' : conversion de 'double' en 'const Uint8', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(40,1): warning C4244: 'initialisation' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(41,1): warning C4244: 'initialisation' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(98,32): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\basecode_VS2019\VonKoch\circle.c(95,1): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\source\basecode_VS2019\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

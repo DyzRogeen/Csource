@@ -1,0 +1,3 @@
+﻿  main.c
+C:\Users\Adrie\source\repos\TD4bis\TD4bis\main.c(20,10): warning C4477: 'printf' : la chaîne de format '%d' nécessite un argument de type 'int', mais l'argument variadique 1 est de type 'void *'
+  TD4bis.vcxproj -> C:\Users\Adrie\source\repos\TD4bis\Debug\TD4bis.exe

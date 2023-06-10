@@ -1,0 +1,17 @@
+﻿  arbre.c
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(8,24): warning C4047: '=' : les niveaux d'indirection de 'void *' et de 'int' sont différents
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(31,37): warning C4047: 'fonction' : les niveaux d'indirection de 'treeNode **' et de 'sTreeNode *' sont différents
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(31,29): warning C4024: 'ajoutGauche' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(39,37): warning C4047: 'fonction' : les niveaux d'indirection de 'treeNode **' et de 'sTreeNode *' sont différents
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(39,29): warning C4024: 'ajoutGauche' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(70,35): warning C4047: '==' : les niveaux d'indirection de 'void *' et de 'int' sont différents
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(80,9): warning C4477: 'printf' : la chaîne de format '%d' nécessite un argument de type 'int', mais l'argument variadique 1 est de type 'void *'
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(91,9): warning C4477: 'printf' : la chaîne de format '%d' nécessite un argument de type 'int', mais l'argument variadique 1 est de type 'void *'
+C:\Users\Adrie\source\repos\Arbre\Arbre\arbre.c(99,9): warning C4477: 'printf' : la chaîne de format '%d' nécessite un argument de type 'int', mais l'argument variadique 1 est de type 'void *'
+  main.c
+C:\Users\Adrie\source\repos\Arbre\Arbre\main.c(9,37): warning C4047: 'fonction' : les niveaux d'indirection de 'treeNode **' et de 'sTreeNode *' sont différents
+C:\Users\Adrie\source\repos\Arbre\Arbre\main.c(9,29): warning C4024: 'ajoutGauche' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\repos\Arbre\Arbre\main.c(10,37): warning C4047: 'fonction' : les niveaux d'indirection de 'treeNode **' et de 'sTreeNode *' sont différents
+C:\Users\Adrie\source\repos\Arbre\Arbre\main.c(10,29): warning C4024: 'ajoutDroite' : types différents pour le paramètre formel et réel 1
+  Génération de code en cours...
+  Arbre.vcxproj -> C:\Users\Adrie\source\repos\Arbre\Debug\Arbre.exe

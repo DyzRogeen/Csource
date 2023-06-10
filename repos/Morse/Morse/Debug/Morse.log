@@ -1,0 +1,8 @@
+﻿  main.c
+C:\Users\Adrie\source\repos\Morse\Morse\main.c(4,1): warning C4005: '_CRT_SECURE_NO_WARNINGS' : redéfinition de macro
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\vcruntime.h(313): message : voir la définition précédente de '_CRT_SECURE_NO_WARNINGS'
+C:\Users\Adrie\source\repos\Morse\Morse\main.c(29,22): warning C4047: '!=' : les niveaux d'indirection de 'char [6]' et de 'int' sont différents
+C:\Users\Adrie\source\repos\Morse\Morse\main.c(33,29): warning C4047: 'fonction' : les niveaux d'indirection de 'abr *' et de 'abr **' sont différents
+C:\Users\Adrie\source\repos\Morse\Morse\main.c(33,25): warning C4024: 'findChar' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\repos\Morse\Morse\main.c(16,1): warning C4047: 'initialisation' : les niveaux d'indirection de 'abr **' et de 'abr *' sont différents
+  Morse.vcxproj -> C:\Users\Adrie\source\repos\Morse\Debug\Morse.exe

@@ -1,0 +1,17 @@
+﻿  gravity.c
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(105,36): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(131,44): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(132,55): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(132,86): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(132,109): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(132,132): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(149,54): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(150,54): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(162,39): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(163,56): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(163,89): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(163,122): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(163,155): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Gravité\VonKoch\gravity.c(160,1): warning C4244: 'initialisation' : conversion de 'double' en 'int', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\source\Gravité\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

@@ -1,0 +1,10 @@
+﻿  ACO.c
+C:\Users\Adrie\source\repos\ACO\ACO\ACO.c(35,15): warning C4477: 'fscanf_s' : la chaîne de format '%lf' nécessite un argument de type 'double *', mais l'argument variadique 2 est de type 'int *'
+C:\Users\Adrie\source\repos\ACO\ACO\ACO.c(35,15): warning C4477: 'fscanf_s' : la chaîne de format '%lf' nécessite un argument de type 'double *', mais l'argument variadique 3 est de type 'int *'
+C:\Users\Adrie\source\repos\ACO\ACO\ACO.c(26,9): warning C4101: 'tab' : variable locale non référencée
+C:\Users\Adrie\source\repos\ACO\ACO\ACO.c(17,12): warning C4101: 'y' : variable locale non référencée
+C:\Users\Adrie\source\repos\ACO\ACO\ACO.c(17,9): warning C4101: 'x' : variable locale non référencée
+  main.c
+  Génération de code en cours...
+C:\Users\Adrie\source\repos\ACO\ACO\ACO.c(40): warning C4715: 'createGraph' : les chemins de contrôle ne retournent pas tous une valeur
+  ACO.vcxproj -> C:\Users\Adrie\source\repos\ACO\Debug\ACO.exe

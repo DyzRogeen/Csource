@@ -1,0 +1,10 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: Le répertoire intermédiaire (Debug\) contient des fichiers partagés provenant d'un autre projet (TD1.vcxproj). Cela peut entraîner un comportement de nettoyage et de regénération incorrect.
+  Chaine.c
+C:\Users\Adrie\source\repos\Project1\Project1\Chaine.c(12,29): warning C4013: 'calloc' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\source\repos\Project1\Project1\Chaine.c(49,16): warning C4013: 'free' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\source\repos\Project1\Project1\Chaine.c(128,21): warning C4047: '=' : les niveaux d'indirection de 'char' et de 'char *' sont différents
+C:\Users\Adrie\source\repos\Project1\Project1\Chaine.c(120,1): warning C4047: 'initialisation' : les niveaux d'indirection de 'char *' et de 'int' sont différents
+C:\Users\Adrie\source\repos\Project1\Project1\Chaine.c(122,1): warning C4047: 'initialisation' : les niveaux d'indirection de 'char **' et de 'char *' sont différents
+  main.c
+  Génération de code en cours...
+  Project1.vcxproj -> C:\Users\Adrie\source\repos\Project1\Debug\Project1.exe

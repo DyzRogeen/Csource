@@ -1,0 +1,8 @@
+﻿  ABR.c
+C:\Users\Adrie\source\repos\ABR\ABR\ABR.c(65,7): warning C4101: 'tmp2' : variable locale non référencée
+C:\Users\Adrie\source\repos\ABR\ABR\ABR.c(97,25): warning C4133: '=' : types incompatibles - de 'list *' à 'ABR *'
+C:\Users\Adrie\source\repos\ABR\ABR\ABR.c(99,26): warning C4133: '=' : types incompatibles - de 'list *' à 'ABR *'
+C:\Users\Adrie\source\repos\ABR\ABR\ABR.c(104,45): warning C4029: la déclaration de la liste de paramètres formels est différente de la définition
+C:\Users\Adrie\source\repos\ABR\ABR\ABR.c(46): warning C4715: 'findNode' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\Adrie\source\repos\ABR\ABR\ABR.c(114): warning C4716: 'arbor' : doit retourner une valeur
+  ABR.vcxproj -> C:\Users\Adrie\source\repos\ABR\Debug\ABR.exe

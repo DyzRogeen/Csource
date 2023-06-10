@@ -1,0 +1,3 @@
+﻿  main.c
+C:\Users\Adrie\source\repos\LZW\LZW\main.c(24,27): warning C4013: 'estDansDico' non défini(e) ; extern retournant int pris par défaut
+  LZW.vcxproj -> C:\Users\Adrie\source\repos\LZW\Debug\LZW.exe

@@ -1,0 +1,9 @@
+﻿  utils.c
+C:\Users\Adrie\source\repos\puissance4\puissance4\utils.c(7,20): warning C4028: paramètre formel 1 différent de la déclaration
+C:\Users\Adrie\source\repos\puissance4\puissance4\utils.c(17,19): warning C4047: 'fonction' : les niveaux d'indirection de 'int **' et de 'int (*)[8]' sont différents
+C:\Users\Adrie\source\repos\puissance4\puissance4\utils.c(17,12): warning C4024: 'printGame' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\repos\puissance4\puissance4\utils.c(19,26): warning C4047: 'fonction' : les niveaux d'indirection de 'int **' et de 'int (*)[8]' sont différents
+C:\Users\Adrie\source\repos\puissance4\puissance4\utils.c(19,19): warning C4024: 'verifGame' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\repos\puissance4\puissance4\utils.c(23,20): warning C4028: paramètre formel 1 différent de la déclaration
+C:\Users\Adrie\source\repos\puissance4\puissance4\utils.c(51,19): warning C4028: paramètre formel 1 différent de la déclaration
+  puissance4.vcxproj -> C:\Users\Adrie\source\repos\puissance4\Debug\puissance4.exe

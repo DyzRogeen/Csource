@@ -1,0 +1,14 @@
+﻿  main.c
+C:\Users\Adrie\source\Mot graph\VonKoch\main.c(11,44): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Mot graph\VonKoch\main.c(69,16): warning C4047: 'fonction' : les niveaux d'indirection de 'list *' et de 'list **' sont différents
+C:\Users\Adrie\source\Mot graph\VonKoch\main.c(69,14): warning C4024: 'popList' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\Mot graph\VonKoch\main.c(146,16): warning C4305: '+=' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Mot graph\VonKoch\main.c(16,14): warning C4101: 'c' : variable locale non référencée
+  Génération de code en cours
+  1 of 18 functions ( 5.6%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Fin de la génération du code
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\source\Mot graph\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
+  VonKoch.vcxproj -> C:\Users\Adrie\source\Mot graph\bin\VonKoch.exe
+          1 fichier(s) copié(s).

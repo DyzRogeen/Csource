@@ -1,0 +1,7 @@
+﻿  fonc.c
+  main.c
+D:\RecupOrdi\Users\Adrie\source\repos\TPinfo2\TPinfo\fonc.c(26,25): warning C4047:  '=' : les niveaux d'indirection de 'list **' et de 'list *' sont différents
+  Génération de code en cours...
+D:\RecupOrdi\Users\Adrie\source\repos\TPinfo2\TPinfo\main.c(8,6): warning C4101:  'gameTree' : variable locale non référencée
+D:\RecupOrdi\Users\Adrie\source\repos\TPinfo2\TPinfo\main.c(8,6): warning C4101: D:\RecupOrdi\Users\Adrie\source\repos\TPinfo2\TPinfo\fonc.c(258) : warning C4715: 'initTreeIA' : les chemins de contrôle ne retournent pas tous une valeur
+  TPinfo.vcxproj -> D:\RecupOrdi\Users\Adrie\source\repos\TPinfo2\Debug\TPinfo.exe

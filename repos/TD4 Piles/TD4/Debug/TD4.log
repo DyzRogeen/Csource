@@ -1,0 +1,10 @@
+﻿  liste.c
+C:\Users\Adrie\source\repos\TD4\TD4\liste.c(30,41): warning C4013: 'createListNode' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\source\repos\TD4\TD4\liste.c(30,51): warning C4047: '=' : les niveaux d'indirection de 'file *' et de 'int' sont différents
+C:\Users\Adrie\source\repos\TD4\TD4\liste.c(58,16): warning C4028: paramètre formel 1 différent de la déclaration
+C:\Users\Adrie\source\repos\TD4\TD4\liste.c(64,25): warning C4133: '=' : types incompatibles - de 'sPile *' à 'node *'
+C:\Users\Adrie\source\repos\TD4\TD4\liste.c(62,1): warning C4133: 'initialisation' : types incompatibles - de 'node *' à 'pile *'
+  main.c
+  Génération de code en cours...
+liste.obj : error LNK2019: symbole externe non résolu _createListNode référencé dans la fonction _enqueue
+C:\Users\Adrie\source\repos\TD4\Debug\TD4.exe : fatal error LNK1120: 1 externes non résolus

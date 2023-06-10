@@ -1,0 +1,9 @@
+﻿  main.c
+C:\Users\Adrie\source\repos\graph2\graph2\main.c(8,32): warning C4047: 'fonction' : les niveaux d'indirection de 'unsigned char *' et de 'int' sont différents
+C:\Users\Adrie\source\repos\graph2\graph2\main.c(8,29): warning C4024: 'createGraph' : types différents pour le paramètre formel et réel 1
+C:\Users\Adrie\source\repos\graph2\graph2\main.c(12,39): warning C4047: 'fonction' : les niveaux d'indirection de 'unsigned char *' et de 'char' sont différents
+C:\Users\Adrie\source\repos\graph2\graph2\main.c(12,38): warning C4024: 'addNode' : types différents pour le paramètre formel et réel 3
+C:\Users\Adrie\source\repos\graph2\graph2\main.c(16,40): warning C4047: 'fonction' : les niveaux d'indirection de 'unsigned char *' et de 'int' sont différents
+C:\Users\Adrie\source\repos\graph2\graph2\main.c(16,37): warning C4024: 'addNode' : types différents pour le paramètre formel et réel 3
+C:\Users\Adrie\source\repos\graph2\graph2\main.c(46,9): warning C4013: 'destroy' non défini(e) ; extern retournant int pris par défaut
+  graph2.vcxproj -> C:\Users\Adrie\source\repos\graph2\Debug\graph2.exe
