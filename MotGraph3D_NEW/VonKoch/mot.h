@@ -1,29 +1,92 @@
 #pragma once
 
+#include "utils_SDL.h"
 #define PI	3.14159265359
 
 typedef struct sPoint {
 	int x;
 	int y;
-	struct sPoint* next;
+	int display;
 }point;
+
+typedef struct sPoint3 {
+	float x,y,z;
+	point p;
+	struct sPoint3* next;
+}point3;
+
+typedef struct sEdge {
+	point3* points[2];
+	struct sEdge* next;
+}edge;
 
 typedef struct sFace {
 	int nbPoints;
-	point normale;
-	point* points;
+	point3 normale;
+	point3* points;
+	struct sFace* next;
 }face;
+
+typedef struct sObj3 {
+	int nbFaces, nbEdges, nbVertexes;
+	face* faces;
+	edge* edges;
+	point3* vertexes;
+}obj;
+
+typedef struct sCam {
+	point3 pos, pCam;
+	point3 dir, vUnit1, vUnit2;
+	float lon, lat;
+	float dist;
+}cam;
+
+//Utils
+
+void printP3(point3 p);
 
 //Vector Basic Operations
 
-point sum(point p1, point p2);
+point3 sum(point3 p1, point3 p2, int diff);
 
-point scale(point p, int n);
+void add(point3* p1, point3 p2, int diff);
 
-//Faces methods
+point3 scale(point3 p, float n);
 
-face createFace(point n);
+float norm(point3 p);
 
-face addPointFace(face f, point* p);
+//Points methods
 
-int isInPlane(face f, point* p);
+point3* createPoint(float x, float y, float z);
+
+point3 setPoint(float x, float y, float z);
+
+//Faces and Edges methods
+
+edge* createEdge(point3* p1, point3* p2);
+
+face createFace(point3 n, point3* p, int nbPoints);
+
+void printFace(face f);
+
+void addPointFace(face *f, point3* p);
+
+int isInPlane(face f, point3* p);
+
+obj* createObj3D(face* f, edge* e, point3* p, int nbFaces, int nbEdges, int nbVertexes);
+
+//Graphic methods
+
+cam initCam(point3 pos, point3 dir);
+
+void moveCam(cam* C, point3 pos);
+
+void rotateCam(cam* C, float lon, float lat);
+
+void faceTo2dProjection(face f, cam c);
+
+void pointsTo2dProjection(point3* p, int nbPoints, cam c);
+
+//Modelisation methods
+
+//face* ExtrudeFace(face f, point3 dir, float l);

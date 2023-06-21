@@ -1,18 +1,22 @@
-﻿  main.c
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(21,44): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(61,68): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(62,68): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(42,17): warning C4101: 'f' : variable locale non référencée
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(116,58): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(118,26): warning C4244: '*=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(119,26): warning C4244: '*=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(92,12): warning C4101: 'CE' : variable locale non référencée
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(91,17): warning C4101: 'f' : variable locale non référencée
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(197,91): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\source\Von Koch\VonKoch\main.c(198,91): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-  utils_SDL.c
-  Génération de code en cours...
-MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
-SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\source\Von Koch\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
-  VonKoch.vcxproj -> C:\Users\Adrie\source\Von Koch\bin\VonKoch_d.exe
+﻿  mot.c
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(127,10): warning C4098: 'addPointFace' : fonction 'void' retournant une valeur
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(185,41): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(186,47): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(188,48): warning C4305: '=' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(189,57): warning C4305: '=' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(195,50): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(195,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(195,101): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(200,42): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(200,65): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(201,53): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(201,73): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(201,105): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(280,65): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(281,66): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(284,65): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(285,66): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(289,65): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\MotGraph3D_NEW\VonKoch\mot.c(290,66): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\source\MotGraph3D_NEW\bin\VonKoch_d.exe
           1 fichier(s) copié(s).
