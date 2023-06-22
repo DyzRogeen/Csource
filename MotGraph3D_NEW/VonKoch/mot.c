@@ -19,17 +19,29 @@ int isInPlane(face f, point3* p) {
 
 ///////////////////////////////////////////////////////////
 
-point3 sum(point3 p1, point3 p2, int diff) {
+point sum2(point p1, point p2, int diff) {
+	
+	if (diff != -1) diff = 1;
 
-	point3 s;
+	p1.x += p2.x * diff;
+	p1.y += p2.y * diff;
+
+	return p1;
+}
+
+float norm2(point p) {
+	return sqrt(p.x*p.x + p.y*p.y);
+}
+
+point3 sum(point3 p1, point3 p2, int diff) {
 
 	if (diff != -1) diff = 1;
 
-	s.x = p1.x + p2.x * diff;
-	s.y = p1.y + p2.y * diff;
-	s.z = p1.z + p2.z * diff;
+	p1.x += p2.x * diff;
+	p1.y += p2.y * diff;
+	p1.z += p2.z * diff;
 	
-	return s;
+	return p1;
 }
 
 void add(point3* p1, point3 p2, int diff) {
@@ -89,13 +101,13 @@ edge* createEdge(point3* p1, point3* p2) {
 }
 
 //PB : normale dynamique à faire
-face createFace(point3 n, point3* p, int nbPoints) {
+face* createFace(point3 n, point3* p, int nbPoints) {
 
-	face f;
-	f.points = p;
-	f.normale = n;
-	f.nbPoints = nbPoints;
-	f.next = NULL;
+	face* f = (face*)calloc(1,sizeof(face));
+	f->points = p;
+	f->normale = n;
+	f->nbPoints = nbPoints;
+	f->next = NULL;
 	
 	return f;
 
@@ -157,7 +169,7 @@ cam initCam(point3 pos, point3 dir) {
 	cam c;
 	c.pos = pos;
 	c.dir = dir;
-	c.dist = 5;
+	c.dist = 15;
 	c.lon = 0;
 	c.lat = 0;
 
@@ -212,7 +224,7 @@ void rotateCam(cam* C, float lon, float lat) {
 	printf("\n");*/
 }
 
-void pointsTo2dProjection(point3* p, int nbPoints, cam c) {
+void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam c) {
 
 	float normDir = norm(c.dir);
 
@@ -260,7 +272,7 @@ void pointsTo2dProjection(point3* p, int nbPoints, cam c) {
 		Z = (c.pos.z - p->z) * k + p->z - pcam.z;
 
 		/*
-		* x*i + y*j = (X ; Y ; Z) => pcamX + x*v1.x + y*v2.x = X | pcamY + x*v1.y + y*v2.y = Y | pcamZ + x*v1.z + y*v2.z = Z
+		* x*i + y*j = (X ; Y ; Z) => x*v1.x + y*v2.x = X | x*v1.y + y*v2.y = Y | x*v1.z + y*v2.z = Z
 		* 
 		* x*(v1.x - v2.x/v2.y) = X - pcamX - (Y - pcamY)*v2.x/v2.y
 		* with r = v2.x/v2.y
@@ -274,20 +286,26 @@ void pointsTo2dProjection(point3* p, int nbPoints, cam c) {
 		[   '        '           ]
 		[   ,        ,           ] x is the point intersection projected on the plane
 		[   x - - - -'           ] here x is (-2.25 ; -1.5)
+		*
+		* Taking 2 equations of the system, we got the following matrices operation :
+		* [x][v1.x v2.x] = [X] <=> [x] = [X][v1.x v2.x]^-1
+		* [y][v1.y v2.y] = [Y]	   [y] = [Y][v1.y v2.y]   
+		* Verifying that v1.x*v2.y - v1.y*v2.x != 0
+		* if not select another combinaison of 2 equations in the system
 		*/
 		float den;
 		if (fabs(den = vUnit1.x * vUnit2.y - vUnit1.y * vUnit2.x) > 0.00001) {
-			p->p.x = round((vUnit2.y * X - vUnit2.x * Y) / den) * normDir;
-			p->p.y = -round((vUnit1.y * X - vUnit1.x * Y) / den) * normDir;
+			p->p.x = round((vUnit2.y * X - vUnit2.x * Y) / den) * normDir + screenW;
+			p->p.y = round((vUnit1.y * X - vUnit1.x * Y) / den) * normDir + screenH;
 		}
 		else if (fabs(den = vUnit1.x * vUnit2.z - vUnit1.z * vUnit2.x) > 0.00001) {
-			p->p.x = round((vUnit2.z * X - vUnit2.x * Z) / den) * normDir;
-			p->p.y = -round((vUnit1.z * X - vUnit1.x * Z) / den) * normDir;
+			p->p.x = round((vUnit2.z * X - vUnit2.x * Z) / den) * normDir + screenW;
+			p->p.y = round((vUnit1.z * X - vUnit1.x * Z) / den) * normDir + screenH;
 		}
 		else {
 			den = vUnit1.y * vUnit2.z - vUnit1.z * vUnit2.y;
-			p->p.x = round((vUnit2.z * Y - vUnit2.y * Z) / den) * normDir;
-			p->p.y = -round((vUnit1.z * Y - vUnit1.y * Z) / den) * normDir;
+			p->p.x = round((vUnit2.z * Y - vUnit2.y * Z) / den) * normDir + screenW;
+			p->p.y = round((vUnit1.z * Y - vUnit1.y * Z) / den) * normDir + screenH;
 		} 
 
 		//printf("[%.1f ; %.1f ; %.1f] -> (%d;%d)\n", X, Y, Z, p->p.x, p->p.y);
@@ -299,7 +317,7 @@ void pointsTo2dProjection(point3* p, int nbPoints, cam c) {
 
 void displayObj(SDL_Surface* window, obj o, cam c) {
 
-	pointsTo2dProjection(o.vertexes, o.nbVertexes, c);
+	pointsTo2dProjection(window->w/2, window->h/2, o.vertexes, o.nbVertexes, c);
 
 	edge* e = o.edges;
 	point p1, p2;
@@ -307,7 +325,84 @@ void displayObj(SDL_Surface* window, obj o, cam c) {
 	for (int i = 0; i < o.nbEdges; i++) {
 		p1 = e->points[0]->p;
 		p2 = e->points[1]->p;
-		if (p1.display && p2.display) _SDL_DrawLine(window, p1.x + window->w/2, -p1.y + window->h / 2, p2.x + window->w / 2, -p2.y + window->h / 2, 255, 255, 255);
+		if (p1.display && p2.display) _SDL_DrawLine(window, p1.x, p1.y, p2.x, p2.y, 255, 255, 255);
 		if(i != o.nbEdges) e = e->next;
 	}
+
+	face* f = o.faces;
+
+	colorFace(window, f->points, f->nbPoints, 200, 200, 200);
+}
+
+void colorTriangle(SDL_Surface* window, point p, point p2, point p3, const Uint8 r, const Uint8 g, const Uint8 b) {
+
+	int max_y = (p.y > p2.y) ? (p.y > p3.y ? p.y : p3.y) : (p2.y > p3.y ? p2.y : p3.y);
+	int min_y = (p.y < p2.y) ? (p.y < p3.y ? p.y : p3.y) : (p2.y < p3.y ? p2.y : p3.y);
+
+	point v12 = sum2(p2, p, -1);
+	point v13 = sum2(p3, p, -1);
+	point v23 = sum2(p3, p2, -1);
+
+	for (int y = min_y + 1; y < max_y; y++) {
+		if (p.y < y < p2.y && p.y > y > p2.y && p.y < y < p3.y && p.y > y > p3.y) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p.x + (y - p.y) * v13.x / v13.y, y, r, g, b);
+		if (p.y < y < p2.y && p.y > y > p2.y && p2.y < y < p3.y && p2.y > y > p3.y) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
+		if (p.y < y < p3.y && p.y > y > p3.y && p2.y < y < p3.y && p2.y > y > p3.y) _SDL_DrawLine(window, p.x + (y - p.y) * v13.x / v13.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
+	}
+
+}
+
+void colorTriangle2(SDL_Surface* window, point p, point p2, point p3, const Uint8 r, const Uint8 g, const Uint8 b) {
+
+	float delta = 2;
+
+	point v = sum2(p2, p, -1);
+	point v2 = sum2(p3, p, -1);
+
+	float n = norm2(v);
+	float n2 = norm2(v2);
+	if (n < n2) {
+		n = n2;
+		v = sum2(p3, p, -1);
+		v2 = sum2(p2, p, -1);
+	}
+
+	float pct;
+
+	// Draw line between p + v * k/n and p + v2 * k/n
+	for (float k = 0; k < n; k += delta) {
+		pct = k / n;
+		_SDL_DrawLine(window, p.x + v.x * pct, p.y + v.y * pct, p.x + v2.x * pct, p.y + v2.y * pct, r, g, b);
+	}
+
+	_SDL_DrawLine(window, p.x, p.y, p2.x, p2.y, r, g, b);
+	_SDL_DrawLine(window, p.x, p.y, p3.x, p3.y, r, g, b);
+	_SDL_DrawLine(window, p3.x, p3.y, p2.x, p2.y, r, g, b);
+
+}
+
+void colorFace(SDL_Surface* window, point3* p, int nbPoints, const Uint8 r, const Uint8 g, const Uint8 b) {
+
+	point3 P = *p;
+
+	point3* pSaved = createPoint(P.x, P.y, P.z);
+	pSaved->p = P.p;
+	point3* fpLeft;
+
+	int nbPointsLeft = nbPoints - 1 - (int)((nbPoints-1) / 3);
+
+	fpLeft = pSaved;
+
+	for (int i = (int)((nbPoints - 1) / 3); i >= 0; i--) {
+
+		colorTriangle(window, P.p, P.next->p, P.next->next->p, r, g, b);
+
+		P = *(P.next->next);
+
+		pSaved->next = createPoint(P.x, P.y, P.z);
+		pSaved = pSaved->next;
+		pSaved->p = P.p;
+	}
+
+	if (nbPointsLeft > 2) colorFace(window, fpLeft, nbPointsLeft, r, g, b);
+
 }

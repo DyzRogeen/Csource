@@ -47,6 +47,12 @@ void printP3(point3 p);
 
 //Vector Basic Operations
 
+// 2D
+point sum2(point p1, point p2, int diff);
+
+float norm2(point p);
+
+// 3D
 point3 sum(point3 p1, point3 p2, int diff);
 
 void add(point3* p1, point3 p2, int diff);
@@ -65,7 +71,7 @@ point3 setPoint(float x, float y, float z);
 
 edge* createEdge(point3* p1, point3* p2);
 
-face createFace(point3 n, point3* p, int nbPoints);
+face* createFace(point3 n, point3* p, int nbPoints);
 
 void printFace(face f);
 
@@ -83,9 +89,11 @@ void moveCam(cam* C, point3 pos);
 
 void rotateCam(cam* C, float lon, float lat);
 
-void faceTo2dProjection(face f, cam c);
+void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam c);
 
-void pointsTo2dProjection(point3* p, int nbPoints, cam c);
+void colorTriangle(SDL_Surface* p_affichage, point p1, point p2, point p3, const Uint32 color);
+
+void colorFace(SDL_Surface* window, point3* p, int nbPoints, const Uint8 r, const Uint8 g, const Uint8 b);
 
 //Modelisation methods
 

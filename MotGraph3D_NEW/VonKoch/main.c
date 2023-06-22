@@ -27,11 +27,11 @@ int main(int argc, char** argv)
 	int diry = 0;
 	point mPos, premPos;
 	SDL_GetMouseState(&premPos.x, &premPos.y);
-	float speed = 0.05;
+	float speed = 0.15;
 	float jsp = 1;
 
 	point3 n;
-	cam C = initCam(setPoint(0, 300, 0), setPoint(0.1, 0, 0));
+	cam C = initCam(setPoint(0, 300, 0), setPoint(jsp, 0, 0));
 
 	point3* a = createPoint(50, 400, -100);
 	point3* b = createPoint(50, 400, 100);
@@ -43,8 +43,11 @@ int main(int argc, char** argv)
 	point3* c1 = createPoint(250, 200, 100);
 	point3* d1 = createPoint(250, 200, -100);
 
-	edge* E[12] = {
-		createEdge(a,b),
+	point3* last = createPoint(50, 550, 0);
+
+	edge* E[13] = {
+		createEdge(a,last),
+		createEdge(last,b),
 		createEdge(b,c),
 		createEdge(c,d),
 		createEdge(d,a),
@@ -59,18 +62,18 @@ int main(int argc, char** argv)
 		createEdge(c,c1),
 		createEdge(d,d1),
 	};
-	for (int i = 11; i > 0; i--) E[i]->next = E[i - 1];
+	for (int i = 12; i > 0; i--) E[i]->next = E[i - 1];
 
-	point3* P[8] = { a,b,c,d,a1,b1,c1,d1 };
-	for (int i = 7; i > 0; i--) P[i]->next = P[i - 1];
+	point3* P[9] = { a,last,b,c,d,a1,b1,c1,d1 };
+	for (int i = 8; i > 0; i--) P[i]->next = P[i - 1];
 
 	n.x = 1;
 	n.y = 1;
 	n.z = 1;
 
-	face f[6];
+	face F[1];
 
-	obj* o = createObj3D(f, E[11], P[7], 0, 12, 8);
+	obj* o = createObj3D(createFace(n, d, 5), E[12], P[8], 1, 13, 9);
 
 	// Initialisation
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -117,11 +120,6 @@ int main(int argc, char** argv)
 			case SDL_KEYUP:
 				if (e.key.keysym.sym == SDLK_w || e.key.keysym.sym == SDLK_s) dirx = 0;
 				if (e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_d) diry = 0;
-			case SDL_MOUSEBUTTONDOWN:
-				//mouseButton = SDL_GetMouseState(&mousePos.m_x, &mousePos.m_y);
-
-
-				break;
 			}
 		}
 
