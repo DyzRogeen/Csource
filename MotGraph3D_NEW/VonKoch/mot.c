@@ -103,9 +103,37 @@ edge* createEdge(point3* p1, point3* p2) {
 //PB : normale dynamique à faire
 face* createFace(point3 n, point3* p, int nbPoints) {
 
+	if (nbPoints < 3) return NULL;
+
+	point3 p1 = *p;
+	point3 p2 = *(p->next);
+	point3 p3 = *(p->next->next);
+
+	point3 v12 = sum(p2, p1, -1);
+	point3 v13 = sum(p3, p1, -1);
+
 	face* f = (face*)calloc(1,sizeof(face));
+
 	f->points = p;
-	f->normale = n;
+
+	f->normale = setPoint(
+		v12.y * v13.z - v12.z * v13.y,
+		v12.z * v13.x - v12.x * v13.z,
+		v12.x * v13.y - v12.y * v13.z
+	);
+
+	float x = 0;
+	float y = 0;
+	float z = 0;
+
+	for (int i = 0; i < nbPoints; i++) {
+		x += p->x;
+		y += p->y;
+		z += p->z;
+		p = p->next;
+	}
+
+	f->G = setPoint(x / nbPoints, y / nbPoints, z / nbPoints);
 	f->nbPoints = nbPoints;
 	f->next = NULL;
 	
@@ -260,7 +288,7 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam
 
 		k = (d - c.dir.x * p->x - c.dir.y * p->y - c.dir.z * p->z) / n;
 
-		if (k > 1 || k < 0) {
+		if (k > 1) {
 			p->p.display = 0;
 			p = p->next;
 			continue;
@@ -326,12 +354,12 @@ void displayObj(SDL_Surface* window, obj o, cam c) {
 		p1 = e->points[0]->p;
 		p2 = e->points[1]->p;
 		if (p1.display && p2.display) _SDL_DrawLine(window, p1.x, p1.y, p2.x, p2.y, 255, 255, 255);
-		if(i != o.nbEdges) e = e->next;
+		e = e->next;
 	}
 
 	face* f = o.faces;
 
-	colorFace(window, f->points, f->nbPoints, 200, 200, 200);
+	colorFace(window, f->points, f->nbPoints, 100, 100, 100);
 }
 
 void colorTriangle(SDL_Surface* window, point p, point p2, point p3, const Uint8 r, const Uint8 g, const Uint8 b) {
@@ -343,12 +371,24 @@ void colorTriangle(SDL_Surface* window, point p, point p2, point p3, const Uint8
 	point v13 = sum2(p3, p, -1);
 	point v23 = sum2(p3, p2, -1);
 
-	for (int y = min_y + 1; y < max_y; y++) {
-		if (p.y < y < p2.y && p.y > y > p2.y && p.y < y < p3.y && p.y > y > p3.y) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p.x + (y - p.y) * v13.x / v13.y, y, r, g, b);
-		if (p.y < y < p2.y && p.y > y > p2.y && p2.y < y < p3.y && p2.y > y > p3.y) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
-		if (p.y < y < p3.y && p.y > y > p3.y && p2.y < y < p3.y && p2.y > y > p3.y) _SDL_DrawLine(window, p.x + (y - p.y) * v13.x / v13.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
-	}
+	/*
+	*         *                      Filling the triangle from top to bottom
+	*        *===*					 by finding the X of 2 of the edges in its
+	*       *=======*                intersection with the Y value. 
+	*      *===========*             v.x/v.y being the slope value from the
+	*---->*===============*<-------- Y axis perspective.
+	*    *                   *      
+	*   *                       *   
+	*  *'''''''''''''''''''''''''''*
+	*/
 
+
+	for (int y = min_y + (v12.y != 0 && v13.y != 0 && v23.y != 0); y < max_y; y+=1) {
+		if      ((p.y < y && y <= p2.y || p.y > y && y >= p2.y) && (p.y < y && y <= p3.y || p.y > y && y >= p3.y) && (v12.y != 0 && v13.y != 0)) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p.x + (y - p.y) * v13.x / v13.y, y, r, g, b);
+		else if ((p.y <= y && y < p2.y || p.y >= y && y > p2.y) && (p2.y < y && y <= p3.y || p2.y > y && y >= p3.y) && (v12.y != 0 && v23.y != 0)) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
+		else if (v13.y != 0 && v23.y != 0) _SDL_DrawLine(window, p.x + (y - p.y) * v13.x / v13.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
+		
+	}
 }
 
 void colorTriangle2(SDL_Surface* window, point p, point p2, point p3, const Uint8 r, const Uint8 g, const Uint8 b) {

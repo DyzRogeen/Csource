@@ -23,6 +23,7 @@ typedef struct sEdge {
 typedef struct sFace {
 	int nbPoints;
 	point3 normale;
+	point3 G;
 	point3* points;
 	struct sFace* next;
 }face;
@@ -40,6 +41,11 @@ typedef struct sCam {
 	float lon, lat;
 	float dist;
 }cam;
+
+typedef struct sLight {
+	float intensity;
+	point3 pos;
+}light;
 
 //Utils
 
