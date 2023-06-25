@@ -17,6 +17,26 @@ int isInPlane(face f, point3* p) {
 
 }
 
+int checkFaceDisplay(face f, cam c) {
+
+	point3 vcf = sum(f.G, c.pos, -1);
+	point3 nf = f.normale;
+	if (vcf.x * nf.x + vcf.y * nf.y + vcf.z * nf.z < 0) {
+		point3* p = f.points;
+		for (int i = 0; i < f.nbPoints; i++) {
+			if (p->p.display) return 1;
+			p = p->next;
+		}
+	}
+	return 0;
+}
+
+point3 getUnitV(point3 v) {
+
+	return scale(v, 1/norm(v));
+
+}
+
 ///////////////////////////////////////////////////////////
 
 point sum2(point p1, point p2, int diff) {
@@ -100,8 +120,7 @@ edge* createEdge(point3* p1, point3* p2) {
 	return e;
 }
 
-//PB : normale dynamique à faire
-face* createFace(point3 n, point3* p, int nbPoints) {
+face* createFace(point3* p, int nbPoints, Uint8 color[3]) {
 
 	if (nbPoints < 3) return NULL;
 
@@ -116,11 +135,12 @@ face* createFace(point3 n, point3* p, int nbPoints) {
 
 	f->points = p;
 
-	f->normale = setPoint(
+	point3 normale = setPoint(
 		v12.y * v13.z - v12.z * v13.y,
 		v12.z * v13.x - v12.x * v13.z,
 		v12.x * v13.y - v12.y * v13.z
 	);
+	f->normale = scale(normale, 1 / norm(normale));
 
 	float x = 0;
 	float y = 0;
@@ -133,10 +153,14 @@ face* createFace(point3 n, point3* p, int nbPoints) {
 		p = p->next;
 	}
 
+	f->color[0] = color[0];
+	f->color[1] = color[1];
+	f->color[2] = color[2];
+
 	f->G = setPoint(x / nbPoints, y / nbPoints, z / nbPoints);
 	f->nbPoints = nbPoints;
 	f->next = NULL;
-	
+
 	return f;
 
 }
@@ -215,6 +239,19 @@ cam initCam(point3 pos, point3 dir) {
 
 }
 
+light initLight(point3 pos, float intensity, Uint8 color[3]) {
+
+	light l;
+	l.pos = pos;
+	l.intensity = intensity;
+	l.color[0] = color[0];
+	l.color[1] = color[1];
+	l.color[2] = color[2];
+
+	return l;
+
+}
+
 void moveCam(cam* C, point3 pos) {
 	add(&C->pos, pos, 0);
 	C->pCam = sum(C->pos, scale(C->dir, C->dist), 0);
@@ -288,7 +325,7 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam
 
 		k = (d - c.dir.x * p->x - c.dir.y * p->y - c.dir.z * p->z) / n;
 
-		if (k > 1) {
+		if (k > 1 || k < 0) {
 			p->p.display = 0;
 			p = p->next;
 			continue;
@@ -343,7 +380,7 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam
 
 }
 
-void displayObj(SDL_Surface* window, obj o, cam c) {
+void displayObj(SDL_Surface* window, obj o, cam c, light l, int camHasMoved) {
 
 	pointsTo2dProjection(window->w/2, window->h/2, o.vertexes, o.nbVertexes, c);
 
@@ -358,8 +395,18 @@ void displayObj(SDL_Surface* window, obj o, cam c) {
 	}
 
 	face* f = o.faces;
+	Uint8 color[3];
 
-	colorFace(window, f->points, f->nbPoints, 100, 100, 100);
+	for (int i = 0; i < o.nbFaces; i++) {
+
+		if (!camHasMoved || checkFaceDisplay(*f, c)) {
+			addLight(*f, c, l, color);
+			colorFace(window, f->points, f->nbPoints, color[0], color[1], color[2]);
+		}
+		
+		f = f->next;
+	}
+	
 }
 
 void colorTriangle(SDL_Surface* window, point p, point p2, point p3, const Uint8 r, const Uint8 g, const Uint8 b) {
@@ -434,7 +481,11 @@ void colorFace(SDL_Surface* window, point3* p, int nbPoints, const Uint8 r, cons
 
 	for (int i = (int)((nbPoints - 1) / 3); i >= 0; i--) {
 
-		colorTriangle(window, P.p, P.next->p, P.next->next->p, r, g, b);
+		if (P.next->next) colorTriangle(window, P.p, P.next->p, P.next->next->p, r, g, b);
+		else {
+			colorTriangle(window, P.p, P.next->p, p->p, r, g, b);
+			break;
+		}
 
 		P = *(P.next->next);
 
@@ -444,5 +495,27 @@ void colorFace(SDL_Surface* window, point3* p, int nbPoints, const Uint8 r, cons
 	}
 
 	if (nbPointsLeft > 2) colorFace(window, fpLeft, nbPointsLeft, r, g, b);
+
+}
+
+void addLight(face f, cam c, light l, Uint8 color[3]){
+
+	point3 vlf = sum(f.G, l.pos, -1);
+	point3 vfc = getUnitV(sum(c.pos, f.G, -1));
+
+	// Getting direction of the reflected light vector on the face
+	point3 vr = sum(getUnitV(f.normale), getUnitV(vlf), 0);
+
+	float nlf = norm(vlf) / 20;
+
+	// Scalar product with the vector face-camera with all the other bullshit tweaked on ass makes the brightness coef
+	float coef = (vr.x * vfc.x + vr.y * vfc.y + vr.z * vfc.z) * l.intensity * l.intensity / (nlf * nlf);
+
+	Uint8* cf = f.color;
+	Uint8* cl = l.color;
+
+	color[0] = (cf[0] + cl[0] * coef < 0)?0:(cf[0] + cl[0] * coef) / (coef + 1);
+	color[2] = (cf[2] + cl[2] * coef < 0)?0:(cf[2] + cl[2] * coef) / (coef + 1);
+	color[1] = (cf[1] + cl[1] * coef < 0)?0:(cf[1] + cl[1] * coef) / (coef + 1);
 
 }

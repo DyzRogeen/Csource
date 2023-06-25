@@ -4,12 +4,12 @@
 #include "utils_SDL.h"
 #include "mot.h"
 
-void updateScreen(SDL_Surface * window, obj o, cam C) {
+void updateScreen(SDL_Surface * window, obj o, cam C, light L, int camHasMoved) {
 
 	// On vide la fenêtre (on la remplit en noir)
 	SDL_FillRect(window, &(window->clip_rect), SDL_MapRGB(window->format, 0, 0, 0));
 
-	displayObj(window, o, C);
+	displayObj(window, o, C, L, camHasMoved);
 
 	// Met à jour le buffer de la fenêtre
 	SDL_UpdateRect(window, 0, 0, 0, 0);
@@ -30,8 +30,8 @@ int main(int argc, char** argv)
 	float speed = 0.15;
 	float jsp = 1;
 
-	point3 n;
 	cam C = initCam(setPoint(0, 300, 0), setPoint(jsp, 0, 0));
+	light L = initLight(setPoint(0, 500, 300), 10, (Uint8[3]){255, 255, 255});
 
 	point3* a = createPoint(50, 400, -100);
 	point3* b = createPoint(50, 400, 100);
@@ -43,11 +43,12 @@ int main(int argc, char** argv)
 	point3* c1 = createPoint(250, 200, 100);
 	point3* d1 = createPoint(250, 200, -100);
 
-	point3* last = createPoint(50, 550, 0);
+	const int NB_POINTS = 8;
+	const int NB_EDGES = 12;
+	const int NB_FACES = 6;
 
-	edge* E[13] = {
-		createEdge(a,last),
-		createEdge(last,b),
+	edge* E[12] = {
+		createEdge(a,b),
 		createEdge(b,c),
 		createEdge(c,d),
 		createEdge(d,a),
@@ -62,18 +63,14 @@ int main(int argc, char** argv)
 		createEdge(c,c1),
 		createEdge(d,d1),
 	};
-	for (int i = 12; i > 0; i--) E[i]->next = E[i - 1];
+	for (int i = 11; i > 0; i--) E[i]->next = E[i - 1];
 
-	point3* P[9] = { a,last,b,c,d,a1,b1,c1,d1 };
-	for (int i = 8; i > 0; i--) P[i]->next = P[i - 1];
-
-	n.x = 1;
-	n.y = 1;
-	n.z = 1;
+	point3* P[8] = { a,b,c,d,a1,b1,c1,d1 };
+	for (int i = 7; i > 0; i--) P[i]->next = P[i - 1];
 
 	face F[1];
 
-	obj* o = createObj3D(createFace(n, d, 5), E[12], P[8], 1, 13, 9);
+	obj* o = createObj3D(createFace(d, 4, (Uint8[3]) {0 , 150, 200}), E[NB_EDGES - 1], P[NB_POINTS - 1], 1, NB_EDGES, NB_POINTS);
 
 	// Initialisation
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -94,7 +91,7 @@ int main(int argc, char** argv)
 	// On met le titre sur la fenêtre
 	SDL_WM_SetCaption("VonKoch", NULL);
 
-	updateScreen(window, *o, C);
+	updateScreen(window, *o, C, L, 1);
 
 	while (!quit)
 	{
@@ -126,12 +123,12 @@ int main(int argc, char** argv)
 		SDL_GetMouseState(&mPos.x, &mPos.y);
 		if (mPos.x - premPos.x || mPos.y - premPos.y) {
 			rotateCam(&C, (mPos.x - premPos.x) / 100.0, (mPos.y - premPos.y) / -100.0);
-			updateScreen(window, *o, C);
+			updateScreen(window, *o, C, L, 0);
 		}
 
 		if (dirx || diry) {
 			moveCam(&C,setPoint((dirx * C.dir.x - diry * C.dir.z)*speed/jsp, 0, (dirx * C.dir.z + diry * C.dir.x)*speed/jsp));
-			updateScreen(window, *o, C);
+			updateScreen(window, *o, C, L, 1);
 		}
 
 		premPos.x = mPos.x;

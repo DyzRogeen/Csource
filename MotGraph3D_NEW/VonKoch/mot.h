@@ -25,6 +25,8 @@ typedef struct sFace {
 	point3 normale;
 	point3 G;
 	point3* points;
+	Uint8 color[3];
+	int display;
 	struct sFace* next;
 }face;
 
@@ -43,6 +45,7 @@ typedef struct sCam {
 }cam;
 
 typedef struct sLight {
+	Uint8 color[3];
 	float intensity;
 	point3 pos;
 }light;
@@ -50,6 +53,12 @@ typedef struct sLight {
 //Utils
 
 void printP3(point3 p);
+
+int isInPlane(face f, point3* p);
+
+int checkFaceDisplay(face f, cam c);
+
+point3 getUnitV(point3 v);
 
 //Vector Basic Operations
 
@@ -77,13 +86,11 @@ point3 setPoint(float x, float y, float z);
 
 edge* createEdge(point3* p1, point3* p2);
 
-face* createFace(point3 n, point3* p, int nbPoints);
+face* createFace(point3* p, int nbPoints, Uint8 color[3]);
 
 void printFace(face f);
 
 void addPointFace(face *f, point3* p);
-
-int isInPlane(face f, point3* p);
 
 obj* createObj3D(face* f, edge* e, point3* p, int nbFaces, int nbEdges, int nbVertexes);
 
@@ -91,16 +98,27 @@ obj* createObj3D(face* f, edge* e, point3* p, int nbFaces, int nbEdges, int nbVe
 
 cam initCam(point3 pos, point3 dir);
 
+light initLight(point3 pos, float intensity, Uint8 color[3]);
+
 void moveCam(cam* C, point3 pos);
 
 void rotateCam(cam* C, float lon, float lat);
 
 void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam c);
 
+void displayObj(SDL_Surface* window, obj o, cam c, light l, int camHasMoved);
+
 void colorTriangle(SDL_Surface* p_affichage, point p1, point p2, point p3, const Uint32 color);
 
 void colorFace(SDL_Surface* window, point3* p, int nbPoints, const Uint8 r, const Uint8 g, const Uint8 b);
 
+void addLight(face f, cam c, light l);
+
 //Modelisation methods
 
 //face* ExtrudeFace(face f, point3 dir, float l);
+
+/*OPTI
+* save face reflection color in other slot in face structure to avoid repeating addLight
+* 
+*/
