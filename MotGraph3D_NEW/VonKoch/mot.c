@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdarg.h>
 
 void printP3(point3 p) {
 	printf("[%.1f , %.1f , %.1f]", p.x, p.y, p.z);
@@ -11,7 +12,7 @@ void printP3(point3 p) {
 int isInPlane(face f, point3* p) {
 
 	//Vecteur orthonormal à la normale ?
-	point3 v = sum(*f.points, *p, -1);
+	point3 v = sum(*f.points->p, *p, -1);
 	point3 n = f.normale;
 	return !(n.x * v.x + n.y * v.y + n.z * v.z);
 
@@ -21,10 +22,11 @@ int checkFaceDisplay(face f, cam c) {
 
 	point3 vcf = sum(f.G, c.pos, -1);
 	point3 nf = f.normale;
+
 	if (vcf.x * nf.x + vcf.y * nf.y + vcf.z * nf.z < 0) {
-		point3* p = f.points;
+		listP* p = f.points;
 		for (int i = 0; i < f.nbPoints; i++) {
-			if (p->p.display) return 1;
+			if (p->p->p.display) return 1;
 			p = p->next;
 		}
 	}
@@ -35,6 +37,12 @@ point3 getUnitV(point3 v) {
 
 	return scale(v, 1/norm(v));
 
+}
+
+listP* createListP(point3* p) {
+	listP* lp = (listP*)calloc(1, sizeof(listP));
+	lp->p = p;
+	return lp;
 }
 
 ///////////////////////////////////////////////////////////
@@ -120,44 +128,59 @@ edge* createEdge(point3* p1, point3* p2) {
 	return e;
 }
 
-face* createFace(point3* p, int nbPoints, Uint8 color[3]) {
+face* createFace(Uint8 color[3], int dir, int nbPoints, ...) {
 
 	if (nbPoints < 3) return NULL;
+	if (dir != -1) dir = 1;
 
-	point3 p1 = *p;
-	point3 p2 = *(p->next);
-	point3 p3 = *(p->next->next);
+	va_list list;
+	va_start(list, nbPoints);
+
+	point3 p1 = *va_arg(list, point3*);
+	point3 p2 = *va_arg(list, point3*);
+	point3 p3 = *va_arg(list, point3*);
 
 	point3 v12 = sum(p2, p1, -1);
 	point3 v13 = sum(p3, p1, -1);
 
-	face* f = (face*)calloc(1,sizeof(face));
-
-	f->points = p;
-
 	point3 normale = setPoint(
-		v12.y * v13.z - v12.z * v13.y,
-		v12.z * v13.x - v12.x * v13.z,
-		v12.x * v13.y - v12.y * v13.z
+		(v12.z * v13.y - v12.y * v13.z) * dir,
+		(v12.x * v13.z - v12.z * v13.x) * dir,
+		(v12.y * v13.x - v12.x * v13.y) * dir
 	);
-	f->normale = scale(normale, 1 / norm(normale));
+
+	face* f = (face*)calloc(1,sizeof(face));
+	f->normale = getUnitV(normale);
+
+	va_start(list, nbPoints);
+	listP* p = createListP(va_arg(list, point3*));
+	listP* fp = p;
 
 	float x = 0;
 	float y = 0;
 	float z = 0;
 
-	for (int i = 0; i < nbPoints; i++) {
-		x += p->x;
-		y += p->y;
-		z += p->z;
+	for (int i = 1; i < nbPoints; i++) {
+		x += p->p->x;
+		y += p->p->y;
+		z += p->p->z;
+		p->next = createListP(va_arg(list, point3*));
 		p = p->next;
 	}
+
+	x += p->p->x;
+	y += p->p->y;
+	z += p->p->z;
+
+	va_end(list);
+
+	f->points = fp;
+	f->G = setPoint(x / nbPoints, y / nbPoints, z / nbPoints);
 
 	f->color[0] = color[0];
 	f->color[1] = color[1];
 	f->color[2] = color[2];
 
-	f->G = setPoint(x / nbPoints, y / nbPoints, z / nbPoints);
 	f->nbPoints = nbPoints;
 	f->next = NULL;
 
@@ -168,10 +191,10 @@ face* createFace(point3* p, int nbPoints, Uint8 color[3]) {
 void printFace(face f) {
 	printP3(f.normale);
 	printf(" : ");
-	point3* p = f.points;
-	for (int i = 0; i < f.nbPoints; i++) {
+	listP* p = f.points;
+	for (int i = 0; p; i++) {
 
-		printP3(*p);
+		printP3(*p->p);
 		printf(" -> ");
 		p = p->next;
 	}
@@ -384,7 +407,7 @@ void displayObj(SDL_Surface* window, obj o, cam c, light l, int camHasMoved) {
 
 	pointsTo2dProjection(window->w/2, window->h/2, o.vertexes, o.nbVertexes, c);
 
-	edge* e = o.edges;
+	/*edge* e = o.edges;
 	point p1, p2;
 
 	for (int i = 0; i < o.nbEdges; i++) {
@@ -392,16 +415,24 @@ void displayObj(SDL_Surface* window, obj o, cam c, light l, int camHasMoved) {
 		p2 = e->points[1]->p;
 		if (p1.display && p2.display) _SDL_DrawLine(window, p1.x, p1.y, p2.x, p2.y, 255, 255, 255);
 		e = e->next;
-	}
+	}*/
 
 	face* f = o.faces;
 	Uint8 color[3];
 
 	for (int i = 0; i < o.nbFaces; i++) {
 
-		if (!camHasMoved || checkFaceDisplay(*f, c)) {
-			addLight(*f, c, l, color);
-			colorFace(window, f->points, f->nbPoints, color[0], color[1], color[2]);
+		if (camHasMoved) {
+			if (f->display = checkFaceDisplay(*f, c)) {
+				addLight(*f, c, l, color);
+				colorFace(window, f->points, f->nbPoints, color[0], color[1], color[2]);
+			}
+		}
+		else {
+			if (f->display) {
+				addLight(*f, c, l, color);
+				colorFace(window, f->points, f->nbPoints, color[0], color[1], color[2]);
+			}
 		}
 		
 		f = f->next;
@@ -467,12 +498,13 @@ void colorTriangle2(SDL_Surface* window, point p, point p2, point p3, const Uint
 
 }
 
-void colorFace(SDL_Surface* window, point3* p, int nbPoints, const Uint8 r, const Uint8 g, const Uint8 b) {
+void colorFace(SDL_Surface* window, listP* lp, int nbPoints, const Uint8 r, const Uint8 g, const Uint8 b) {
 
-	point3 P = *p;
+	listP* P = lp;
+	point3 p = *P->p;
 
-	point3* pSaved = createPoint(P.x, P.y, P.z);
-	pSaved->p = P.p;
+	point3* pSaved = createPoint(p.x, p.y, p.z);
+	pSaved->p = p.p;
 	point3* fpLeft;
 
 	int nbPointsLeft = nbPoints - 1 - (int)((nbPoints-1) / 3);
@@ -481,17 +513,18 @@ void colorFace(SDL_Surface* window, point3* p, int nbPoints, const Uint8 r, cons
 
 	for (int i = (int)((nbPoints - 1) / 3); i >= 0; i--) {
 
-		if (P.next->next) colorTriangle(window, P.p, P.next->p, P.next->next->p, r, g, b);
+		if (P->next->next) colorTriangle(window, P->p->p, P->next->p->p, P->next->next->p->p, r, g, b);
 		else {
-			colorTriangle(window, P.p, P.next->p, p->p, r, g, b);
+			colorTriangle(window, P->p->p, P->next->p->p, lp->p->p, r, g, b);
 			break;
 		}
 
-		P = *(P.next->next);
+		P = P->next->next;
+		p = *P->p;
 
-		pSaved->next = createPoint(P.x, P.y, P.z);
+		pSaved->next = createPoint(p.x, p.y, p.z);
 		pSaved = pSaved->next;
-		pSaved->p = P.p;
+		pSaved->p = p.p;
 	}
 
 	if (nbPointsLeft > 2) colorFace(window, fpLeft, nbPointsLeft, r, g, b);

@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include "utils_SDL.h"
 #include "mot.h"
 
@@ -17,6 +18,14 @@ void updateScreen(SDL_Surface * window, obj o, cam C, light L, int camHasMoved) 
 	SDL_Flip(window);
 }
 
+void coucou(int num,...) {
+	printf("coucou\n");
+	va_list list;
+	va_start(list, num);
+	for (int i = 0; i < num; i++) printP3(*(va_arg(list, point3*)));
+	va_end(list);
+}
+
 int main(int argc, char** argv)
 {
 	SDL_Surface* window;
@@ -25,6 +34,7 @@ int main(int argc, char** argv)
 	int quit = 0;
 	int dirx = 0;
 	int diry = 0;
+	int dirz = 0;
 	point mPos, premPos;
 	SDL_GetMouseState(&premPos.x, &premPos.y);
 	float speed = 0.15;
@@ -33,19 +43,22 @@ int main(int argc, char** argv)
 	cam C = initCam(setPoint(0, 300, 0), setPoint(jsp, 0, 0));
 	light L = initLight(setPoint(0, 500, 300), 10, (Uint8[3]){255, 255, 255});
 
-	point3* a = createPoint(50, 400, -100);
-	point3* b = createPoint(50, 400, 100);
-	point3* c = createPoint(50, 200, 100);
-	point3* d = createPoint(50, 200, -100);
+	point3* a = createPoint(50, 400, -200);
+	point3* b = createPoint(50, 400, 200);
+	point3* c = createPoint(50, 0, 200);
+	point3* d = createPoint(50, 0, -200);
 
-	point3* a1 = createPoint(250, 400, -100);
-	point3* b1 = createPoint(250, 400, 100);
-	point3* c1 = createPoint(250, 200, 100);
-	point3* d1 = createPoint(250, 200, -100);
+	point3* a1 = createPoint(450, 400, -200);
+	point3* b1 = createPoint(450, 400, 200);
+	point3* c1 = createPoint(450, 0, 200);
+	point3* d1 = createPoint(450, 0, -200);
 
 	const int NB_POINTS = 8;
 	const int NB_EDGES = 12;
 	const int NB_FACES = 6;
+
+	point3* P[8] = { a,b,c,d,a1,b1,c1,d1 };
+	for (int i = 7; i > 0; i--) P[i]->next = P[i - 1];
 
 	edge* E[12] = {
 		createEdge(a,b),
@@ -65,12 +78,17 @@ int main(int argc, char** argv)
 	};
 	for (int i = 11; i > 0; i--) E[i]->next = E[i - 1];
 
-	point3* P[8] = { a,b,c,d,a1,b1,c1,d1 };
-	for (int i = 7; i > 0; i--) P[i]->next = P[i - 1];
+	face* F[6] = {
+		createFace((Uint8[3]) { 0, 150, 200 }, 0, 4, a, b, c, d),
+		createFace((Uint8[3]) { 0, 150, 200 }, -1, 4, a1, b1, c1, d1),
+		createFace((Uint8[3]) { 0, 150, 200 }, -1, 4, a, b, b1, a1),
+		createFace((Uint8[3]) { 0, 150, 200 }, -1, 4, b, c, c1, b1),
+		createFace((Uint8[3]) { 0, 150, 200 }, -1, 4, c, d, d1, c1),
+		createFace((Uint8[3]) { 0, 150, 200 }, 0, 4, a, d, d1, a1)
+	};
+	for (int i = 5; i > 0; i--) F[i]->next = F[i - 1];
 
-	face F[1];
-
-	obj* o = createObj3D(createFace(d, 4, (Uint8[3]) {0 , 150, 200}), E[NB_EDGES - 1], P[NB_POINTS - 1], 1, NB_EDGES, NB_POINTS);
+	obj* o = createObj3D(F[NB_FACES - 1], E[NB_EDGES - 1], P[NB_POINTS - 1], NB_FACES, NB_EDGES, NB_POINTS);
 
 	// Initialisation
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -107,8 +125,10 @@ int main(int argc, char** argv)
 					quit = 1;
 				if (e.key.keysym.sym == SDLK_w) dirx = 1;
 				if (e.key.keysym.sym == SDLK_s) dirx = -1;
-				if (e.key.keysym.sym == SDLK_a) diry = -1;
 				if (e.key.keysym.sym == SDLK_d) diry = 1;
+				if (e.key.keysym.sym == SDLK_a) diry = -1;
+				if (e.key.keysym.sym == SDLK_z) dirz = 1;
+				if (e.key.keysym.sym == SDLK_x) dirz = -1;
 				if (e.key.keysym.sym == SDLK_r) C = initCam(setPoint(0,300,0),setPoint(jsp,0,0));
 				if (e.key.keysym.sym == SDLK_e) jsp /= 10;
 				if (e.key.keysym.sym == SDLK_q) jsp *= 10;
@@ -117,6 +137,7 @@ int main(int argc, char** argv)
 			case SDL_KEYUP:
 				if (e.key.keysym.sym == SDLK_w || e.key.keysym.sym == SDLK_s) dirx = 0;
 				if (e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_d) diry = 0;
+				if (e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_x) dirz = 0;
 			}
 		}
 
@@ -126,8 +147,8 @@ int main(int argc, char** argv)
 			updateScreen(window, *o, C, L, 0);
 		}
 
-		if (dirx || diry) {
-			moveCam(&C,setPoint((dirx * C.dir.x - diry * C.dir.z)*speed/jsp, 0, (dirx * C.dir.z + diry * C.dir.x)*speed/jsp));
+		if (dirx || diry || dirz) {
+			moveCam(&C,setPoint((dirx * C.dir.x - diry * C.dir.z)*speed/jsp, dirz, (dirx * C.dir.z + diry * C.dir.x)*speed/jsp));
 			updateScreen(window, *o, C, L, 1);
 		}
 
