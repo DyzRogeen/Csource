@@ -118,11 +118,11 @@ int main(int argc, char **argv)
 		}
 	
 		if (dirx != 0) {
-			addCam(&c, dirx * 10 * cos(c.lon), dirx * 10 * sin(c.lon), 0, 0, 0, 0);
+			addCam(&c, dirx * cos(c.lon), dirx * sin(c.lon), 0, 0, 0, 0);
 			//dirx = 0;
 		}
 		if (diry != 0) {
-			addCam(&c, diry * 10 * sin(c.lon), diry * 10 * cos(c.lon), 0, 0, 0, 0);
+			addCam(&c, diry * sin(c.lon), diry * cos(c.lon), 0, 0, 0, 0);
 			//diry = 0;
 		}
 		
@@ -130,11 +130,11 @@ int main(int argc, char **argv)
 		// On vide la fenêtre (on la remplit en noir)
 		
 		SDL_FillRect(window, &(window->clip_rect), SDL_MapRGB(window->format, 0, 0, 0));
-		system("cls");
+		//system("cls");
 		
 		SDL_GetMouseState(&m.m_x, &m.m_y);
 		addCam(&c, 0, 0, 0, (m.m_x - mc.m_x) / 100.0, (m.m_y - mc.m_y) / 100.0, 0);
-		printf("[lon = %f, lat = %f], %.0f\n", c.lon, c.lat, c.zoom);
+		//printf("[lon = %f, lat = %f], %.0f\n", c.lon, c.lat, c.zoom);
 		
 		mc.m_x = m.m_x;
 		mc.m_y = m.m_y;

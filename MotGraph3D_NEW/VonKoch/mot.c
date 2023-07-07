@@ -45,8 +45,22 @@ listP* createListP(point3* p) {
 	return lp;
 }
 
+void printFace(face f) {
+	printP3(f.normale);
+	printf(" : ");
+	listP* p = f.points;
+	for (int i = 0; p; i++) {
+
+		printP3(*p->p);
+		printf(" -> ");
+		p = p->next;
+	}
+	printf("\n");
+}
+
 ///////////////////////////////////////////////////////////
 
+// 2D
 point sum2(point p1, point p2, int diff) {
 	
 	if (diff != -1) diff = 1;
@@ -61,6 +75,7 @@ float norm2(point p) {
 	return sqrt(p.x*p.x + p.y*p.y);
 }
 
+// 3D
 point3 sum(point3 p1, point3 p2, int diff) {
 
 	if (diff != -1) diff = 1;
@@ -88,6 +103,10 @@ point3 scale(point3 p, float n) {
 	p.z *= n;
 	return p;
 
+}
+
+float scalar(point3 p1, point3 p2) {
+	return p1.x * p2.x + p1.y * p2.y + p1.z * p2.z;
 }
 
 float norm(point3 p) {
@@ -119,6 +138,7 @@ point3 setPoint(float x, float y, float z) {
 
 ///////////////////////////////////////////////////////////
 
+// Edges and Faces
 edge* createEdge(point3* p1, point3* p2) {
 	edge* e = (edge*)calloc(1,sizeof(edge));
 	e->points[0] = p1;
@@ -188,57 +208,116 @@ face* createFace(Uint8 color[3], int dir, int nbPoints, ...) {
 
 }
 
-void printFace(face f) {
-	printP3(f.normale);
-	printf(" : ");
-	listP* p = f.points;
-	for (int i = 0; p; i++) {
-
-		printP3(*p->p);
-		printf(" -> ");
-		p = p->next;
-	}
-	printf("\n");
-}
-
 void addPointFace(face *f, point3* p) {
 
-	//if (!isInPlane(f, p))
-	//	return f;
+	if (!isInPlane(*f, p)) return f;
 
 	f->nbPoints++;
 	//Push
-	p->next = f->points;
-	f->points = p;
+	listP* lp = (listP*)calloc(1, sizeof(listP));
+	lp->p = p;
+	lp->next = f->points;
+	f->points = lp;
 
 	return f;
 
 }
 
-obj* createObj3D(face* f, edge* e, point3* p, int nbFaces, int nbEdges, int nbVertexes){
-
-	/*int size_f = (int)(sizeof(f) / sizeof(face*));
-	int size_e = (int)(sizeof(e) / sizeof(edge*));
-
-	for (int i = size_f - 1; i > 0; i--) f[i]->next = f[i - 1];
-	for (int i = size_e - 1; i > 0; i--) e[i]->next = e[i - 1];*/
+// Object
+obj* createObj3D(face* f, edge* e, point3* p, int nbFaces, int nbEdges, int nbVertexes, int isStatic) {
 
 	obj* o = (obj*)calloc(1, sizeof(obj));
 
 	o->nbFaces = nbFaces;
 	o->nbEdges = nbEdges;
 	o->nbVertexes = nbVertexes;
+	o->isStatic = isStatic;
 
 	o->faces = f;
 	o->edges = e;
 	o->vertexes = p;
 
+	float x = 0;
+	float y = 0;
+	float z = 0;
+	for (int i = 0; i < nbVertexes; i++) {
+		x += p->x;
+		y += p->y;
+		z += p->z;
+		p = p->next;
+	}
+	o->G = setPoint(x / nbVertexes, y / nbVertexes, z / nbVertexes);
+
 	return o;
+
+}
+
+obj* createCube(point3 pos, point3 rot, float size, Uint8 color[3], int isStatic) {
+
+	size /= 2;
+
+	float cosX = cos(rot.x);
+	float sinX = sin(rot.x);
+	float cosY = cos(rot.y);
+	float sinY = sin(rot.y);
+	float cosZ = cos(rot.z);
+	float sinZ = sin(rot.z);
+
+	//point3* a = createPoint(pos.x - size * (cosY + sinY + cosZ + sinZ), pos.y + size * (cosX + sinX + cosZ - sinZ), pos.z - size * (cosX - sinX + cosY - sinY));
+	//point3* b = createPoint(pos.x - size * (cosY - sinY + cosZ + sinZ), pos.y + size * (cosX - sinX + cosZ - sinZ), pos.z + size * (cosX + sinX + cosY + sinY));
+	//point3* c = createPoint(pos.x - size * (cosY - sinY + cosZ - sinZ), pos.y - size * (cosX + sinX + cosZ + sinZ), pos.z + size * (cosX - sinX + cosY + sinY));
+	//point3* d = createPoint(pos.x - size * (cosY + sinY + cosZ - sinZ), pos.y - size * (cosX - sinX + cosZ + sinZ), pos.z - size * (cosX + sinX + cosY - sinY));
+	//point3* e = createPoint(pos.x + size * (cosY - sinY + cosZ - sinZ), pos.y + size * (cosX + sinX + cosZ + sinZ), pos.z - size * (cosX - sinX + cosY + sinY));
+	//point3* f = createPoint(pos.x + size * (cosY + sinY + cosZ - sinZ), pos.y + size * (cosX - sinX + cosZ + sinZ), pos.z + size * (cosX + sinX + cosY - sinY));
+	//point3* g = createPoint(pos.x + size * (cosY + sinY + cosZ + sinZ), pos.y - size * (cosX + sinX + cosZ - sinZ), pos.z + size * (cosX - sinX + cosY - sinY));
+	//point3* h = createPoint(pos.x + size * (cosY - sinY + cosZ + sinZ), pos.y - size * (cosX - sinX + cosZ - sinZ), pos.z - size * (cosX + sinX + cosY + sinY));
+
+	point3* a = createPoint(pos.x - size, pos.y + size, pos.z - size);
+	point3* b = createPoint(pos.x - size, pos.y + size, pos.z + size);
+	point3* c = createPoint(pos.x - size, pos.y - size, pos.z + size);
+	point3* d = createPoint(pos.x - size, pos.y - size, pos.z - size);
+	point3* e = createPoint(pos.x + size, pos.y + size, pos.z - size);
+	point3* f = createPoint(pos.x + size, pos.y + size, pos.z + size);
+	point3* g = createPoint(pos.x + size, pos.y - size, pos.z + size);
+	point3* h = createPoint(pos.x + size, pos.y - size, pos.z - size);
+
+	point3* P[8] = { a, b, c, d, e, f, g, h };
+	for (int i = 7; i > 0; i--) P[i - 1]->next = P[i];
+
+	face* F[6] = {
+		createFace(color, 0, 4, a, b, c, d),
+		createFace(color, -1, 4, e, f, g, h),
+		createFace(color, -1, 4, a, b, f, e),
+		createFace(color, -1, 4, c, d, h, g),
+		createFace(color, 0, 4, a, d, h, e),
+		createFace(color, -1, 4, b, c, g, f),
+	};
+	for (int i = 5; i > 0; i--) F[i - 1]->next = F[i];
+
+	obj* o = createObj3D(*F, NULL, *P, 6, 0, 8, isStatic);
+	RotateObj(o, rot);
+
+	return o;
+}
+
+obj* createRect(point3 p1, point3 p2, Uint8 color[3]) {
+
+
+
+}
+
+void addObj(listO** O, obj* o) {
+
+	listO* newO = (listO*)calloc(1, sizeof(listO));
+	newO->o = o;
+	newO->next = *O;
+	*O = newO;
 
 }
 
 ///////////////////////////////////////////////////////////
 
+// Camera
 cam initCam(point3 pos, point3 dir) {
 
 	cam c;
@@ -262,6 +341,35 @@ cam initCam(point3 pos, point3 dir) {
 
 }
 
+void moveCam(cam* C, point3 pos) {
+	add(&C->pos, pos, 0);
+	C->pCam = sum(C->pos, scale(C->dir, C->dist), 0);
+}
+
+void rotateCam(cam* C, float lon, float lat) {
+	C->lon += lon;
+	if (C->lon > PI) C->lon = C->lon - 2 * PI;
+	else if (C->lon < -PI) C->lon = C->lon + 2 * PI;
+	C->lat += lat;
+	if (C->lat > 0.99 * PI / 2) C->lat = 0.99 * PI / 2;
+	else if (C->lat < -0.99 * PI / 2) C->lat = -0.99 * PI / 2;
+
+	lon = C->lon;
+	lat = C->lat;
+
+	float normDir = norm(C->dir);
+	C->dir = setPoint(normDir * cos(lat) * cos(lon), normDir * sin(lat), normDir * cos(lat) * sin(lon));
+
+	point3 dir = C->dir;
+	float nNorm = sqrtf(dir.x * dir.x + dir.y * dir.y) / normDir;
+
+	C->vUnit1 = setPoint(-normDir * sin(lon), 0, normDir * cos(lon));
+	C->vUnit2 = setPoint(-normDir * sin(lat) * cos(lon), normDir * cos(lat), -normDir * sin(lat) * sin(lon));
+
+	C->pCam = sum(C->pos, scale(C->dir, C->dist), 0);
+}
+
+// Light
 light initLight(point3 pos, float intensity, Uint8 color[3]) {
 
 	light l;
@@ -275,57 +383,49 @@ light initLight(point3 pos, float intensity, Uint8 color[3]) {
 
 }
 
-void moveCam(cam* C, point3 pos) {
-	add(&C->pos, pos, 0);
-	C->pCam = sum(C->pos, scale(C->dir, C->dist), 0);
+void addLight(face f, cam c, light l, Uint8 color[3]) {
+
+	point3 vlf = sum(f.G, l.pos, -1);
+	point3 vfc = getUnitV(sum(c.pos, f.G, -1));
+	point3 normal = f.normale;
+
+	// Getting direction of the reflected light vector on the face
+	point3 vr = getUnitV(sum(getUnitV(f.normale), getUnitV(vlf), 0));
+
+	float nlf = norm(vlf) / 10;
+
+	// Scalar product with the vector face-camera with all the other bullshit tweaked on ass makes the brightness coef
+	float coef = (scalar(vr,vfc)*4 - scalar(normal,vlf)/4) * l.intensity / (nlf * nlf);
+
+	Uint8* cf = f.color;
+	Uint8* cl = l.color;
+
+	color[0] = (coef < 0) ? cf[0] : (cf[0] + cl[0] * coef) / (coef + 1);
+	color[2] = (coef < 0) ? cf[2] : (cf[2] + cl[2] * coef) / (coef + 1);
+	color[1] = (coef < 0) ? cf[1] : (cf[1] + cl[1] * coef) / (coef + 1);
+
 }
 
-void rotateCam(cam* C, float lon, float lat) {
-	C->lon += lon;
-	if (C->lon > PI) C->lon = C->lon - 2*PI;
-	else if (C->lon < -PI) C->lon = C->lon + 2*PI;
-	C->lat += lat;
-	if (C->lat > 0.99*PI / 2) C->lat = 0.99*PI / 2;
-	else if (C->lat < - 0.99*PI / 2) C->lat = - 0.99*PI / 2;
-
-	lon = C->lon;
-	lat = C->lat;
-
-	float normDir = norm(C->dir);
-	C->dir = setPoint(normDir * cos(lat) * cos(lon) , normDir * sin(lat), normDir * cos(lat) * sin(lon));
-
-	point3 dir = C->dir;
-	float nNorm = sqrtf(dir.x * dir.x + dir.y * dir.y) / normDir;
-		
-	C->vUnit1 = setPoint(-normDir * sin(lon), 0, normDir * cos(lon));
-	C->vUnit2 = setPoint(-normDir * sin(lat) * cos(lon), normDir * cos(lat), -normDir * sin(lat) * sin(lon));
-
-	C->pCam = sum(C->pos, scale(C->dir, C->dist), 0);
-
-	/*printf("lon:%.2f lat: %.2f : ", C->lon, C->lat);
-	printf("UNITS : \n");
-	printP3(C->dir);
-	printf("\n");
-	printP3(C->vUnit1);
-	printf("\n");
-	printP3(C->vUnit2);
-	printf("\n");*/
-}
-
+// Render
 void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam c) {
 
 	float normDir = norm(c.dir);
 
 	// ref point on the cam plane
 	point3 pcam = c.pCam;
+	point3 pos = c.pos;
+	point3 dir = c.dir;
 
 	// i and j unit vectors on the cam plane
 	point3 vUnit1 = c.vUnit1;
 	point3 vUnit2 = c.vUnit2;
 
+	// vector point to camera
+	point3 vpc;
+
 	// (X - pcamX)*dirX + (Y - pcamY)*dirY + (Z - pcamZ)*dirZ = 0
 	// Cartesian d value in [ ax + by + cz = -d ] for the cam plane
-	float d = (pcam.x * c.dir.x) + (pcam.y * c.dir.y) + (pcam.z * c.dir.z);
+	float d = (pcam.x * dir.x) + (pcam.y * dir.y) + (pcam.z * dir.z);
 	float n,k;
 
 	// Intersection coordinates
@@ -337,8 +437,10 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam
 		// so that [ ax + by + cz = -d ] <=> [ a*(vx*k + px) + b*(vy*k + py) + c*(vz*k + pz) = -d ] <=> [ k = -(d + a*px + b*py + c*pz)/(a*vx + b*vy + c*vz) ] with denom != 0
 		// if k > 1, point is behind cam plane so must not be visible
 		// if k < 0, point is between cam and plane.
-
-		n = c.dir.x * (c.pos.x - p->x) + c.dir.y * (c.pos.y - p->y) + c.dir.z * (c.pos.z - p->z);
+	
+		vpc = sum(pos, *p, -1);
+		// n = dir.x * (pos.x - p->x) + dir.y * (pos.y - p->y) + dir.z * (pos.z - p->z);
+		n = scalar(dir, vpc);
 
 		if (n == 0) {
 			p->p.display = 0;
@@ -346,7 +448,7 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam
 			continue;
 		}
 
-		k = (d - c.dir.x * p->x - c.dir.y * p->y - c.dir.z * p->z) / n;
+		k = (d - dir.x * p->x - dir.y * p->y - dir.z * p->z) / n;
 
 		if (k > 1 || k < 0) {
 			p->p.display = 0;
@@ -355,9 +457,9 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam
 		}
 
 		// P = v*k + p
-		X = (c.pos.x - p->x) * k + p->x - pcam.x;
-		Y = (c.pos.y - p->y) * k + p->y - pcam.y;
-		Z = (c.pos.z - p->z) * k + p->z - pcam.z;
+		X = (pos.x - p->x) * k + p->x - pcam.x;
+		Y = (pos.y - p->y) * k + p->y - pcam.y;
+		Z = (pos.z - p->z) * k + p->z - pcam.z;
 
 		/*
 		* x*i + y*j = (X ; Y ; Z) => x*v1.x + y*v2.x = X | x*v1.y + y*v2.y = Y | x*v1.z + y*v2.z = Z
@@ -383,27 +485,28 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, int nbPoints, cam
 		*/
 		float den;
 		if (fabs(den = vUnit1.x * vUnit2.y - vUnit1.y * vUnit2.x) > 0.00001) {
-			p->p.x = round((vUnit2.y * X - vUnit2.x * Y) / den) * normDir + screenW;
-			p->p.y = round((vUnit1.y * X - vUnit1.x * Y) / den) * normDir + screenH;
+			p->p.x = (vUnit2.y * X - vUnit2.x * Y) * normDir / den + screenW;
+			p->p.y = (vUnit1.y * X - vUnit1.x * Y) * normDir / den + screenH;
 		}
 		else if (fabs(den = vUnit1.x * vUnit2.z - vUnit1.z * vUnit2.x) > 0.00001) {
-			p->p.x = round((vUnit2.z * X - vUnit2.x * Z) / den) * normDir + screenW;
-			p->p.y = round((vUnit1.z * X - vUnit1.x * Z) / den) * normDir + screenH;
+			p->p.x = (vUnit2.z * X - vUnit2.x * Z) * normDir / den + screenW;
+			p->p.y = (vUnit1.z * X - vUnit1.x * Z) * normDir / den + screenH;
 		}
 		else {
 			den = vUnit1.y * vUnit2.z - vUnit1.z * vUnit2.y;
-			p->p.x = round((vUnit2.z * Y - vUnit2.y * Z) / den) * normDir + screenW;
-			p->p.y = round((vUnit1.z * Y - vUnit1.y * Z) / den) * normDir + screenH;
+			p->p.x = (vUnit2.z * Y - vUnit2.y * Z) * normDir / den + screenW;
+			p->p.y = (vUnit1.z * Y - vUnit1.y * Z) * normDir / den + screenH;
 		} 
 
-		//printf("[%.1f ; %.1f ; %.1f] -> (%d;%d)\n", X, Y, Z, p->p.x, p->p.y);
+		p->p.depth = norm(vpc);
+		
 		p->p.display = 1;
 		p = p->next;
 	}
 
 }
 
-void displayObj(SDL_Surface* window, obj o, cam c, light l, int camHasMoved) {
+void displayObj(SDL_Surface* window, int* Z_Buffers, obj o, cam c, light l, int camHasMoved, int alt) {
 
 	pointsTo2dProjection(window->w/2, window->h/2, o.vertexes, o.nbVertexes, c);
 
@@ -425,13 +528,13 @@ void displayObj(SDL_Surface* window, obj o, cam c, light l, int camHasMoved) {
 		if (camHasMoved) {
 			if (f->display = checkFaceDisplay(*f, c)) {
 				addLight(*f, c, l, color);
-				colorFace(window, f->points, f->nbPoints, color[0], color[1], color[2]);
+				colorFace(window, Z_Buffers, f->points, f->nbPoints, SDL_MapRGB(window->format, color[0], color[1], color[2]), alt);
 			}
 		}
 		else {
 			if (f->display) {
 				addLight(*f, c, l, color);
-				colorFace(window, f->points, f->nbPoints, color[0], color[1], color[2]);
+				colorFace(window, Z_Buffers, f->points, f->nbPoints, SDL_MapRGB(window->format, color[0], color[1], color[2]), alt);
 			}
 		}
 		
@@ -440,7 +543,46 @@ void displayObj(SDL_Surface* window, obj o, cam c, light l, int camHasMoved) {
 	
 }
 
-void colorTriangle(SDL_Surface* window, point p, point p2, point p3, const Uint8 r, const Uint8 g, const Uint8 b) {
+void colorRow(SDL_Surface* window, int* Z_Buffers, int x1, int x2, int y,  int z1, int z2, const Uint32 color, int alt) {
+
+	int w = window->w;
+	if (x1 == x2 || (x1 < 0 || x1 >= w) && (x2 < 0 || x2 >= w)) return;
+
+	int h = window->h;
+
+	int inc = (x1 < x2) ? 1 : -1;
+	int x = (x1 < x2) ? x1 : x2;
+	int l = abs(x1 - x2);
+
+	int z = (z1 < z2) ? z1 : z2;
+	int dz = abs(z1 - z2);
+
+	int currentZ;
+	int slot;
+	int* Z_buffer;
+
+	for (int i = 0; i <= l; i += 1) {
+
+		// Uncomment to turn off the Occlusion culling
+		//if ((x + i >= 0 && x + i < window->clip_rect.w) && (y >= 0 && y < window->clip_rect.h)) *((Uint32*)(window->pixels) + x + i + y * w) = color;
+		//continue;
+
+		if (x + i < 0 || x + i >= w) continue;
+
+		currentZ = (z + dz * i / l) * alt;
+		slot = x + i + y * w;
+		Z_buffer = (Z_Buffers + slot);
+
+		// Occlusion culling
+		if (!*Z_buffer || ((alt == 1) ? (*Z_buffer < 0 || currentZ < *Z_buffer) : (*Z_buffer > 0 || currentZ > *Z_buffer))) {
+			*Z_buffer = currentZ;
+			*((Uint32*)(window->pixels) + slot) = color;
+		}
+	}
+
+}
+
+void colorTriangle(SDL_Surface* window, int* Z_Buffers, point p, point p2, point p3, const Uint32 color, int alt) {
 
 	int max_y = (p.y > p2.y) ? (p.y > p3.y ? p.y : p3.y) : (p2.y > p3.y ? p2.y : p3.y);
 	int min_y = (p.y < p2.y) ? (p.y < p3.y ? p.y : p3.y) : (p2.y < p3.y ? p2.y : p3.y);
@@ -448,6 +590,14 @@ void colorTriangle(SDL_Surface* window, point p, point p2, point p3, const Uint8
 	point v12 = sum2(p2, p, -1);
 	point v13 = sum2(p3, p, -1);
 	point v23 = sum2(p3, p2, -1);
+
+	int z1 = p.depth;
+	int z2 = p2.depth;
+	int z3 = p3.depth;
+
+	int z12 = z2 - z1;
+	int z13 = z3 - z1;
+	int z23 = z3 - z2;
 
 	/*
 	*         *                      Filling the triangle from top to bottom
@@ -460,45 +610,15 @@ void colorTriangle(SDL_Surface* window, point p, point p2, point p3, const Uint8
 	*  *'''''''''''''''''''''''''''*
 	*/
 
-
 	for (int y = min_y + (v12.y != 0 && v13.y != 0 && v23.y != 0); y < max_y; y+=1) {
-		if      ((p.y < y && y <= p2.y || p.y > y && y >= p2.y) && (p.y < y && y <= p3.y || p.y > y && y >= p3.y) && (v12.y != 0 && v13.y != 0)) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p.x + (y - p.y) * v13.x / v13.y, y, r, g, b);
-		else if ((p.y <= y && y < p2.y || p.y >= y && y > p2.y) && (p2.y < y && y <= p3.y || p2.y > y && y >= p3.y) && (v12.y != 0 && v23.y != 0)) _SDL_DrawLine(window, p.x + (y - p.y) * v12.x / v12.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
-		else if (v13.y != 0 && v23.y != 0) _SDL_DrawLine(window, p.x + (y - p.y) * v13.x / v13.y, y, p2.x + (y - p2.y) * v23.x / v23.y, y, r, g, b);
-		
+		if (y < 0 || y >= window->h) continue;
+		if      ((p.y < y && y <= p2.y || p.y > y && y >= p2.y) && (p.y < y && y <= p3.y || p.y > y && y >= p3.y) && (v12.y != 0 && v13.y != 0))	colorRow(window, Z_Buffers, p.x + (y - p.y) * v12.x / v12.y, p.x + (y - p.y) * v13.x / v13.y,	y, z1 + z12 * (y - p.y) / v12.y, z1 + z13 * (y - p.y) / v13.y,	color, alt);
+		else if ((p.y <= y && y < p2.y || p.y >= y && y > p2.y) && (p2.y < y && y <= p3.y || p2.y > y && y >= p3.y) && (v12.y != 0 && v23.y != 0))	colorRow(window, Z_Buffers, p.x + (y - p.y) * v12.x / v12.y, p2.x + (y - p2.y) * v23.x / v23.y, y, z1 + z12 * (y - p.y) / v23.y, z2 + z23 * (y - p2.y) / v23.y, color, alt);
+		else if (v13.y != 0 && v23.y != 0)																											colorRow(window, Z_Buffers, p.x + (y - p.y) * v13.x / v13.y, p2.x + (y - p2.y) * v23.x / v23.y, y, z1 + z13 * (y - p.y) / v13.y, z2 + z23 * (y - p2.y) / v23.y, color, alt);
 	}
 }
 
-void colorTriangle2(SDL_Surface* window, point p, point p2, point p3, const Uint8 r, const Uint8 g, const Uint8 b) {
-
-	float delta = 2;
-
-	point v = sum2(p2, p, -1);
-	point v2 = sum2(p3, p, -1);
-
-	float n = norm2(v);
-	float n2 = norm2(v2);
-	if (n < n2) {
-		n = n2;
-		v = sum2(p3, p, -1);
-		v2 = sum2(p2, p, -1);
-	}
-
-	float pct;
-
-	// Draw line between p + v * k/n and p + v2 * k/n
-	for (float k = 0; k < n; k += delta) {
-		pct = k / n;
-		_SDL_DrawLine(window, p.x + v.x * pct, p.y + v.y * pct, p.x + v2.x * pct, p.y + v2.y * pct, r, g, b);
-	}
-
-	_SDL_DrawLine(window, p.x, p.y, p2.x, p2.y, r, g, b);
-	_SDL_DrawLine(window, p.x, p.y, p3.x, p3.y, r, g, b);
-	_SDL_DrawLine(window, p3.x, p3.y, p2.x, p2.y, r, g, b);
-
-}
-
-void colorFace(SDL_Surface* window, listP* lp, int nbPoints, const Uint8 r, const Uint8 g, const Uint8 b) {
+void colorFace(SDL_Surface* window, int* Z_Buffers, listP* lp, int nbPoints, const Uint32 color, int alt) {
 
 	listP* P = lp;
 	point3 p = *P->p;
@@ -513,9 +633,9 @@ void colorFace(SDL_Surface* window, listP* lp, int nbPoints, const Uint8 r, cons
 
 	for (int i = (int)((nbPoints - 1) / 3); i >= 0; i--) {
 
-		if (P->next->next) colorTriangle(window, P->p->p, P->next->p->p, P->next->next->p->p, r, g, b);
+		if (P->next->next) colorTriangle(window, Z_Buffers, P->p->p, P->next->p->p, P->next->next->p->p, color, alt);
 		else {
-			colorTriangle(window, P->p->p, P->next->p->p, lp->p->p, r, g, b);
+			colorTriangle(window, Z_Buffers, P->p->p, P->next->p->p, lp->p->p, color, alt);
 			break;
 		}
 
@@ -527,28 +647,130 @@ void colorFace(SDL_Surface* window, listP* lp, int nbPoints, const Uint8 r, cons
 		pSaved->p = p.p;
 	}
 
-	if (nbPointsLeft > 2) colorFace(window, fpLeft, nbPointsLeft, r, g, b);
+	if (nbPointsLeft > 2) colorFace(window, Z_Buffers, fpLeft, nbPointsLeft, color, alt);
 
 }
 
-void addLight(face f, cam c, light l, Uint8 color[3]){
+///////////////////////////////////////////////////////////
 
-	point3 vlf = sum(f.G, l.pos, -1);
-	point3 vfc = getUnitV(sum(c.pos, f.G, -1));
+void RotateObj(obj* o, point3 rot) {
 
-	// Getting direction of the reflected light vector on the face
-	point3 vr = sum(getUnitV(f.normale), getUnitV(vlf), 0);
+	float cosX = cos(rot.x);
+	float sinX = sin(rot.x);
+	float cosY = cos(rot.y);
+	float sinY = sin(rot.y);
+	float cosZ = cos(rot.z);
+	float sinZ = sin(rot.z);
 
-	float nlf = norm(vlf) / 20;
+	point3* p = o->vertexes;
+	point3 G = o->G;
+	point3 v;
 
-	// Scalar product with the vector face-camera with all the other bullshit tweaked on ass makes the brightness coef
-	float coef = (vr.x * vfc.x + vr.y * vfc.y + vr.z * vfc.z) * l.intensity * l.intensity / (nlf * nlf);
+	for (int i = 0; i < o->nbVertexes; i++) {
 
-	Uint8* cf = f.color;
-	Uint8* cl = l.color;
+		// Yaw
+		v = sum(*p, G, -1);
+		p->y = v.y * cosX - v.z * sinX + G.y;
+		p->z = v.z * cosX + v.y * sinX + G.z;
 
-	color[0] = (cf[0] + cl[0] * coef < 0)?0:(cf[0] + cl[0] * coef) / (coef + 1);
-	color[2] = (cf[2] + cl[2] * coef < 0)?0:(cf[2] + cl[2] * coef) / (coef + 1);
-	color[1] = (cf[1] + cl[1] * coef < 0)?0:(cf[1] + cl[1] * coef) / (coef + 1);
+		// Pitch
+		v = sum(*p, G, -1);
+		p->x = v.x * cosY + v.z * sinY + G.x;
+		p->z = v.z * cosY - v.x * sinY + G.z;
 
+		// Roll
+		v = sum(*p, G, -1);
+		p->x = v.x * cosZ - v.y * sinZ + G.x;
+		p->y = v.y * cosZ + v.x * sinZ + G.y;
+
+		p = p->next;
+	}
+
+	face* f = o->faces;
+	point3 n;
+	for (int i = 0; i < o->nbFaces; i++) {
+		n = f->normale;
+
+		// Yaw
+		n.y = n.y * cosX - n.z * sinX;
+		n.z = n.z * cosX + n.y * sinX;
+		// Pitch
+		n.x = n.x * cosY + n.z * sinY;
+		n.z = n.z * cosY - n.x * sinY;
+		// Roll
+		n.x = n.x * cosZ - n.y * sinZ;
+		n.y = n.y * cosZ + n.x * sinZ;
+
+		f->normale = n;
+		f = f->next;
+	}
+}
+
+//SEULEMENT PREMIERE FACE
+void ExtrudeFace(obj* o, point3 dir) {
+
+	point3* pO = o->vertexes;
+	face* f = o->faces;
+	face* ff = f;
+	listP* P = f->points;
+	face* fTmp;
+
+	point3 p;
+	point3* newp;
+	listP* listPf = f->points;
+	listP* flistPf = listPf;
+	point3** pTab = (point3**)calloc(f->nbPoints, sizeof(point3*));
+	point3** pTab2 = (point3**)calloc(f->nbPoints, sizeof(point3*));
+
+	int nbPoints = f->nbPoints;
+
+	point3 G = o->G;
+	point3 vfo;
+	point3 nf;
+
+	for (int i = 0; i < nbPoints; i++) {
+
+		p = *P->p;
+
+		pTab[i] = P->p;
+		pTab2[i] = newp = createPoint(p.x + dir.x, p.y + dir.y, p.z + dir.z);
+
+		newp->next = pO;
+		pO = newp;
+
+		if (i > 0) {
+
+			listPf = listPf->next;
+
+			fTmp = createFace(f->color, 0, 4, pTab[i], pTab[i - 1], pTab2[i - 1], pTab2[i]);
+
+			// Correcting normal direction
+			vfo = sum(G, fTmp->G, -1);
+			nf = fTmp->normale;
+			if (scalar(vfo, nf) > 0) fTmp->normale = scale(nf, -1);
+
+			fTmp->next = f;
+			f = fTmp;
+		}
+		listPf->p = newp;
+		P = P->next;
+	}
+
+	fTmp = createFace(f->color, 0, 4, pTab[0], pTab[nbPoints - 1], pTab2[nbPoints - 1], pTab2[0]);
+
+	vfo = sum(G, fTmp->G, -1);
+	nf = fTmp->normale;
+	if (scalar(vfo, nf) > 0) fTmp->normale = scale(nf, -1);
+
+	fTmp->next = f;
+	f = fTmp;
+
+	ff->points = flistPf;
+	o->vertexes = pO;
+	o->nbVertexes += nbPoints;
+	o->faces = f;
+	o->nbFaces += nbPoints - 1;
+
+	free(pTab);
+	free(pTab2);
 }

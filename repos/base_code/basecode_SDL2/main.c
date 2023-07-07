@@ -181,7 +181,7 @@ int main(int argc, char** argv)
 					
 					printf("Au tour des Blancs\n");
 					tabCpy(gameTree, game);
-					(root)->val = initTreeIA(gameTree, &root, 2, -1);
+					(root)->val = initTreeIA(gameTree, &root, 3, -1);
 					printTree(root);
 					turnIA(game, root);
 

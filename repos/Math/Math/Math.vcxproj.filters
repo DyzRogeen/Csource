@@ -15,27 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Desktop\mathlib\Vector.c">
+    <ClCompile Include="Vector.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\mathlib\Tools.c">
+    <ClCompile Include="Tools.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Desktop\mathlib\Matrix.c">
+    <ClCompile Include="Matrix.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Vector.h">
+    <ClInclude Include="Vector.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Tools.h">
+    <ClInclude Include="Tools.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Settings.h">
+    <ClInclude Include="Settings.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Matrix.h">
+    <ClInclude Include="Matrix.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
   </ItemGroup>

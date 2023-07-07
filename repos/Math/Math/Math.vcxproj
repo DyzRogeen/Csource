@@ -139,15 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Desktop\mathlib\Matrix.c" />
-    <ClCompile Include="..\..\..\..\Desktop\mathlib\Tools.c" />
-    <ClCompile Include="..\..\..\..\Desktop\mathlib\Vector.c" />
+    <ClCompile Include="Matrix.c" />
+    <ClCompile Include="Tools.c" />
+    <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Matrix.h" />
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Settings.h" />
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Tools.h" />
-    <ClInclude Include="..\..\..\..\Desktop\mathlib\Vector.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Tools.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

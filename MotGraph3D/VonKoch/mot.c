@@ -224,24 +224,24 @@ pointS pointOnScreen(cam c, screen s, point* p) {
 	if ((int)(d * 100) != 0) {
 
 		//printf("X = %f ; Y = %f\n", (s.unit2_z * x - s.unit2_x * z) / d, (s.unit1_x * z - s.unit1_z * x) / d);
-		v.m_x = round((s.unit2_z * x - s.unit2_x * z) / d);
-		v.m_y = round((s.unit1_x * z - s.unit1_z * x) / d);
+		v.m_x = (s.unit2_z * x - s.unit2_x * z) / d;
+		v.m_y = (s.unit1_x * z - s.unit1_z * x) / d;
 		//printf("1\n");
 
 	}
 	if ((int)((d = s.unit1_x * s.unit2_y - s.unit1_y * s.unit2_x) * 100) != 0) {
 
 		//printf("X = %f ; Y = %f\n", (s.unit2_x * y - s.unit2_y * x) / d, (s.unit1_y * x - s.unit1_x * y) / d);
-		v.m_x = round((s.unit2_x * y - s.unit2_y * x) / d);
-		v.m_y = round((s.unit1_y * x - s.unit1_x * y) / d);
+		v.m_x = (s.unit2_x * y - s.unit2_y * x) / d;
+		v.m_y = (s.unit1_y * x - s.unit1_x * y) / d;
 		//printf("2\n");
 
 	}
 	if ((int)((d = s.unit1_y * s.unit2_z - s.unit1_z * s.unit2_y) * 100) != 0) {
 		
 		//printf("X = %f ; Y = %f, id:%d\n", (s.unit2_z * y - s.unit2_y * z) / d, (s.unit1_y * z - s.unit1_z * y) / d, p->id);
-		v.m_x = round((s.unit2_z * y - s.unit2_y * z) / d);
-		v.m_y = round((s.unit1_y * z - s.unit1_z * y) / d);
+		v.m_x = (s.unit2_z * y - s.unit2_y * z) / d;
+		v.m_y = (s.unit1_y * z - s.unit1_z * y) / d;
 		//printf("3\n");
 
 	}
