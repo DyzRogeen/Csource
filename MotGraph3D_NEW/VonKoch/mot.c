@@ -148,10 +148,9 @@ edge* createEdge(point3* p1, point3* p2) {
 	return e;
 }
 
-face* createFace(Uint8 color[3], int dir, int nbPoints, ...) {
+face* createFace(Uint8 color[3], int nbPoints, ...) {
 
 	if (nbPoints < 3) return NULL;
-	if (dir != -1) dir = 1;
 
 	va_list list;
 	va_start(list, nbPoints);
@@ -164,9 +163,9 @@ face* createFace(Uint8 color[3], int dir, int nbPoints, ...) {
 	point3 v13 = sum(p3, p1, -1);
 
 	point3 normale = setPoint(
-		(v12.z * v13.y - v12.y * v13.z) * dir,
-		(v12.x * v13.z - v12.z * v13.x) * dir,
-		(v12.y * v13.x - v12.x * v13.y) * dir
+		(v12.z * v13.y - v12.y * v13.z),
+		(v12.x * v13.z - v12.z * v13.x),
+		(v12.y * v13.x - v12.x * v13.y)
 	);
 
 	face* f = (face*)calloc(1,sizeof(face));
@@ -248,6 +247,18 @@ obj* createObj3D(face* f, edge* e, point3* p, int nbFaces, int nbEdges, int nbVe
 	}
 	o->G = setPoint(x / nbVertexes, y / nbVertexes, z / nbVertexes);
 
+	// Face normals orientation correction
+	point3 vfo;
+	point3 nf;
+	for (int i = 0; i < nbFaces; i++) {
+
+		vfo = sum(o->G, f->G, -1);
+		nf = f->normale;
+		if (scalar(vfo, nf) > 0) f->normale = scale(nf, -1);
+
+		f = f->next;
+	}
+
 	return o;
 
 }
@@ -263,15 +274,6 @@ obj* createCube(point3 pos, point3 rot, float size, Uint8 color[3], int isStatic
 	float cosZ = cos(rot.z);
 	float sinZ = sin(rot.z);
 
-	//point3* a = createPoint(pos.x - size * (cosY + sinY + cosZ + sinZ), pos.y + size * (cosX + sinX + cosZ - sinZ), pos.z - size * (cosX - sinX + cosY - sinY));
-	//point3* b = createPoint(pos.x - size * (cosY - sinY + cosZ + sinZ), pos.y + size * (cosX - sinX + cosZ - sinZ), pos.z + size * (cosX + sinX + cosY + sinY));
-	//point3* c = createPoint(pos.x - size * (cosY - sinY + cosZ - sinZ), pos.y - size * (cosX + sinX + cosZ + sinZ), pos.z + size * (cosX - sinX + cosY + sinY));
-	//point3* d = createPoint(pos.x - size * (cosY + sinY + cosZ - sinZ), pos.y - size * (cosX - sinX + cosZ + sinZ), pos.z - size * (cosX + sinX + cosY - sinY));
-	//point3* e = createPoint(pos.x + size * (cosY - sinY + cosZ - sinZ), pos.y + size * (cosX + sinX + cosZ + sinZ), pos.z - size * (cosX - sinX + cosY + sinY));
-	//point3* f = createPoint(pos.x + size * (cosY + sinY + cosZ - sinZ), pos.y + size * (cosX - sinX + cosZ + sinZ), pos.z + size * (cosX + sinX + cosY - sinY));
-	//point3* g = createPoint(pos.x + size * (cosY + sinY + cosZ + sinZ), pos.y - size * (cosX + sinX + cosZ - sinZ), pos.z + size * (cosX - sinX + cosY - sinY));
-	//point3* h = createPoint(pos.x + size * (cosY - sinY + cosZ + sinZ), pos.y - size * (cosX - sinX + cosZ - sinZ), pos.z - size * (cosX + sinX + cosY + sinY));
-
 	point3* a = createPoint(pos.x - size, pos.y + size, pos.z - size);
 	point3* b = createPoint(pos.x - size, pos.y + size, pos.z + size);
 	point3* c = createPoint(pos.x - size, pos.y - size, pos.z + size);
@@ -285,12 +287,12 @@ obj* createCube(point3 pos, point3 rot, float size, Uint8 color[3], int isStatic
 	for (int i = 7; i > 0; i--) P[i - 1]->next = P[i];
 
 	face* F[6] = {
-		createFace(color, 0, 4, a, b, c, d),
-		createFace(color, -1, 4, e, f, g, h),
-		createFace(color, -1, 4, a, b, f, e),
-		createFace(color, -1, 4, c, d, h, g),
-		createFace(color, 0, 4, a, d, h, e),
-		createFace(color, -1, 4, b, c, g, f),
+		createFace(color, 4, a, b, c, d),
+		createFace(color, 4, e, f, g, h),
+		createFace(color, 4, a, b, f, e),
+		createFace(color, 4, c, d, h, g),
+		createFace(color, 4, a, d, h, e),
+		createFace(color, 4, b, c, g, f),
 	};
 	for (int i = 5; i > 0; i--) F[i - 1]->next = F[i];
 
@@ -742,7 +744,8 @@ void ExtrudeFace(obj* o, point3 dir) {
 
 			listPf = listPf->next;
 
-			fTmp = createFace(f->color, 0, 4, pTab[i], pTab[i - 1], pTab2[i - 1], pTab2[i]);
+			// Face creating resulting of extrusion
+			fTmp = createFace(f->color, 4, pTab[i], pTab[i - 1], pTab2[i - 1], pTab2[i]);
 
 			// Correcting normal direction
 			vfo = sum(G, fTmp->G, -1);
@@ -756,7 +759,7 @@ void ExtrudeFace(obj* o, point3 dir) {
 		P = P->next;
 	}
 
-	fTmp = createFace(f->color, 0, 4, pTab[0], pTab[nbPoints - 1], pTab2[nbPoints - 1], pTab2[0]);
+	fTmp = createFace(f->color, 4, pTab[0], pTab[nbPoints - 1], pTab2[nbPoints - 1], pTab2[0]);
 
 	vfo = sum(G, fTmp->G, -1);
 	nf = fTmp->normale;
@@ -765,12 +768,60 @@ void ExtrudeFace(obj* o, point3 dir) {
 	fTmp->next = f;
 	f = fTmp;
 
+	// Extruded face gets the moved new points
 	ff->points = flistPf;
 	o->vertexes = pO;
 	o->nbVertexes += nbPoints;
 	o->faces = f;
-	o->nbFaces += nbPoints - 1;
+	o->nbFaces += nbPoints;
 
 	free(pTab);
 	free(pTab2);
+}
+
+// Memory Cleaning
+void freeAll(listO* O) {
+
+	if (!O) return;
+	freeAll(O->next);
+	freeObj(O->o);
+	free(O);
+
+}
+void freeObj(obj* o) {
+
+	freeFaces(o->faces);
+	freeEdges(o->edges);
+	freePoints(o->vertexes);
+	free(o);
+
+}
+void freeFaces(face* f) {
+
+	if (!f) return;
+	freeFaces(f->next);
+	freeListP(f->points);
+	free(f);
+
+}
+void freeEdges(edge* e) {
+
+	if (!e) return;
+	freeEdges(e->next);
+	free(e);
+
+}
+void freeListP(listP* P) {
+
+	if (!P) return;
+	freeListP(P->next);
+	free(P);
+
+}
+void freePoints(point3* p) {
+
+	if (!p) return;
+	freePoints(p->next);
+	free(p);
+
 }

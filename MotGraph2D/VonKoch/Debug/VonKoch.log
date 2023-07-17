@@ -1,10 +1,4 @@
-﻿  main.c
-C:\Users\Adrie\source\MotGraph2D\VonKoch\main.c(11,44): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\MotGraph2D\VonKoch\main.c(69,16): warning C4047: 'fonction' : les niveaux d'indirection de 'list *' et de 'list **' sont différents
-C:\Users\Adrie\source\MotGraph2D\VonKoch\main.c(69,14): warning C4024: 'popList' : types différents pour le paramètre formel et réel 1
-C:\Users\Adrie\source\MotGraph2D\VonKoch\main.c(147,16): warning C4305: '+=' : troncation de 'double' à 'float'
-C:\Users\Adrie\source\MotGraph2D\VonKoch\main.c(16,14): warning C4101: 'c' : variable locale non référencée
-MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+﻿MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
 SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\source\MotGraph2D\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
   VonKoch.vcxproj -> C:\Users\Adrie\source\MotGraph2D\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

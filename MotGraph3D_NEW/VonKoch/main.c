@@ -44,10 +44,11 @@ int main(int argc, char** argv)
 	listO* O = (listO*)calloc(1, sizeof(listO));
 	int nbObj = 0;
 
-	addObj(&O, createCube(setPoint(400, 0, 0), setPoint(0, PI / 4, PI / 4), 400, (Uint8[3]) {120, 120, 120}, 1));
+	addObj(&O, createCube(setPoint(400, 0, 0), setPoint(0, 0, 0), 400, (Uint8[3]) {120, 120, 120}, 1));
 	addObj(&O, createCube(setPoint(400, 0, 800), setPoint(PI / 4, 0, PI / 4), 300, (Uint8[3]) {200, 0, 0}, 0));
 	addObj(&O, createCube(setPoint(400, 0, -800), setPoint(0, 0, 0), 300, (Uint8[3]) { 0, 200, 0 }, 0));
 	ExtrudeFace(O->o, setPoint(-200, 100, 100));
+
 	nbObj = 3;
 
 	// Initialisation
@@ -81,6 +82,7 @@ int main(int argc, char** argv)
 			{
 			case SDL_QUIT:
 				quit = 1;
+				freeAll(O);
 				break;
 			case SDL_KEYDOWN:
 				if (e.key.keysym.sym == SDLK_ESCAPE)
@@ -110,6 +112,7 @@ int main(int argc, char** argv)
 		if (mPos.x - premPos.x || mPos.y - premPos.y) {
 			rotateCam(&C, (mPos.x - premPos.x) / 100.0, (mPos.y - premPos.y) / -100.0);
 			updateScreen(window, Z_Buffers, O, nbObj, C, L, 0, &alt);
+
 		}
 
 		if (dirx || diry || dirz) {

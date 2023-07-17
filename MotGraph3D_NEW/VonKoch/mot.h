@@ -108,7 +108,7 @@ point3 setPoint(float x, float y, float z);
 
 edge* createEdge(point3* p1, point3* p2);
 
-face* createFace(Uint8 color[3], int dir, int nbPoints, ...);
+face* createFace(Uint8 color[3], int nbPoints, ...);
 
 void addPointFace(face *f, point3* p);
 
@@ -156,10 +156,17 @@ void ExtrudeFace(obj* o, point3 dir);
 
 // Physics Methods
 
+// Memory Cleaning
+void freeAll(listO* O);
+void freeObj(obj* o);
+void freeFaces(face* f);
+void freeEdges(edge* e);
+void freeListP(listP* P);
+void freePoints(point3* p);
+
 /*OPTI
 * 
 * save face reflection color in other slot in face structure to avoid repeating addLight
 * edges only for faces
-* FREE TES POINTEURS
 * 
 */
