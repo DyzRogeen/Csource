@@ -164,6 +164,7 @@ void freeEdges(edge* e);
 void freeListP(listP* P);
 void freePoints(point3* p);
 
+
 /*OPTI
 * 
 * save face reflection color in other slot in face structure to avoid repeating addLight
