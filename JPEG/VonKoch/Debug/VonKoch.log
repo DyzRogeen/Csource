@@ -1,0 +1,6 @@
+﻿  main.c
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(225,25): warning C4047: '=' : les niveaux d'indirection de 'Uint8 *' et de 'Uint32' sont différents
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(226,55): warning C4047: '=' : les niveaux d'indirection de 'Uint32' et de 'Uint8 *' sont différents
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(314,26): warning C4305: 'fonction' : troncation de 'double' à 'float'
+  VonKoch.vcxproj -> C:\Users\Adrie\source\JPEG\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).
