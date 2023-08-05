@@ -1,6 +1,14 @@
 ﻿  main.c
 C:\Users\Adrie\source\JPEG\VonKoch\main.c(225,25): warning C4047: '=' : les niveaux d'indirection de 'Uint8 *' et de 'Uint32' sont différents
 C:\Users\Adrie\source\JPEG\VonKoch\main.c(226,55): warning C4047: '=' : les niveaux d'indirection de 'Uint32' et de 'Uint8 *' sont différents
-C:\Users\Adrie\source\JPEG\VonKoch\main.c(314,26): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(284,70): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(315,37): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(316,37): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(308,1): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(335,65): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(329,1): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(376,70): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(461,26): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(303): warning C4715: 'blackWhite' : les chemins de contrôle ne retournent pas tous une valeur
   VonKoch.vcxproj -> C:\Users\Adrie\source\JPEG\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

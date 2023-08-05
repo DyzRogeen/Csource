@@ -258,6 +258,153 @@ void negative(SDL_Surface* window) {
 
 }
 
+Uint8* blackWhite(SDL_Surface* window, int comp) {
+
+	int w = window->w;
+	int h = window->h;
+	
+	Uint32* pxl;
+	Uint8* bw = NULL;
+	Uint8* p;
+
+	if (comp) {
+		pxl = cpyIMG(window);
+		bw = (Uint8*)calloc(w * h, sizeof(Uint8));
+	}
+	else pxl = (Uint32*)(window->pixels);
+
+	Uint8 sum;
+
+	for (int x = 0; x < w; x++)
+		for (int y = 0; y < h; y++) {
+
+			sum = 0;
+
+			p = (Uint8*)(pxl + x + y * w);
+			sum = (Uint8)(roundf(((int)(p[0]) + (int)(p[1]) + (int)(p[2])) / 3));
+			if (comp) {
+				bw[x + y * w] = sum;
+				continue;
+			}
+			p[0] = sum;
+			p[1] = sum;
+			p[2] = sum;
+
+		}
+
+	if (comp) {
+		free(pxl);
+		return bw;
+	}
+
+	SDL_UpdateRect(window, 0, 0, 0, 0);
+	SDL_Flip(window);
+
+}
+
+void getCoefs(float* f, float* a, float* b, int nbCoefs, int x_rest, int y_rest) {
+
+	int area2 = x_rest * y_rest;
+	float ratio = 2 * PI / area2;
+
+	for (int n = 1; n < nbCoefs; n++) {
+		a[n] = 0;
+		b[n] = 0;
+		for (int x = 0; x < area2; x++) {
+
+			a[n] += f[x] * cos(ratio * x * n);
+			b[n] += f[x] * sin(ratio * x * n);
+		}
+		a[n] *= 2 / (float)area2;
+		b[n] *= 2 / (float)area2;
+		//if ((int)a[n] != 0 || (int)b[n] != 0) printf("%.1fcos(%dx) + %.1fisin(%dx)\n", a[n], n, b[n], n);
+	}
+	//printf("\n");
+}
+
+void getFunc(float* f, float* a, float* b, int nbCoefs, int x_rest, int y_rest) {
+
+
+	int area2 = x_rest * y_rest;
+	float ratio = 2 * PI / area2;
+
+	for (int x = 0; x < area2; x++) f[x] = 126;
+
+	for (int n = 1; n < nbCoefs; n++)
+		for (int x = 0; x < area2; x++)
+			f[x] += a[n] * cos(ratio * x * n) + b[n] * sin(ratio * x * n);
+
+	//for (int x = 0; x < area2; x++) printf("f[%d] = %d\n", x, f[x]);
+	for (int x = 0; x < area2; x++) {
+		if (f[x] < 0) f[x] = 0;
+		else if (f[x] > 255) f[x] = 255;
+	}
+
+}
+
+void fourierComp(SDL_Surface* window, int nbCoefs, int area) {
+
+	int area2 = area * area;
+	float* coef_a = (float*)calloc(nbCoefs, sizeof(float));
+	float* coef_b = (float*)calloc(nbCoefs, sizeof(float));
+
+	float* f = (float*)calloc(area2, sizeof(float));
+
+	int w = window->w;
+	int h = window->h;
+	int x, y;
+	int x_rest, y_rest;
+
+	float prog = 0;
+
+	Uint32* pxlW = (Uint32*)(window->pixels);
+	Uint8* pxl = blackWhite(window, 1);
+	Uint8* p;
+	Uint8 fVal;
+
+	for (int x_step = 0; x_step < w; x_step += area)
+		for (int y_step = 0; y_step < h; y_step += area) {
+
+			if (x_step + area >= w) x_rest = w - x_step;
+			else x_rest = area;
+
+			if (y_step + area >= h) y_rest = h - y_step;
+			else y_rest = area;
+
+			for (x = 0; x < x_rest; x++)
+				for (y = 0; y < y_rest; y++)
+					f[x + y * x_rest] = *(pxl + x_step + x + (y_step + y) * w) - 126;
+
+			//if (x_step == 0 && y_step == 0)
+			getCoefs(f, coef_a, coef_b, nbCoefs, x_rest, y_rest);
+			getFunc(f, coef_a, coef_b, nbCoefs, x_rest, y_rest);
+
+			for (x = 0; x < x_rest; x++)
+				for (y = 0; y < y_rest; y++) {
+
+					fVal = (Uint8)(f[x + y * x_rest]);
+					p = (Uint8*)(pxlW + x_step + x + (y_step + y) * w);
+					p[0] = fVal;
+					p[1] = fVal;
+					p[2] = fVal;
+
+				}
+
+			prog += 100 * x_rest * y_rest / (float)(w * h);
+			printf("Fourier Compression Completed at %.1f %%\n", prog);
+		}
+
+	free(coef_a);
+	free(coef_b);
+	free(pxl);
+
+	SDL_UpdateRect(window, 0, 0, 0, 0);
+	SDL_Flip(window);
+
+	printf("Done!\n");
+
+}
+
 int main(int argc, char **argv)
 {
 	SDL_Surface * window;
@@ -314,6 +461,10 @@ int main(int argc, char **argv)
 					homogene(window, 0.1);
 				if (e.key.keysym.sym == SDLK_n)
 					negative(window);
+				if (e.key.keysym.sym == SDLK_b)
+					blackWhite(window, 0);
+				if (e.key.keysym.sym == SDLK_f)
+					fourierComp(window, 100, 64);
 				if (e.key.keysym.sym == SDLK_r && IMG_SaveJPG(window, "cammile.jpg", 100))
 					exit(EXIT_FAILURE);
 				break;
