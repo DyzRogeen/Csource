@@ -21,9 +21,15 @@
     <ClCompile Include="utils_SDL.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="huff.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils_SDL.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="huff.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -34,5 +40,19 @@
     <Image Include="camol.jpg">
       <Filter>Fichiers sources</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="compressed.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="huffman.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="duffman.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="duffman2.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
   </ItemGroup>
 </Project>

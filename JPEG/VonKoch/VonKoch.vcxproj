@@ -95,15 +95,23 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="huff.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="utils_SDL.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="huff.h" />
     <ClInclude Include="utils_SDL.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="cammile.jpg" />
     <Image Include="camol.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="compressed.txt" />
+    <Text Include="duffman.txt" />
+    <Text Include="duffman2.txt" />
+    <Text Include="huffman.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
