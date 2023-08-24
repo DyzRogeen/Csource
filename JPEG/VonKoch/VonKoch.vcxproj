@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="compressed.txt" />
+    <Text Include="compressed2.txt" />
     <Text Include="duffman.txt" />
     <Text Include="duffman2.txt" />
     <Text Include="huffman.txt" />

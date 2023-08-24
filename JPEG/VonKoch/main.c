@@ -667,7 +667,7 @@ void JPEGDecomp(SDL_Surface* window) {
 
 	int w, h, dSample, limFreq;
 
-	FILE* f = fopen("compressed2.txt", "rb");
+	FILE* f = fopen("compressed.txt", "rb");
 	fscanf(f, "%dx%d %d %d\n", &w, &h, &dSample, &limFreq);
 	printf("%dx%d %d %d\n", w, h, dSample, limFreq);
 	
@@ -755,7 +755,7 @@ void JPEGComp(SDL_Surface* window, Uint8* Q, int dSample, int limFreq, float ran
 	free(Cb);
 	free(G);
 
-	huffComp();
+	//huffComp();
 
 	printf("Compression Done !\n");
 

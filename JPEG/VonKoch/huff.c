@@ -75,8 +75,8 @@ int charCount(int* t) {
 
 	int cnt = 0;
 	char c;
-	while ((c = getc(f)) != -1) {
-		t[c]++;
+	while ((c = getc(f)) != '\0') {
+		t[c + (c < 0) * 256]++;
 		cnt++;
 	}
 
@@ -216,7 +216,7 @@ void getCode(char** s, tree* t, int nbChar, int* tchar) {
 		c = tchar[2 * i];
 		s[c] = lookForChar(c, t, depth, "\0");
 		strreverse(s[c]);
-		printf("%c => %s\n", c, s[c]);
+		printf("(%d)%c => %s\n", c, c, s[c]);
 
 	}
 
@@ -230,13 +230,17 @@ void encodeHuff(char** coded, int nbChar, int* tchar) {
 
 	FILE* f = fopen("huffman.txt", "w");
 	FILE* f2 = fopen("compressed.txt", "rb");
+	FILE* f3 = fopen("duffman2.txt", "w");
+	int tmp = -1;
 
 	// WRITING HEADER
 	fprintf(f, "%d ", nbChar);
 	for (int i = 0; i < nbChar; i+=2) fprintf(f, "%c %d ", tchar[i], tchar[i + 1]);
 
 	// ENCODING DATA
-	while ((chr = getc(f2)) != -1) {
+	while ((chr = getc(f2)) != '\0') {
+		putc(chr, f3);
+		tmp++;
 		code = coded[chr];
 		while (*code && bCnt < 8) {
 			c = c << 1;
@@ -245,7 +249,7 @@ void encodeHuff(char** coded, int nbChar, int* tchar) {
 			code++;
 			if (bCnt == 8) {
 				putc(c, f);
-				printf("(%d)%c ", c, c);
+				//printf("(%d)%c ", c, c);
 				c = 0;
 				bCnt = 0;
 			}
@@ -255,20 +259,24 @@ void encodeHuff(char** coded, int nbChar, int* tchar) {
 	if (bCnt != 0) {
 		c = c << (8 - bCnt);
 		putc(c, f);
-		printf("(%d)%c ", c, c);
+		//printf("(%d)%c ", c, c);
 	}
+	putc('\0', f);
+	putc('\0', f);
 
 	printf("\n");
 
 	fclose(f);
 	fclose(f2);
+	fclose(f3);
 
 }
 
 void decodeHuff() {
 
-	FILE* f = fopen("huffman.txt", "r");
+	FILE* f = fopen("huffman.txt", "rb");
 	FILE* f2 = fopen("compressed2.txt", "w");
+	FILE* f3 = fopen("duffman2.txt", "w");
 
 	// READING HEADER
 	int nbChar;
@@ -279,7 +287,8 @@ void decodeHuff() {
 	for (int i = 0; i < nbChar; i += 2) {
 		tchar[i] = getc(f);
 		fscanf(f, " %d", &(tchar[i + 1])); getc(f);
-	}
+		printf("[(%d)%c %d] => ", tchar[i], tchar[i], tchar[i + 1]);
+	}printf("\n\n");
 	
 	tree* t = mkTree(tchar, nbChar);
 
@@ -287,14 +296,18 @@ void decodeHuff() {
 	char c, *code = (char*)calloc(8, sizeof(char)), decoded;
 	*code = '\0';
 	int bCnt;
-	while ((c = getc(f)) != -1) {
+	while (1) {
 
+		if ((c = getc(f)) == '\0') {
+			if (getc(f) == '\0') break;
+			else fseek(f, -1, SEEK_CUR);
+		}
 		if (c == '\r') {
 			if (getc(f) == '\n') c = '\n';
 			else fseek(f, -1, SEEK_CUR);
 		}
-
-		printf("(%d)%c ",c, c);
+		putc(c, f3);
+		//printf("(%d)%c ",c, c);
 
 		bCnt = 7;
 
@@ -308,9 +321,11 @@ void decodeHuff() {
 		}
 
 	}
+	putc('\0', f2);
 
 	fclose(f);
 	fclose(f2);
+	fclose(f3);
 	freeTree(t);
 
 }
@@ -340,6 +355,8 @@ void huffComp() {
 
 	encodeHuff(coded, charCnt, tchar);
 
+	//for (int c = 1; c < 256; c++) free(coded[c]);
+	
 	free(tchar);
 	freeTree(codeTree);
 

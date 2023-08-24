@@ -42,9 +42,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="compressed.txt">
-      <Filter>Fichiers de ressources</Filter>
-    </Text>
     <Text Include="huffman.txt">
       <Filter>Fichiers de ressources</Filter>
     </Text>
@@ -52,6 +49,12 @@
       <Filter>Fichiers de ressources</Filter>
     </Text>
     <Text Include="duffman2.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="compressed2.txt">
+      <Filter>Fichiers de ressources</Filter>
+    </Text>
+    <Text Include="compressed.txt">
       <Filter>Fichiers de ressources</Filter>
     </Text>
   </ItemGroup>

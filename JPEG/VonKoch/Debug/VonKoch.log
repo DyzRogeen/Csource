@@ -1,10 +1,47 @@
-﻿  huff.c
-C:\Users\Adrie\source\JPEG\VonKoch\huff.c(22,22): warning C4047: 'return' : les niveaux d'indirection de 'char' et de 'char [1]' sont différents
-C:\Users\Adrie\source\JPEG\VonKoch\huff.c(42,10): warning C4047: '=' : les niveaux d'indirection de 'char' et de 'char [1]' sont différents
-C:\Users\Adrie\source\JPEG\VonKoch\huff.c(50,10): warning C4047: '=' : les niveaux d'indirection de 'char' et de 'char [1]' sont différents
-C:\Users\Adrie\source\JPEG\VonKoch\huff.c(145,62): warning C4047: 'fonction' : les niveaux d'indirection de 'char' et de 'char [1]' sont différents
-C:\Users\Adrie\source\JPEG\VonKoch\huff.c(145,60): warning C4024: 'createTree' : types différents pour le paramètre formel et réel 2
-C:\Users\Adrie\source\JPEG\VonKoch\huff.c(212,40): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\source\JPEG\VonKoch\huff.c(212,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+﻿  main.c
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(141,70): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(255,25): warning C4047: '=' : les niveaux d'indirection de 'Uint8 *' et de 'Uint32' sont différents
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(256,55): warning C4047: '=' : les niveaux d'indirection de 'Uint32' et de 'Uint8 *' sont différents
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(314,62): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(314,63): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(358,39): warning C4244: '=' : conversion de 'double' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(360,39): warning C4244: '=' : conversion de 'double' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(362,68): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(362,75): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(385,37): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(386,37): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(376,1): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(407,65): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(401,1): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(452,37): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(453,37): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(454,37): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(478,17): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(532,30): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(533,30): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(538,90): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(543,123): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(543,130): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(551,86): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(558,17): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(517,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(599,49): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(599,50): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(600,55): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(600,56): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(601,48): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(601,49): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(634,30): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(635,30): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(646,89): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(680,45): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(680,87): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(698,44): warning C4244: 'fonction' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(699,37): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(680,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(839,26): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(849,37): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(333): warning C4715: 'blackWhite' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\Adrie\source\JPEG\VonKoch\main.c(371): warning C4715: 'chrominance' : les chemins de contrôle ne retournent pas tous une valeur
   VonKoch.vcxproj -> C:\Users\Adrie\source\JPEG\bin\VonKoch_d.exe
           1 fichier(s) copié(s).
