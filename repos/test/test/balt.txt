@@ -1,0 +1,9 @@
+<AG_new_user>
+	<AG_date>
+		<AG_day>281023</AG_day>
+		<AG_hour>144405</AG_hour>
+	</AG_date>
+	<AG_name>root</AG_name>
+	<AG_UID>21</AG_UID>
+	<AG_password>qlkqativfl</AG_password>
+</AG_new_user>

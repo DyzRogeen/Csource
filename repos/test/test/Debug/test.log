@@ -1,0 +1,6 @@
+﻿  main.c
+C:\Users\Adrie\source\repos\test\test\main.c(16,17): warning C4013: 'open' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\source\repos\test\test\main.c(23,15): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\Adrie\source\repos\test\test\main.c(44,7): warning C4013: 'write' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\source\repos\test\test\main.c(61,7): warning C4013: 'close' non défini(e) ; extern retournant int pris par défaut
+  test.vcxproj -> C:\Users\Adrie\source\repos\test\Debug\test.exe

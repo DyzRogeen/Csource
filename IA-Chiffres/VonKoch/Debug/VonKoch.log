@@ -1,0 +1,14 @@
+﻿  NNetwork.c
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(17,12): warning C4013: 'time' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(30,82): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(124,32): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(205,1): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(254,32): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(257,41): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(258,36): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+  main.c
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\main.c(23,6): warning C4101: 'number' : variable locale non référencée
+  Génération de code en cours...
+C:\Users\Adrie\source\IA-Chiffres\VonKoch\NNetwork.c(303): warning C4172: retourne l'adresse d'une variable locale ou : v temporaire
+  VonKoch.vcxproj -> C:\Users\Adrie\source\IA-Chiffres\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

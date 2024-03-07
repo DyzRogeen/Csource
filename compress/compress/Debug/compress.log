@@ -1,5 +1,1 @@
-﻿  comp.c
-  main.c
-  Génération de code en cours...
-C:\Users\Adrie\source\compress\compress\comp.c(39): warning C4716: 'count' : doit retourner une valeur
-  compress.vcxproj -> C:\Users\Adrie\source\compress\Debug\compress.exe
+﻿  compress.vcxproj -> C:\Users\Adrie\source\compress\Debug\compress.exe
