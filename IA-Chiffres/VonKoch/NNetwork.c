@@ -1,8 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS 0
+#define e 2.71828182846
 
 #include "NNetwork.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 network *initNetwork(int* layerSizes, int nbLayers) {
 
@@ -55,6 +57,7 @@ weight** initWeight(int* layerSizes, int nbLayers) {
 	
 	weight *l, **w = (weight**)calloc(nbLayers, sizeof(weight*));
 	float** W, *nVal, *n;
+	int nbInputNeurons, nbOutputNeurons;
 
 	srand(time(NULL));
 
@@ -63,15 +66,19 @@ weight** initWeight(int* layerSizes, int nbLayers) {
 
 		l = (weight*)calloc(1, sizeof(weight));
 
-		nVal = (float*)calloc(layerSizes[i], sizeof(float));
+		nbInputNeurons = layerSizes[i] + 1; // + 1 including bias
+		nbOutputNeurons = layerSizes[i + 1];
 
-		W = (float**)calloc(layerSizes[i + 1], sizeof(float*));
+		nVal = (float*)calloc(nbInputNeurons, sizeof(float));
 
-		for (int j = 0; j < layerSizes[i + 1]; j++) {
+		W = (float**)calloc(nbOutputNeurons, sizeof(float*));
 
-			n = (float*)calloc(layerSizes[i], sizeof(float));
+		for (int j = 0; j < nbOutputNeurons; j++) {
 
-			for (int k = 0; k < layerSizes[i]; k++) n[k] = (float)(rand() % 200 - 100) / 100;
+			n = (float*)calloc(nbInputNeurons, sizeof(float));
+
+			// Random Weights between -1/sqrt(M) and 1/sqrt(M)
+			for (int k = 0; k < nbInputNeurons; k++) n[k] = ((float)(rand() % 201) / 100 - 1) / sqrt(nbInputNeurons);
 
 			W[j] = n;
 
@@ -100,7 +107,7 @@ weight** initWeight(int* layerSizes, int nbLayers) {
 }
 
 void learn(weight** w) {
-
+	
 	FILE* db = fopen("database.txt", "r");
 
 	int nbV, vectorSize, number;
@@ -123,6 +130,7 @@ void learn(weight** w) {
 			fscanf(db, " %d", &tmpV);
 			w[0]->nVal[j] = tmpV / 100.0;
 		}
+		w[0]->nVal[vectorSize] = 0.; // Biais
 
 		//printf("Reading line %d, number : %d\n", (i * (nbV + 1) / 10) % nbV, number);
 
@@ -144,11 +152,10 @@ void learn(weight** w) {
 
 }
 
-
 float* propagation(weight** w) {
 
 	int layerSize_in = (*w)->layerSize;
-	int layerSize_out = w[1]->layerSize;
+	int layerSize_out = w[1]->layerSize - ((*w)->position != LAST); // On ne compte pas le neuronne du biais.
 	float** W = (*w)->W;
 	float* nVal_in = (*w)->nVal;
 	float* nVal_out = w[1]->nVal;
@@ -157,9 +164,11 @@ float* propagation(weight** w) {
 
 	// Pour tous les neuronnes de sortie ...
 	for (int i = 0; i < layerSize_out; i++) {
+		
+		// On normalise la couche d'entrée
+		normalize(nVal_in, layerSize_in);
 
 		sum = 0;
-
 		// Somme du produit des poids avec les valeurs d'entrée ...
 		for (int j = 0; j < layerSize_in; j++) {
 			sum += W[i][j] * nVal_in[j];
@@ -201,7 +210,7 @@ float* retroPropagation(weight** w, int number) {
 	float* nVal_in = (*w)->nVal, *nVal_out = w[1]->nVal;
 
 	error_current = (float*)calloc(layerSize_out, sizeof(float));
-
+	
 	float pas = 0.0005;
 
 	for (int i = 0; i < layerSize_in; i++) {
@@ -265,6 +274,24 @@ void stats(weight** w) {
 	free(nl);
 	fclose(db);
 
+}
+
+void normalize(float* layer, int layerSize) {
+	float mean = 0.;
+	float std = 0.;
+
+	// Mean and standard deviation of the array
+	for (int i = 0; i < layerSize; i++) {
+		mean += layer[i];
+		std += layer[i] * layer[i];
+	}
+	mean /= layerSize;
+	std = sqrtf(std / layerSize - mean * mean);
+
+	// Normalisation xi' = (xi - µ) / s
+	for (int i = 0; i < layerSize; i++) {
+		layer[i] = (layer[i] - mean) / std;
+	}
 }
 
 // UTILS
@@ -332,6 +359,10 @@ int* findNewline(FILE* f, int nbLines) {
 
 	return nl;
 
+}
+
+float sigmoid(float v) {
+	return (1 - pow(e, -v)) / (1 + pow(e, -v));
 }
 
 /*float* propagation(weight* w, float* v) {

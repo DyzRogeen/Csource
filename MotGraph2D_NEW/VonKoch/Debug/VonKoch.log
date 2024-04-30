@@ -1,5 +1,4 @@
 ﻿  main.c
 C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\main.c(13,25): warning C4305: '+=' : troncation de 'double' à 'float'
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\main.c(83,101): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'const SDL_PixelFormat *const '
   VonKoch.vcxproj -> C:\Users\Adrie\source\MotGraph2D_NEW\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

@@ -14,6 +14,7 @@
 
 int main(int argc, char **argv)
 {
+
 	SDL_Surface * window;
 	int quit = 0;
 	SDL_Event e;

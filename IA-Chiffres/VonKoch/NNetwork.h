@@ -52,6 +52,8 @@ void guess(weight** w, float* v, int vectorSize, int verbose);
 
 void stats(weight** w);
 
+void normalize(float* layer, int layerSize);
+
 /*void freeNetwork(network* nN);
 
 void freeLayer(layer* l);
@@ -67,3 +69,5 @@ float* ntov(int n);
 int maxIndex(float* v, int verbose);
 
 int* findNewline(FILE* f, int nbLines);
+
+float sigmoid(float v);
