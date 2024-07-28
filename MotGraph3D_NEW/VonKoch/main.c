@@ -5,16 +5,23 @@
 #include "utils_SDL.h"
 #include "mot.h"
 
-void updateScreen(SDL_Surface * window, int* Z_Buffers, listO* lo, int nbObj, cam C, light L, int camHasMoved, int* alt) {
+void updateScreen(SDL_Surface * window, int* Z_Buffers, listO* lo, listS* S, cam C, listL* L, int camHasMoved, int* alt) {
 
 	// On vide la fenêtre (on la remplit en noir)
 	SDL_FillRect(window, &(window->clip_rect), SDL_MapRGB(window->format, 0, 0, 0));
+	//displayFloorLines(window, Z_Buffers, C);
+	*((Uint32*)window->pixels + window->w / 2 + window->h * window->w / 2) = SDL_MapRGB(window->format, 200, 200, 200);
 
-	for (int i = 0; i < nbObj; i++) {
+	while (lo) {
 		displayObj(window, Z_Buffers, *lo->o, C, L, camHasMoved, *alt);
 		lo = lo->next;
 	}
 
+	moveSpheres(S);
+	drawSpheres(window, Z_Buffers, S, L, C, *alt);
+
+	displayLights(window, Z_Buffers, L, C, *alt);
+	
 	// Met à jour le buffer de la fenêtre
 	SDL_UpdateRect(window, 0, 0, 0, 0);
 	// Flip le buffer pour l'envoyer vers l'écran (la fenêtre est configurée en double buffer)
@@ -29,27 +36,28 @@ int main(int argc, char** argv)
 	SDL_Surface* window;
 	SDL_Event e;
 
-	int quit, dirx, diry, dirz, roty;
+	int quit, dirx, diry, dirz, roty, dirx_z, diry_z;
 	quit = dirx = diry = dirz = roty = 0;
 
-	int alt = 1;
+	int alt = 1, updateS = 0;
 
+	int mPosx, mPosy;
 	point mPos, premPos;
 	SDL_GetMouseState(&premPos.x, &premPos.y);
-	float speed = 0.4;
-	float jsp = 10;
+	float speed = 5;
+	float jsp = 1, pct;
 
 	cam C = initCam(setPoint(0, 300, 0), setPoint(jsp, 0, 0));
-	light L = initLight(setPoint(0, 500, 300), 10, (Uint8[3]){255, 255, 255});
+
+	listL* L = NULL;
+	addLight(&L, createLight(createPoint(0, 500, 300), 10, (Uint32)(255 << 16 | 255 << 8 | 255)));
+
 	listO* O = (listO*)calloc(1, sizeof(listO));
-	int nbObj = 0;
-
-	addObj(&O, createCube(setPoint(400, 0, 0), setPoint(0, 0, 0), 400, (Uint8[3]) {120, 120, 120}, 1));
-	addObj(&O, createCube(setPoint(400, 0, 800), setPoint(PI / 4, 0, PI / 4), 300, (Uint8[3]) {200, 0, 0}, 0));
-	addObj(&O, createCube(setPoint(400, 0, -800), setPoint(0, 0, 0), 300, (Uint8[3]) { 0, 200, 0 }, 0));
-	ExtrudeFace(O->o, setPoint(-200, 100, 100));
-
-	nbObj = 3;
+	O->next = NULL;
+	O->o = createCube(setPoint(400, 1000, 800), setPoint(0, 0, 0), 400, (Uint32) (120 << 16 | 120 << 8 | 120), 1);
+	addObj(&O, createCube(setPoint(400, 0, 800), setPoint(PI / 4, 0, PI / 4), 300, (Uint32) (200 << 16), 0));
+	addObj(&O, createCube(setPoint(400, 0, -800), setPoint(0, 0, 0), 300, (Uint32) (200 << 8), 0));
+	//ExtrudeFace(O->o, setPoint(-200, 100, 100));
 
 	// Initialisation
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -68,11 +76,12 @@ int main(int argc, char** argv)
 	}
 
 	int* Z_Buffers = (int*)calloc(window->h * window->w, sizeof(int));
+	listS* S = createListS(createSphere(200, createPoint(400, 600, 0), SDL_MapRGB(window->format, 50, 50, 50)));
 
 	// On met le titre sur la fenêtre
 	SDL_WM_SetCaption("VonKoch", NULL);
 
-	updateScreen(window, Z_Buffers, O, nbObj, C, L, 1, &alt);
+	updateScreen(window, Z_Buffers, O, S, C, L, 1, &alt);
 
 	while (!quit)
 	{
@@ -82,7 +91,7 @@ int main(int argc, char** argv)
 			{
 			case SDL_QUIT:
 				quit = 1;
-				freeAll(O);
+				freeAll(O, S, L);
 				break;
 			case SDL_KEYDOWN:
 				if (e.key.keysym.sym == SDLK_ESCAPE)
@@ -108,27 +117,32 @@ int main(int argc, char** argv)
 			}
 		}
 
-		SDL_GetMouseState(&mPos.x, &mPos.y);
-		if (mPos.x - premPos.x || mPos.y - premPos.y) {
-			rotateCam(&C, (mPos.x - premPos.x) / 100.0, (mPos.y - premPos.y) / -100.0);
-			updateScreen(window, Z_Buffers, O, nbObj, C, L, 0, &alt);
-
+		SDL_GetMouseState(&mPosx, &mPosy);
+		if (mPosx - premPos.x || mPosy - premPos.y) {
+			rotateCam(&C, (mPosx - premPos.x) / 100.0, (mPosy - premPos.y) / -100.0);
+			updateS = 1;
 		}
 
 		if (dirx || diry || dirz) {
-			moveCam(&C,setPoint((dirx * C.dir.x - diry * C.dir.z)*speed/jsp, dirz, (dirx * C.dir.z + diry * C.dir.x)*speed/jsp));
-			updateScreen(window, Z_Buffers, O, nbObj, C, L, 1, &alt);
+			pct = fabs(C.dir.x) / (fabs(C.dir.x) + fabs(C.dir.z));
+			moveCam(&C,setPoint((dirx * (C.dir.x + fabs(C.dir.y) * pct) - diry * (C.dir.z + fabs(C.dir.y) * (1 - pct))) * speed/jsp, dirz, (dirx * (C.dir.z + fabs(C.dir.y) * (1 - pct)) + diry * (C.dir.x + fabs(C.dir.y) * pct)) * speed/jsp));
+			updateS = 1;
 		}
 
 		if (roty) {
 			RotateObj(O->o, setPoint(0.01, 0, 0));
 			RotateObj(O->next->o, setPoint(0, 0, 0.01));
 			RotateObj(O->next->next->o, setPoint(0, 0.01, 0));
-			updateScreen(window, Z_Buffers, O, nbObj, C, L, 1, &alt);
+			updateS = 1;
 		}
 
-		premPos.x = mPos.x;
-		premPos.y = mPos.y;
+		if (updateS) {
+			updateScreen(window, Z_Buffers, O, S, C, L, 1, &alt);
+			updateS = 0;
+		} else updateScreen(window, Z_Buffers, O, S, C, L, 0, &alt);
+
+		premPos.x = mPosx;
+		premPos.y = mPosy;
 
 	}
 	free(Z_Buffers);

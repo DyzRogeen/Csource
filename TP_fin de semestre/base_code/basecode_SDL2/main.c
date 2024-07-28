@@ -405,8 +405,8 @@ int main(int argc, char** argv)
 		}
 		if (turn == true) {
 			tabCpy(gameTree, game);
-			(root)->val = initTreeIA(gameTree, &root, 2, 2, -1);
-			printTree(root);
+			(root)->val = initTreeIA(gameTree, &root, 4, 4, -1);
+			//printTree(root);
 
 			turnIA(game, root);
 

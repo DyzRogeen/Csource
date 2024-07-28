@@ -6,13 +6,39 @@
 
 void displayAll(SDL_Surface* window, listO* O) {
 	obj* o;
-	for (int i = 0; O; i++) {
-		o = O->o;
-		if (!o->isStatic) {
-			moveObj(o);
-			o->velocity.y += 0.01;
-		}
+	listP* P;
+	pointf* p;
+	int offScreen;
+	int w = window->w;
+	int h = window->h;
 
+	seekCollision(O);
+
+	while (O) {
+		o = O->o;
+		o->v.y += 0.001;
+		if (!o->isStatic) {
+			P = o->points;
+
+			offScreen = 1;
+			while (P) {
+				p = P->p;
+				movePoint(*o, p);
+				displayVector(window, *o, *p, 200);
+
+				offScreen = offScreen && (p->x < 0.f || p->x > w || p->y < 0.f || p->y > h);
+				
+				P = P->next;
+			}
+			movePoint(*o, &(o->pRot));
+
+			if (offScreen) {
+				//printf("OFFSCREEN !\n");
+				//freeObj(o);
+				//*O = *(O->next);
+				//continue;
+			}
+		}
 		colorObj(window, o->points, o->nbPoints, o->color);
 		O = O->next;
 	}
@@ -20,7 +46,7 @@ void displayAll(SDL_Surface* window, listO* O) {
 
 int main(int argc, char **argv)
 {
-	point* a;
+
 	SDL_Surface * window;
 	int quit = 0;
 	int pause = 0;
@@ -30,6 +56,13 @@ int main(int argc, char **argv)
 
 	obj* o = NULL;
 	listO* O = NULL;
+
+	listP* P1 = NULL;
+	addPoint(&P1, createPoint(50, 400));
+	addPoint(&P1, createPoint(590, 400));
+	addPoint(&P1, createPoint(320, 450));
+	obj* o1 = createObj(P1, 200, 1, 1);
+	addObj(&O, o1);
 
 	int nbPoints = 1;
 
@@ -54,10 +87,6 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	a = createPoint(w/2 + 100,	h/2 + 100);
-
-	listP* P = createList(a);
-
 	// On met le titre sur la fenêtre
 	SDL_WM_SetCaption("2D Engine", NULL);
 
@@ -80,13 +109,15 @@ int main(int argc, char **argv)
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				mouseButton = SDL_GetMouseState(&mousePos.x, &mousePos.y);
-				if (pause == 0) o = createObj(createList(createPoint(mousePos.x, mousePos.y)), SDL_MapRGB(window->format, 160, 130, 220), 0, (e.button.button == SDL_BUTTON_RIGHT));
+				if (pause == 0) o = createObj(createList(createPoint(mousePos.x, mousePos.y)), SDL_MapRGB(window->format, 160, 190 * (e.button.button == SDL_BUTTON_RIGHT), 220), 0, (e.button.button == SDL_BUTTON_RIGHT));
 				else {
 					addPoint(&o->points, createPoint(mousePos.x, mousePos.y));
 					o->nbPoints++;
 				}
 
+				SDL_FillRect(window, &(window->clip_rect), SDL_MapRGB(window->format, 0, 0, 0));
 				colorObj(window, o->points, o->nbPoints, o->color);
+				displayAll(window, O);
 				SDL_UpdateRect(window, 0, 0, 0, 0);
 				SDL_Flip(window);
 
@@ -108,6 +139,8 @@ int main(int argc, char **argv)
 		}
 
 	}
+
+	freeListO(O);
 
 	return EXIT_SUCCESS;
 }
