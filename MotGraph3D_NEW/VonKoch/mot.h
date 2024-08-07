@@ -147,7 +147,7 @@ void RotateObj(obj* o, point3 rot);
 void ExtrudeFace(obj* o, point3 dir);
 
 // Physics Methods
-void moveSpheres(listS* S);
+void moveSpheres(listS* S, cam c);
 
 // Memory Cleaning
 void freeAll(listO* O, listS* S, listL* L);

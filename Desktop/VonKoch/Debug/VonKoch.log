@@ -1,0 +1,10 @@
+﻿  main.c
+C:\Users\Adrie\source\Desktop\VonKoch\main.c(23,48): warning C4047: '==' : les niveaux d'indirection de 'FILE *' et de 'int' sont différents
+C:\Users\Adrie\source\Desktop\VonKoch\main.c(24,2): warning C4033: 'SDL_main' doit retourner une valeur
+C:\Users\Adrie\source\Desktop\VonKoch\main.c(32,35): warning C4133: 'fonction' : types incompatibles - de 'char [200]' à 'LPCWSTR'
+C:\Users\Adrie\source\Desktop\VonKoch\main.c(36,3): warning C4033: 'SDL_main' doit retourner une valeur
+C:\Users\Adrie\source\Desktop\VonKoch\main.c(48,2): warning C4033: 'SDL_main' doit retourner une valeur
+C:\Users\Adrie\source\Desktop\VonKoch\main.c(40,1): warning C4133: 'initialisation' : types incompatibles - de 'WCHAR *' à 'const char *'
+C:\Users\Adrie\source\Desktop\VonKoch\main.c(94): warning C4715: 'SDL_main' : les chemins de contrôle ne retournent pas tous une valeur
+  VonKoch.vcxproj -> C:\Users\Adrie\source\Desktop\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

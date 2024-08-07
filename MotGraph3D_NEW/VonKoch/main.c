@@ -9,7 +9,7 @@ void updateScreen(SDL_Surface * window, int* Z_Buffers, listO* lo, listS* S, cam
 
 	// On vide la fenêtre (on la remplit en noir)
 	SDL_FillRect(window, &(window->clip_rect), SDL_MapRGB(window->format, 0, 0, 0));
-	//displayFloorLines(window, Z_Buffers, C);
+	displayFloorLines(window, Z_Buffers, C);
 	*((Uint32*)window->pixels + window->w / 2 + window->h * window->w / 2) = SDL_MapRGB(window->format, 200, 200, 200);
 
 	while (lo) {
@@ -17,7 +17,7 @@ void updateScreen(SDL_Surface * window, int* Z_Buffers, listO* lo, listS* S, cam
 		lo = lo->next;
 	}
 
-	moveSpheres(S);
+	moveSpheres(S, C);
 	drawSpheres(window, Z_Buffers, S, L, C, *alt);
 
 	displayLights(window, Z_Buffers, L, C, *alt);
@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 	float speed = 5;
 	float jsp = 1, pct;
 
-	cam C = initCam(setPoint(0, 300, 0), setPoint(jsp, 0, 0));
+	cam C = initCam(setPoint(0, 400, 0), setPoint(jsp, 0, 0));
 
 	listL* L = NULL;
 	addLight(&L, createLight(createPoint(0, 500, 300), 10, (Uint32)(255 << 16 | 255 << 8 | 255)));
@@ -77,6 +77,8 @@ int main(int argc, char** argv)
 
 	int* Z_Buffers = (int*)calloc(window->h * window->w, sizeof(int));
 	listS* S = createListS(createSphere(200, createPoint(400, 600, 0), SDL_MapRGB(window->format, 50, 50, 50)));
+	for (int i = -8; i < 8; i++)
+		addSphere(&S, createSphere(100, createPoint(500 * (float)i/5, 1500, 500 * (i % 5)), SDL_MapRGB(window->format, 50 * i, 20, 70 * (25 - i))));
 
 	// On met le titre sur la fenêtre
 	SDL_WM_SetCaption("VonKoch", NULL);
@@ -102,7 +104,7 @@ int main(int argc, char** argv)
 				if (e.key.keysym.sym == SDLK_a) diry = -1;
 				if (e.key.keysym.sym == SDLK_z) dirz = 1;
 				if (e.key.keysym.sym == SDLK_x) dirz = -1;
-				if (e.key.keysym.sym == SDLK_r) C = initCam(setPoint(0,300,0),setPoint(jsp,0,0));
+				if (e.key.keysym.sym == SDLK_r) C = initCam(setPoint(0,400,0),setPoint(jsp,0,0));
 				if (e.key.keysym.sym == SDLK_e) jsp /= 10;
 				if (e.key.keysym.sym == SDLK_q) jsp *= 10;
 				if (e.key.keysym.sym == SDLK_p) roty = 1;

@@ -1,0 +1,18 @@
+﻿  main.c
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(22,14): warning C4098: 'writeFile' : fonction 'void' retournant une valeur
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(43,14): warning C4098: 'readFile' : fonction 'void' retournant une valeur
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(61,28): warning C4028: paramètre formel 1 différent de la déclaration
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(61,43): warning C4028: paramètre formel 2 différent de la déclaration
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(61,52): warning C4028: paramètre formel 3 différent de la déclaration
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(61,63): warning C4028: paramètre formel 4 différent de la déclaration
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(61,74): warning C4028: paramètre formel 5 différent de la déclaration
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(61,96): warning C4028: paramètre formel 7 différent de la déclaration
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(61,133): warning C4029: la déclaration de la liste de paramètres formels est différente de la définition
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(68,36): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(68,74): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(68,93): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(68,135): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(132,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\VonKoch\main.c(133,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\source\Je_ve_une_fonction_en_txt\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

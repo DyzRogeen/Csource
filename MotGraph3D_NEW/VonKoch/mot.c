@@ -485,7 +485,7 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 	// Cartesian d value in [ ax + by + cz = -d ] for the cam plane
 	float d = (pcam.x * dir.x) + (pcam.y * dir.y) + (pcam.z * dir.z);
 	float n,k, kbis, nbis, den;
-	point3 pProj;
+	point pProj;
 
 	// Intersection coordinates
 	float X, Y, Z;
@@ -511,7 +511,6 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		if (k > 1) {
 			p->p.display = 0;
 
-
 			X = (pos.x - p->x) * k + p->x - pcam.x;
 			Y = (pos.y - p->y) * k + p->y - pcam.y;
 			Z = (pos.z - p->z) * k + p->z - pcam.z;
@@ -530,17 +529,36 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 				pProj.y = (vUnit1.z * Y - vUnit1.y * Z) * normDir / den + screenH;
 			}
 
-			pProj.x += 2 * (screenW - pProj.x);
-			pProj.y += 2 * (screenH - pProj.y);
+			point p2loin;
+			X = pos.x - pcam.x;
+			Y = pos.y - pcam.y;
+			Z = pos.z - pcam.z;
+			if (fabs(den = vUnit1.x * vUnit2.y - vUnit1.y * vUnit2.x) > 0.00001) {
+				p2loin.x = (vUnit2.y * X - vUnit2.x * Y) * normDir / den + screenW;
+				p2loin.y = (vUnit1.y * X - vUnit1.x * Y) * normDir / den + screenH;
+			}
+			else if (fabs(den = vUnit1.x * vUnit2.z - vUnit1.z * vUnit2.x) > 0.00001) {
+				p2loin.x = (vUnit2.z * X - vUnit2.x * Z) * normDir / den + screenW;
+				p2loin.y = (vUnit1.z * X - vUnit1.x * Z) * normDir / den + screenH;
+			}
+			else {
+				den = vUnit1.y * vUnit2.z - vUnit1.z * vUnit2.y;
+				p2loin.x = (vUnit2.z * Y - vUnit2.y * Z) * normDir / den + screenW;
+				p2loin.y = (vUnit1.z * Y - vUnit1.y * Z) * normDir / den + screenH;
+			}
 
-			float coef = (screenH - pProj.y) / (screenW - pProj.x);
-			if (fabs(coef) < (float)screenH / screenW) {
+
+			pProj.x += 2 * (p2loin.x - pProj.x) ;
+			pProj.y += 2 * (p2loin.y - pProj.y);
+
+			float coef = (p2loin.y - pProj.y) / (p2loin.x - pProj.x);
+			if (fabs(coef) < (float)p2loin.y / p2loin.x) {
 				if (pProj.x < screenW) {
 					p->p.x = 0.f;
 					p->p.y = pProj.y - pProj.x * coef;
 				}
 				else {
-					p->p.x = 2 * screenW;
+					p->p.x = 2 * screenW - 1;
 					p->p.y = pProj.y - (pProj.x - 2 * screenW) * coef;
 				}
 			}
@@ -551,19 +569,20 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 				}
 				else {
 					p->p.x = pProj.x - (pProj.y - 2 * screenH) / coef;
-					p->p.y = 2 * screenH;
+					p->p.y = 2 * screenH - 1;
 				}
 			}
 
 			p = p->next;
 			continue;
 		}
-		else p->p.display = !(k < 0);
+		
+		p->p.display = 1;
 
 		// P = v*k + p
-		X = (pos.x - p->x) * k + p->x - pcam.x;
-		Y = (pos.y - p->y) * k + p->y - pcam.y;
-		Z = (pos.z - p->z) * k + p->z - pcam.z;		
+		X = (pos.x - p->x) * k + p->x + pcam.x;
+		Y = (pos.y - p->y) * k + p->y + pcam.y;
+		Z = (pos.z - p->z) * k + p->z + pcam.z;		
 
 		/*
 		* x*i + y*j = (X ; Y ; Z) => x*v1.x + y*v2.x = X | x*v1.y + y*v2.y = Y | x*v1.z + y*v2.z = Z
@@ -621,10 +640,10 @@ void drawSpheres(SDL_Surface* window, int* Z_Buffers, listS* S, listL* L, cam c,
 	pointsTo2dProjection(w / 2, h / 2, S->s->pos, c);
 
 	int x, y, slot, rad2, lx, R, G, B, *Z_buffer, depth;
-	float coef = 180.f, dist, coefl, normsl, lum, lightDir;
+	float coef = 150.f, dist, coefl, normsl, lum, lightDir;
 	sphere* s;
 	point p, pl;
-	point3 psc, psl;
+	point3 psc, psl, pl3;
 	light* l = L->l; // TODO : faire avec toutes les lumières
 	Uint8* colorS, color[3], *cl = &l->color;
 	while (S) {
@@ -636,19 +655,22 @@ void drawSpheres(SDL_Surface* window, int* Z_Buffers, listS* S, listL* L, cam c,
 			continue;
 		}
 
-		depth = p.depth * alt; // - s->radius + sqrt(x * x + y * y)) * alt; //(courbe de la boule pour + de précision)
 		psc = sum(c.pos, *s->pos, -1);
 		psl = sum(*l->pos, *s->pos, -1);
 
 		// Light handling : pl is the nearest point of the sphere from the light
 		lightDir = scalar(psc, psl); // A faire plus tard : quand la sphere est entre la lumiere et nous, prendre le point opposé au point pl et ajouter coefl quand norm augmente
 		normsl = norm(psl);
-		pl = scale2(sum2(l->pos->p, p, -1), s->radius / normsl); // Amélioration : prendre le vrai point pl
-		lum = 1000000.f * l->intensity / (normsl * normsl);
+		pl3 = sum(*s->pos, scale(psl, s->radius / normsl), 0);
+		pointsTo2dProjection(w / 2, h / 2, &pl3, c);
+		pl = sum2(pl3.p, p, -1);
+
+		//pl = scale2(sum2(l->pos->p, p, -1), s->radius / normsl); // Amélioration : prendre le vrai point pl
 		colorS = (Uint8*)&s->color;
 
 		dist = fabs(scalar(psc, c.dir));
 		rad2 = coef * s->radius / dist;
+		lum = 100000.f * l->intensity * rad2 * rad2 * rad2 * rad2 / (normsl * normsl * normsl);
 		for (y = -rad2; y <= rad2; y++) {
 
 			if (p.y + y < 0 || p.y + y >= h) continue;
@@ -663,10 +685,11 @@ void drawSpheres(SDL_Surface* window, int* Z_Buffers, listS* S, listL* L, cam c,
 
 				Z_buffer = Z_Buffers + slot;
 
+				depth = (p.depth - s->radius + sqrt(x * x + y * y)) * alt; //(courbe de la boule pour + de précision)
 				if (*Z_buffer && !((alt == 1) ? (*Z_buffer < 0 || depth < *Z_buffer) : (*Z_buffer > 0 || depth > *Z_buffer))) continue;
 				*Z_buffer = depth;
 
-				coefl = lum / (pow((pl.x - x) * (pl.x - x) + (pl.y - y) * (pl.y - y), 0.55f) + 0.00001);
+				coefl = lum / (pow((pl.x - x) * (pl.x - x) + (pl.y - y) * (pl.y - y), 1.3f) + 0.00001);
 
 
 				if (coefl > 0.01) {
@@ -680,7 +703,7 @@ void drawSpheres(SDL_Surface* window, int* Z_Buffers, listS* S, listL* L, cam c,
 			}
 
 		}
-
+		//if (!(pl.x + p.x < 0 || pl.x + p.x >= w || pl.y + p.y < 0 || pl.y + p.y >= h)) *(pxls + (int)(pl.x + p.x) + (int)(pl.y + p.y) * w) = (255 << 16);
 		S = S->next;
 	}
 	
@@ -717,7 +740,7 @@ void displayLights(SDL_Surface* window, int* Z_buffers, listL* L, cam c, int alt
 	pointsTo2dProjection(w / 2, h / 2, L->l->pos, c);
 
 	float coef = 700.f, dist, norm;
-	int rad2, lx, R, G, B;
+	int rad2, lx, R, G, B, *Z_buffer, depth;
 
 	Uint32* pxls = window->pixels;
 	Uint8* pxl;
@@ -729,7 +752,13 @@ void displayLights(SDL_Surface* window, int* Z_buffers, listL* L, cam c, int alt
 		l = L->l;
 		p = l->pos->p;
 
-		if (p.display == 0) {
+		Z_buffer = Z_buffers + (int)p.x + (int)(p.y) * w;
+		depth = p.depth * alt;
+
+		if (
+			p.display == 0 || (p.x < 0 || p.x > w || p.y < 0 || p.y > h) ||
+			(*Z_buffer && !((alt == 1) ? (*Z_buffer < 0 || depth < *Z_buffer) : (*Z_buffer > 0 || depth > *Z_buffer)))
+			) {
 			L = L->next;
 			continue;
 		}
@@ -774,7 +803,7 @@ void displayFloorLines(SDL_Surface* window, int* Z_Buffers, cam c) {
 	point3 cPos = c.pos;
 	
 	float radius = 1050;
-	float gridSize = 100;
+	float gridSize = 50;
 	int ratio = (int)(radius / gridSize);
 	int nbPoints = 8 * ratio;
 
@@ -803,7 +832,7 @@ void displayFloorLines(SDL_Surface* window, int* Z_Buffers, cam c) {
 	pointsTo2dProjection(window->w/2, window->h/2, P[0], c);
 
 	for (int i = 0; i < nbPoints; i += 2) {
-		drawLine(window, P[i]->p, P[i + 1]->p, SDL_MapRGB(window->format ,0, 150, 0));
+		drawLine(window, P[i]->p, P[i + 1]->p, SDL_MapRGB(window->format ,255 * (i == (float)nbPoints / 2), 150, 0));
 	}
 
 	free(P);
@@ -1065,19 +1094,56 @@ void ExtrudeFace(obj* o, point3 dir) {
 
 ///////////////////////////////////////////////////////////
 
-void moveSpheres(listS* S) {
+void moveSpheres(listS* S, cam c) {
 
-	sphere* s;
-	point3 v, p;
+	sphere* s, *sbis;
+	point3 v, * p, pssbis, pc, pcbis, ppc, cpos = c.pos;;
+	listS* Sbis;
+	float rad, radbis, playerDist;
 	while (S) {
 
 		s = S->s;
-		s->v.y -= 0.01;
-		add(s->pos, s->v, 0);
+		p = s->pos;
+		rad = s->radius;
 
-		if (s->pos->y - s->radius <= 0.f) {
-			s->pos->y = s->radius;
-			s->v.y *= -1;
+		s->v.y -= 0.05;
+		add(p, s->v, 0);
+
+		// Ground bounce
+		if (p->y - rad <= 0.f) {
+			p->y = rad;
+			s->v.y *= -0.75;
+			s->v.x *= 0.98; // ground friction
+			s->v.z *= 0.98; // ground friction
+		}
+
+		// Player Collision
+		ppc = sum(*p, cpos, -1);
+		ppc.y = 0;
+		playerDist = norm(ppc);
+			
+		if (playerDist < 300 && abs(p->y - cpos.y) < 500) {
+			p->x += (p->x - cpos.x) * sqrtf(300) / playerDist;
+			p->z += (p->z - cpos.z) * sqrtf(300) / playerDist;
+			add(&s->v, scale(ppc, 1.f / playerDist), 0);
+		}
+
+		// Symetrical Collison (handle the 2 colliders)
+		Sbis = S->next;
+		while (Sbis) {
+			sbis = Sbis->s;
+			radbis = sbis->radius;
+
+			pssbis = sum(*sbis->pos, *p, -1);
+			if (norm(pssbis) < rad + radbis) {
+				pc = scale(pssbis, rad / (rad + radbis));
+				pcbis = scale(pssbis, -radbis / (rad + radbis));
+
+				add(&s->v, scale(pc, -0.05 * fabs(scalar(sbis->v, pcbis) / norm(pcbis)) / norm(pc)), 0);
+				add(&sbis->v, scale(pcbis, -0.05 * fabs(scalar(s->v, pc) / norm(pc)) / norm(pcbis)), 0);
+			}
+
+			Sbis = Sbis->next;
 		}
 
 		S = S->next;

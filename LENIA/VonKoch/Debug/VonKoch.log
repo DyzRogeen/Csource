@@ -1,0 +1,16 @@
+﻿  graph.c
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(27,49): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(28,49): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(29,49): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(7,9): warning C4101: 'nColor' : variable locale non référencée
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(44,152): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(39,1): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(71,118): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(72,118): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(73,118): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(98,126): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(111,18): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(124,28): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(129,42): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\source\LENIA\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).
