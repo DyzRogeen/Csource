@@ -1,0 +1,22 @@
+﻿  main.c
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(20,49): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(20,65): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(70,34): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(70,42): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(122,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(122,47): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(123,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(124,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(130,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(130,47): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(131,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(132,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(141,28): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(141,36): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(167,89): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(167,97): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(173,51): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(173,59): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\main.c(70,45): warning C4101: 'mPos2' : variable locale non référencée
+  VonKoch.vcxproj -> C:\Users\Adrie\source\Electronics\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

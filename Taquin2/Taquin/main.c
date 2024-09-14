@@ -112,12 +112,12 @@ int main(int argc, char ** argv)
 
 			// En mode console
 
-			//gameLoop(hauteur, largeur, minRandom, maxRandom);
+			gameLoop(hauteur, largeur, minRandom, maxRandom);
 
 
 			// En mode graphique
 
-			argc = gameLoopSDL(hauteur, largeur, taquinFile, minRandom, maxRandom);
+			//argc = gameLoopSDL(hauteur, largeur, taquinFile, minRandom, maxRandom);
 
 		}
 

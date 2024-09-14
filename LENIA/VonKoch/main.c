@@ -88,7 +88,7 @@ int main(int argc, char** argv)
 	Uint32* pixels = window->pixels;
 	Uint8* pxl;
 	for (int ind = 0; ind < 3; ind++) {
-		int decal = 11 - (filterDim[ind] - 1) / 2;
+		int decal = 110 - (filterDim[ind] - 1) / 2;
 		for (int i = 0; i < filterDim[ind]; i++) {
 			printf("[");
 			for (int j = 0; j < filterDim[ind]; j++) {
@@ -166,7 +166,9 @@ int main(int argc, char** argv)
 	free(filter[0]);
 	free(filter[1]);
 	free(filter[2]);
-	free(growthFunc);
+	free(growthFunc[0]);
+	free(growthFunc[1]);
+	free(growthFunc[2]);
 
 	return EXIT_SUCCESS;
 }

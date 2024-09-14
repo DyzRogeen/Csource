@@ -1,0 +1,16 @@
+﻿  main.c
+C:\Users\Adrie\source\pendule\VonKoch\main.c(96,25): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(118,100): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(121,87): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(122,50): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(124,74): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(126,55): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(126,84): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(109,1): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\pendule\VonKoch\main.c(108,26): warning C4101: 'F' : variable locale non référencée
+C:\Users\Adrie\source\pendule\VonKoch\main.c(108,20): warning C4101: 'ray2' : variable locale non référencée
+C:\Users\Adrie\source\pendule\VonKoch\main.c(207,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\pendule\VonKoch\main.c(207,47): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\source\pendule\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
+  VonKoch.vcxproj -> C:\Users\Adrie\source\pendule\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

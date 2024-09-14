@@ -1,24 +1,5 @@
-﻿  Camera.c
-  main.c
-C:\Users\Adrie\source\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\main.c(56,10): warning C4101: 'meshCenter' : variable locale non référencée
-  Material.c
-  Matrix.c
+﻿  Matrix.c
 C:\Users\Adrie\source\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Matrix.c(117,32): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\source\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Matrix.c(142,58): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-  Mesh.c
-  Object.c
-  Graphics.c
-  Renderer.c
-  Scene.c
-  Settings.c
-  Shader.c
-  Tools.c
-  Timer.c
-  Vector.c
-C:\Users\Adrie\source\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Vector.c(64,10): warning C4101: 'v' : variable locale non référencée
-C:\Users\Adrie\source\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Vector.c(73,10): warning C4101: 'v' : variable locale non référencée
-C:\Users\Adrie\source\RealTimeRendering\RealTimeRendering_Basecode\RealTimeRendering\Vector.c(104,51): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-  Window.c
-  Génération de code en cours...
   LINK : /LTCG spécifié mais aucune génération de code requise ; supprimez /LTCG de la ligne de commande de l'édition de liens pour améliorer les performances de l'éditeur de liens
   RealTimeRendering.vcxproj -> C:\Users\Adrie\source\RealTimeRendering\RealTimeRendering_Basecode\Bin\RealTimeRendering.exe

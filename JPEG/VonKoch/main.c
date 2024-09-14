@@ -156,19 +156,20 @@ void smooth(SDL_Surface* window, float pct) {
 	int w = window->w;
 	int h = window->h;
 
-	for (int x = 0; x < w; x++) {
+	for (int x = 0; x < w; x++)
 		for (int y = 0; y < h; y++) {
+
+			p = (Uint8*)(pxl + x + y * w);
 
 			for (int i = x - 1; i <= x + 1; i++) {
 
-				if (i < 0 || i > w) continue;
+				if (i < 0 || i >= w) continue;
 
 				for (int j = y - 1; j <= y + 1; j++) {
 
-					if (j < 0 || j > h || (i == x && j == y)) continue;
+					if (j < 0 || j >= h || (i == x && j == y)) continue;
 
-					p = (Uint8*)(pxl + x + y * w);
-					pij = (Uint8*)(pxl + i + j * w);
+					pij = (Uint8*)(cpy + i + j * w);
 
 					// p = (p + pij * pct) / (1 + pct)
 					if (i == x || j == y) {
@@ -184,9 +185,7 @@ void smooth(SDL_Surface* window, float pct) {
 
 				}
 			}
-
 		}
-	}
 
 	free(cpy);
 
@@ -814,6 +813,7 @@ int main(int argc, char **argv)
 
 	window->format->BytesPerPixel = 4;
 	SDL_WM_SetCaption("JPEG", NULL);
+	setMatrix(window, img);
 
 	while (!quit)
 	{
@@ -842,7 +842,7 @@ int main(int argc, char **argv)
 				if (e.key.keysym.sym == SDLK_b)
 					blackWhite(window, 0);
 				if (e.key.keysym.sym == SDLK_f)
-					fourierComp(window, 100, 8);
+					fourierComp(window, 150, 8);
 				if (e.key.keysym.sym == SDLK_c)
 					chrominance(window, NULL, 0);
 				if (e.key.keysym.sym == SDLK_j)

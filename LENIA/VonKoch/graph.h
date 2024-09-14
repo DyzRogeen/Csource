@@ -27,4 +27,4 @@ float* mapNorm(Uint32* pixels, int size);
 
 Uint32 toPxl(int val);
 
-int CntActiveFilterCells(float* filter, int filterDim);
+float CntActiveFilterCells(float* filter, int filterDim);

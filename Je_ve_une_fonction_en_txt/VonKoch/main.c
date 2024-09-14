@@ -1,6 +1,6 @@
 #define PI	3.14159265359
 #define _CRT_SECURE_NO_WARNINGS 0
-#define FILE_PATH "../../LENIA/VonKoch/funcR.txt"
+#define FILE_PATH "../../LENIA/VonKoch/funcB.txt"
 
 #include <math.h>
 #include <stdio.h>

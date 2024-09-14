@@ -1,0 +1,24 @@
+﻿  graph.c
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(27,49): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(28,49): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(29,49): warning C4244: '=' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(7,9): warning C4101: 'nColor' : variable locale non référencée
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(44,152): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(39,1): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(71,107): warning C4244: '=' : conversion de 'double' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(72,107): warning C4244: '=' : conversion de 'double' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(73,107): warning C4244: '=' : conversion de 'double' en 'Uint8', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(103,20): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(111,18): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(124,28): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\LENIA\VonKoch\graph.c(129,42): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+  main.c
+C:\Users\Adrie\source\LENIA\VonKoch\main.c(97,1): warning C4244: 'initialisation' : conversion de 'float' en 'Uint8', perte possible de données
+  utils_SDL.c
+  Génération de code en cours
+  Previous IPDB not found, fall back to full compilation.
+  All 18 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Fin de la génération du code
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB '' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur '' ; l'objet sera lié sans informations de débogage
+  VonKoch.vcxproj -> C:\Users\Adrie\source\LENIA\bin\VonKoch.exe
+          1 fichier(s) copié(s).
