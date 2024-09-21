@@ -1,22 +1,52 @@
-﻿  main.c
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(20,49): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(20,65): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(70,34): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(70,42): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(122,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(122,47): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(123,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(124,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(130,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(130,47): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(131,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(132,34): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(141,28): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(141,36): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(167,89): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(167,97): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(173,51): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(173,59): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\Electronics\VonKoch\main.c(70,45): warning C4101: 'mPos2' : variable locale non référencée
+﻿  graph.c
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(52,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(48,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(48,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(52,29): warning C4101: 'p' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(68,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(80,46): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(80,70): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(82,27): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(87,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(87,64): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(89,27): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(92,27): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(97,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(97,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(102,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(102,54): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(70,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(64,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(64,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(115,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(127,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(127,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(133,28): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(136,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(136,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(117,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(111,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(111,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(151,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(163,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(163,54): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(168,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(168,54): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(153,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(147,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(147,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(181,23): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(182,23): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(185,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(186,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(189,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(190,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(200,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(202,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(217,29): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(218,29): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(221,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(226,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(389,30): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
   VonKoch.vcxproj -> C:\Users\Adrie\source\Electronics\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

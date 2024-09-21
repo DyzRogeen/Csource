@@ -37,7 +37,7 @@ void draw(screen s, point p1, point p2, type t, Uint32 color, int selected) {
 		case DIODE:
 			drawD(s, p1, p2, color, selected);
 			break;
-		default:
+		case WIRE:
 			drawW(s, p1, p2, color, selected);
 			break;
 	}
@@ -209,6 +209,88 @@ void drawBox(screen s, point p, Uint32 color) {
 
 }
 
+void drawSelectedArea(SDL_Surface* s, point p1, point p2) {
+	int w = s->w, h = s->h;
+	Uint32* pxls = s->pixels;
+	if (p2.x < 0) p2.x = 0;
+	if (p2.y < 0) p2.y = 0;
+	if (p2.x >= w) p2.x = w - 1;
+	if (p2.y >= h) p2.y = h - 1;
+
+	int ward = p1.x > p2.x ? -1 : 1;
+	for (int x = p1.x; x != p2.x; x += ward) {
+		*(pxls + x + (int)p1.y * w) = WHITE;
+		*(pxls + x + (int)p2.y * w) = WHITE;
+	}
+	ward = p1.y > p2.y ? -1 : 1;
+	for (int y = p1.y; y != p2.y; y += ward) {
+		*(pxls + (int)p1.x + y * w) = WHITE;
+		*(pxls + (int)p2.x + y * w) = WHITE;
+	}
+}
+
+void drawGUI(SDL_Surface* s) {
+	int w = s->w, h = s->h, i, j;
+	Uint32* pxls = s->pixels;
+
+	// Contours
+	for (i = 0; i < 50; i++) *(pxls + i) = *(pxls + i + (h - 1) * w) = WHITE;
+	for (j = 0; j < h; j++) {
+		*(pxls + j * w) = WHITE;
+		*(pxls + 49 + j * w) = WHITE;
+		*(pxls + 50 + j * w) = GREY;
+		*(pxls + 51 + j * w) = DGREY;
+	}
+	// Remplissage intérieur
+	for (i = 1; i < 48; i++)
+		for (j = 1; j < h - 1; j++)
+			*(pxls + i + j * w) = 0;
+
+	for (type t = GENERATEUR; t <= WIRE; t++)
+		drawGUIBox(s, 18, 45 * t + 25, t);
+}
+
+void drawGUIBox(SDL_Surface* s, int size, int z, type t) {
+	int w = s->w, dec = 25 - size, size2 = 2 * size + dec;
+	Uint32* pxls = s->pixels;
+
+	for (int i = 0; i < 2 * size; i++) {
+		*(pxls + i + dec + (size + z - 1) * w) = WHITE;
+		*(pxls + size2 - 1 + (z - size + i) * w) = WHITE;
+
+		*(pxls + i + dec + (size + z) * w) = LGREY;
+		*(pxls + size2 + (z - size + i) * w) = LGREY;
+
+		*(pxls + i + dec + (z - size) * w) = DGREY;
+		*(pxls + dec + (z - size + i) * w) = DGREY;
+	}
+	*(pxls + size2 + (size + z) * w) = LGREY;
+
+}
+
+void selectZone(screen s, list* L, point p1, point p2) {
+	p1 = setPoint((p1.x + s.offsetx) / s.zoom, (p1.y + s.offsety) / s.zoom);
+	p2 = setPoint((p2.x + s.offsetx) / s.zoom, (p2.y + s.offsety) / s.zoom);
+	float x1, x2, y1, y2;
+	if (p1.x < p2.x) {x1 = p1.x; x2 = p2.x;}
+	else {x1 = p2.x; x2 = p1.x;}
+	if (p1.y < p2.y) {y1 = p1.y; y2 = p2.y;}
+	else { y1 = p2.y; y2 = p1.y; }
+
+	elec* e;
+	point p1_, p2_;
+	while (L) {
+		e = L->e;
+		p1_ = *e->p1;
+		p2_ = *e->p2;
+
+		if (p1_.x > x1 && p1_.x < x2 && p1_.y > y1 && p1_.y < y2 &&
+			p2_.x > x1 && p2_.x < x2 && p2_.y > y1 && p2_.y < y2) e->selected = 1;
+		else e->selected = 0;
+
+		L = L->next;
+	}
+}
 
 // Interactions
 void deselectAll(list* L) {
