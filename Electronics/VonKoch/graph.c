@@ -1,5 +1,34 @@
 #include "graph.h"
 
+icon* createIcon(int size, int z, int pressed, type t) {
+	icon* i = (icon*)calloc(1, sizeof(icon));
+	i->next = NULL;
+	i->pressed = pressed;
+	i->size = size;
+	i->z = z;
+	i->t = t;
+	return i;
+}
+void addIcon(icon** I, icon* i) {
+	if (!I) return;
+	if (!*I) {
+		*I = i;
+		return;
+	}
+	i->next = *I;
+	*I = i;
+}
+void freeIcons(icon* I) {
+	if (!I) return;
+	freeIcons(I->next);
+	free(I);
+}
+icon* initIcons() {
+	icon* I = NULL;
+	for (type t = 0; t <= WIRE; t++)
+		addIcon(&I, createIcon(18, 45 * t + 25, t==WIRE, t));
+	return I;
+}
 
 // Dessin
 void drawGrid(screen s) {
@@ -20,35 +49,43 @@ void drawGrid(screen s) {
 
 }
 
-void draw(screen s, point p1, point p2, type t, Uint32 color, int selected) {
+void draw(screen s, point p1, point p2, type t, Uint32 color, int selected, int isIcon) {
 	switch (t) {
+		case VCC:
+			drawVCC(s, p1, p2, color, selected, isIcon);
+			break;
+		case GND:
+			drawGND(s, p1, p2, color, selected, isIcon);
+			break;
 		case GENERATEUR:
-			drawG(s, p1, p2, color, selected);
+			drawG(s, p1, p2, color, selected, isIcon);
 			break;
 		case RESISTANCE:
-			drawR(s, p1, p2, color, selected);
+			drawR(s, p1, p2, color, selected, isIcon);
 			break;
 		case BOBINE:
-			drawL(s, p1, p2, color, selected);
+			drawL(s, p1, p2, color, selected, isIcon);
 			break;
 		case CONDENSATEUR:
-			drawC(s, p1, p2, color, selected);
+			drawC(s, p1, p2, color, selected, isIcon);
 			break;
 		case DIODE:
-			drawD(s, p1, p2, color, selected);
+			drawD(s, p1, p2, color, selected, isIcon);
 			break;
 		case WIRE:
-			drawW(s, p1, p2, color, selected);
+			drawW(s, p1, p2, color, selected, isIcon);
 			break;
 	}
 }
 
-void drawW(screen s, point p1, point p2, Uint32 color, int selected) {
+void drawW(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
 	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
 	int slotx, sloty;
 
-	p1 = getScreenPoint(s, p1);
-	p2 = getScreenPoint(s, p2);
+	if (!isIcon) {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
 	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
 
 	if (selected) {
@@ -57,14 +94,18 @@ void drawW(screen s, point p1, point p2, Uint32 color, int selected) {
 		drawBox(s, p2, color);
 	}
 
-	for (int k = 0; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
+	if (isIcon) for (int k = 0; k < n; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
 }
-void drawG(screen s, point p1, point p2, Uint32 color, int selected) {
+void drawG(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
 	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
 	int slotx, sloty;
 
-	p1 = getScreenPoint(s, p1);
-	p2 = getScreenPoint(s, p2);
+	if (isIcon) s.zoom = 10;
+	else {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
 	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
 
 	int b_inf = (n - s.zoom) / 2 + 3, b_sup = (n + s.zoom) / 2 - 3;
@@ -75,17 +116,18 @@ void drawG(screen s, point p1, point p2, Uint32 color, int selected) {
 		drawBox(s, p2, color);
 	}
 
-	for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
-
-	point p_pm = sum(sum(p1, scale(v, b_inf - 10), 1), scale(o, s.zoom/2), 1);
-	for (int k = -3; k <= 3; k++) {
+	int l = isIcon ? 1 : 3;
+	// Minus icon
+	point p_pm = sum(sum(p1, scale(v, b_inf - 10), 1), scale(o, s.zoom / 2), isIcon ? -1 : 1);
+	for (int k = -l; k <= l; k++) {
 		p = sum(p_pm, scale(v, k), 1);
 		if (p.x >= 0 && p.x < w && p.y >= 0 && p.y < h)
 			*(pxls + (int)p.x + (int)p.y * w) = color;
 	}
 
-	p_pm = sum(sum(p1, scale(v, b_sup + 10), 1), scale(o, s.zoom/2), 1);
-	for (int k = -3; k <= 3; k++) {
+	// Plus icon
+	p_pm = sum(sum(p1, scale(v, b_sup + 10), 1), scale(o, s.zoom / 2), isIcon ? -1 : 1);
+	for (int k = -l; k <= l; k++) {
 		p = sum(p_pm, scale(v, k), 1);
 		if (p.x >= 0 && p.x < w && p.y >= 0 && p.y < h)
 			*(pxls + (int)p.x + (int)p.y * w) = color;
@@ -94,27 +136,34 @@ void drawG(screen s, point p1, point p2, Uint32 color, int selected) {
 			*(pxls + (int)p.x + (int)p.y * w) = color;
 	}
 
+	// Première patte
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
+	
 	p = sum(sum(p1, scale(v, b_inf), 1), scale(o, s.zoom / 2), -1);
-	for (int k = 0; k < s.zoom; k++) {
-		line3(p, o, v, k, w, h, pxls, color);
-	}
+	if (isIcon) for (int k = 0; k < s.zoom; k++) line(p, o, k, w, h, pxls, color);
+	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color);
 
 	p = sum(sum(p1, scale(v, b_sup), 1), scale(o, s.zoom), -1);
-	for (int k = 0; k < s.zoom * 2; k++) {
-		line3(p, o, v, k, w, h, pxls, color);
-	}
+	if (isIcon) for (int k = 0; k < s.zoom * 2; k++) line(p, o, k, w, h, pxls, color);
+	else for (int k = 0; k < s.zoom * 2; k++) line3(p, o, v, k, w, h, pxls, color);
 
-	for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
+	// Seconde patte
+	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
 }
-void drawR(screen s, point p1, point p2, Uint32 color, int selected) {
+void drawR(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
 	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
 	int slotx, sloty;
 
-	p1 = getScreenPoint(s, p1);
-	p2 = getScreenPoint(s, p2);
+	if (isIcon) s.zoom = 8;
+	else {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
 	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
 
-	int b_inf = n / 2 - (n < 150 ? n / 3 : 50) * s.zoom / 25, b_sup = n / 2 + (n < 150 ? n / 3 : 50) * s.zoom / 25;
+	int b_inf = isIcon ? n / 6 : n / 2 - (n < 150 ? n / 3 : 50) * s.zoom / 25, b_sup = isIcon ? n * 5.f / 6 : n / 2 + (n < 150 ? n / 3 : 50) * s.zoom / 25;
 
 	if (selected) {
 		color = color >> 8;
@@ -122,32 +171,39 @@ void drawR(screen s, point p1, point p2, Uint32 color, int selected) {
 		drawBox(s, p2, color);
 	}
 
-	for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
+	// Première patte
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
 
 	p = sum(sum(p1, scale(v, b_inf), 1), scale(o, s.zoom / 2), -1);
-	for (int k = 0; k < s.zoom; k++) {
-		line3(p, o, v, k, w, h, pxls, color);
-	}
+	if (isIcon) for (int k = 0; k <= s.zoom; k++) line(p, o, k, w, h, pxls, color);
+	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color);
 
-	for (int k = -1; k < b_sup - b_inf + 2; k++) line3(p, v, o, k, w, h, pxls, color);
+	if (isIcon) for (int k = -1; k < b_sup - b_inf + 2; k++) line(p, v, k, w, h, pxls, color);
+	else for (int k = -1; k < b_sup - b_inf + 2; k++) line3(p, v, o, k, w, h, pxls, color);
 	p = sum(p, scale(o, s.zoom), 1);
-	for (int k = -1; k < b_sup - b_inf + 2; k++) line3(p, v, o, k, w, h, pxls, color);
+	if (isIcon) for (int k = -1; k < b_sup - b_inf + 2; k++) line(p, v, k, w, h, pxls, color);
+	else for (int k = -1; k < b_sup - b_inf + 2; k++) line3(p, v, o, k, w, h, pxls, color);
 
 	p = sum(sum(p1, scale(v, b_sup), 1), scale(o, s.zoom / 2), -1);
-	for (int k = 0; k < s.zoom; k++) {
-		line3(p, o, v, k, w, h, pxls, color);
-	}
+	if (isIcon) for (int k = 0; k <= s.zoom; k++) line(p, o, k, w, h, pxls, color);
+	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color);
 
-	for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
+	// Seconde patte
+	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
 }
-void drawL(screen s, point p1, point p2, Uint32 color, int selected) {}
-void drawC(screen s, point p1, point p2, Uint32 color, int selected) {
+void drawL(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {}
+void drawC(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
 
 	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
 	int slotx, sloty;
 
-	p1 = getScreenPoint(s, p1);
-	p2 = getScreenPoint(s, p2);
+	if (isIcon) s.zoom = 12;
+	else {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
 	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
 
 	int b_inf = (n - s.zoom) / 2 + 3, b_sup = (n + s.zoom) / 2 - 3;
@@ -158,23 +214,103 @@ void drawC(screen s, point p1, point p2, Uint32 color, int selected) {
 		drawBox(s, p2, color);
 	}
 
-	for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
+	float bound = isIcon ? s.zoom * 1.75 : s.zoom * 2;
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
 	
-	p = sum(sum(p1, scale(v, b_inf), 1), scale(o, s.zoom), -1);
-	for (int k = 0; k < s.zoom * 2; k++) {
-		line3(p, o, v, k, w, h, pxls, color);
-	}
+	p = sum(sum(p1, scale(v, b_inf), 1), scale(o, bound/2), -1);
+	if (isIcon) for (int k = 0; k < bound; k++) line(p, o, k, w, h, pxls, color);
+	else for (int k = 0; k < bound; k++) line3(p, o, v, k, w, h, pxls, color);
 
-	p = sum(sum(p1, scale(v, b_sup), 1), scale(o, s.zoom), -1);
-	for (int k = 0; k < s.zoom * 2; k++) {
-		line3(p, o, v, k, w, h, pxls, color);
-	}
+	p = sum(sum(p1, scale(v, b_sup), 1), scale(o, bound/2), -1);
+	if (isIcon) for (int k = 0; k < bound; k++) line(p, o, k, w, h, pxls, color);
+	else for (int k = 0; k < bound; k++) line3(p, o, v, k, w, h, pxls, color);
 
-	for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
+	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
 
 }
-void drawD(screen s, point p1, point p2, Uint32 color, int selected) {}
+void drawD(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {}
+void drawVCC(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
+	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
+	int slotx, sloty;
 
+	if (isIcon) s.zoom = 10;
+	else {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
+	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
+	int z = isIcon ? n / 2 : (s.zoom < 25 ? s.zoom : 20);
+	int b_inf = n - z;
+
+	if (selected) {
+		color = color >> 8;
+		drawBox(s, p1, color);
+	}
+
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
+	p1 = sum(p1, scale(v, b_inf), 1);
+	point p_1 = sum(p1, scale(o, z),-1);
+	point p_2 = sum(p1, scale(o, z), 1);
+	if (isIcon) {
+		drawLine(p_1, p_2, w, h, pxls, color);
+		drawLine(p_1, p2, w, h, pxls, color);
+		drawLine(p_2, p2, w, h, pxls, color);
+	}
+	else {
+		drawLine3(p_1, p_2, w, h, pxls, color);
+		drawLine3(p_1, p2, w, h, pxls, color);
+		drawLine3(p_2, p2, w, h, pxls, color);
+	}
+
+}
+void drawGND(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
+	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
+	int slotx, sloty;
+
+	if (isIcon) s.zoom = 10;
+	else {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
+	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
+	int z = isIcon ? n / 2 : (s.zoom < 25 ? s.zoom : 20);
+	int b_inf = n - z;
+
+	if (selected) {
+		color = color >> 8;
+		drawBox(s, p1, color);
+	}
+
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color);
+	p1 = sum(p1, scale(v, b_inf), 1);
+	point p_1 = sum(p1, scale(o, z), -1);
+	point p_2 = sum(p1, scale(o, z), 1);
+	point v_1 = sum(p2, p_1, -1);
+	point v_2 = sum(p2, p_2, -1);
+	if (isIcon) {
+		drawLine(p_1, p_2, w, h, pxls, color);
+		drawLine(sum(p_2, scale(v_2, 0.4), 1), sum(p_1, scale(v_1, 0.4), 1), w, h, pxls, color);
+		drawLine(sum(p_2, scale(v_2, 0.8), 1), sum(p_1, scale(v_1, 0.8), 1), w, h, pxls, color);
+	}
+	else {
+		drawLine3(p_1, p_2, w, h, pxls, color);
+		drawLine3(sum(p_2, scale(v_2, 0.4), 1), sum(p_1, scale(v_1, 0.4), 1), w, h, pxls, color);
+		drawLine3(sum(p_2, scale(v_2, 0.8), 1), sum(p_1, scale(v_1, 0.8), 1), w, h, pxls, color);
+	}
+}
+
+void line(point p, point v, int k, int w, int h, Uint32* pxls, Uint32 color) {
+	int slotx, sloty;
+
+	slotx = p.x + (int)(v.x * k);
+	sloty = p.y + (int)(v.y * k);
+	*(pxls + slotx + sloty * w) = color;
+	*(pxls + slotx + 1 + sloty * w) = color;
+}
 void line3(point p, point v, point o, int k, int w, int h, Uint32 * pxls, Uint32 color) {
 	int slotx, sloty;
 
@@ -189,6 +325,41 @@ void line3(point p, point v, point o, int k, int w, int h, Uint32 * pxls, Uint32
 	slotx = p.x + v.x * k - o.x;
 	sloty = p.y + v.y * k - o.y;
 	if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = color;
+}
+void drawLine(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color) {
+	point v = sum(p2, p1, -1);
+	float n = norm(v);
+	v = scale(v, 1.f / n);
+
+	int slotx, sloty;
+	for (int k = 0; k <= n; k++) {
+		slotx = p1.x + (int)(v.x * k);
+		sloty = p1.y + (int)(v.y * k);
+		*(pxls + slotx + sloty * w) = color;
+		*(pxls + slotx + 1 + sloty * w) = color;
+	}
+}
+void drawLine3(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color) {
+	point v = sum(p2, p1, -1);
+	float n = norm(v);
+	v = scale(v, 1.f / n);
+	point o = orthogonal(v);
+
+	int slotx, sloty;
+	for (int k = 0; k <= n; k++) {
+		slotx = p1.x + v.x * k;
+		sloty = p1.y + v.y * k;
+		if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = color;
+
+		slotx = p1.x + v.x * k + o.x;
+		sloty = p1.y + v.y * k + o.y;
+		if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = color;
+
+		slotx = p1.x + v.x * k - o.x;
+		sloty = p1.y + v.y * k - o.y;
+		if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = color;
+	}
+	
 }
 
 void drawBox(screen s, point p, Uint32 color) {
@@ -229,9 +400,9 @@ void drawSelectedArea(SDL_Surface* s, point p1, point p2) {
 	}
 }
 
-void drawGUI(SDL_Surface* s) {
-	int w = s->w, h = s->h, i, j;
-	Uint32* pxls = s->pixels;
+void drawGUI(screen s, icon* I) {
+	int w = s.w->w, h = s.w->h, i, j;
+	Uint32* pxls = s.w->pixels;
 
 	// Contours
 	for (i = 0; i < 50; i++) *(pxls + i) = *(pxls + i + (h - 1) * w) = WHITE;
@@ -242,32 +413,54 @@ void drawGUI(SDL_Surface* s) {
 		*(pxls + 51 + j * w) = DGREY;
 	}
 	// Remplissage intérieur
-	for (i = 1; i < 48; i++)
+	for (i = 1; i < 49; i++)
 		for (j = 1; j < h - 1; j++)
-			*(pxls + i + j * w) = 0;
+			*(pxls + i + j * w) = 20;
 
-	for (type t = GENERATEUR; t <= WIRE; t++)
-		drawGUIBox(s, 18, 45 * t + 25, t);
-}
-
-void drawGUIBox(SDL_Surface* s, int size, int z, type t) {
-	int w = s->w, dec = 25 - size, size2 = 2 * size + dec;
-	Uint32* pxls = s->pixels;
-
-	for (int i = 0; i < 2 * size; i++) {
-		*(pxls + i + dec + (size + z - 1) * w) = WHITE;
-		*(pxls + size2 - 1 + (z - size + i) * w) = WHITE;
-
-		*(pxls + i + dec + (size + z) * w) = LGREY;
-		*(pxls + size2 + (z - size + i) * w) = LGREY;
-
-		*(pxls + i + dec + (z - size) * w) = DGREY;
-		*(pxls + dec + (z - size + i) * w) = DGREY;
+	while (I) {
+		drawGUIBox(s, I);
+		I = I->next;
 	}
-	*(pxls + size2 + (size + z) * w) = LGREY;
+}
+
+void drawGUIBox(screen s, icon* i) {
+
+	int size = i->size, z = i->z;
+	int w = s.w->w, dec = 25 - size, size2 = 2 * size + dec;
+	Uint32* pxls = s.w->pixels;
+
+	if (i->pressed) {
+		for (int i = 0; i < 2 * size; i++) {
+			*(pxls + i + dec + (size + z) * w) = DGREY;
+			*(pxls + size2 + (z - size + i) * w) = DGREY;
+
+			*(pxls + i + dec + (z - size + 1) * w) = DGREY;
+			*(pxls + dec + 1 + (z - size + i) * w) = DGREY;
+
+			*(pxls + i + dec + (z - size) * w) = WHITE;
+			*(pxls + dec + (z - size + i) * w) = WHITE;
+		}
+	}
+	else {
+		for (int i = 0; i < 2 * size; i++) {
+			*(pxls + i + dec + (size + z - 1) * w) = WHITE;
+			*(pxls + size2 - 1 + (z - size + i) * w) = WHITE;
+
+			*(pxls + i + dec + (size + z) * w) = LGREY;
+			*(pxls + size2 + (z - size + i) * w) = LGREY;
+
+			*(pxls + i + dec + (z - size) * w) = DGREY;
+			*(pxls + dec + (z - size + i) * w) = DGREY;
+		}
+		*(pxls + size2 + (size + z) * w) = LGREY;
+	}
+
+	float p = size / 3;
+	draw(s, setPoint(p + dec + i->pressed, z - 2 * p + i->pressed), setPoint(p * 5 + dec + i->pressed, z + 2 * p + i->pressed), i->t, WHITE, 0, 1);
 
 }
 
+// Interactions
 void selectZone(screen s, list* L, point p1, point p2) {
 	p1 = setPoint((p1.x + s.offsetx) / s.zoom, (p1.y + s.offsety) / s.zoom);
 	p2 = setPoint((p2.x + s.offsetx) / s.zoom, (p2.y + s.offsety) / s.zoom);
@@ -291,15 +484,6 @@ void selectZone(screen s, list* L, point p1, point p2) {
 		L = L->next;
 	}
 }
-
-// Interactions
-void deselectAll(list* L) {
-	while (L) {
-		L->e->selected = 0;
-		L = L->next;
-	}
-}
-
 elec* select(list* L, point p) {
 	point p1, p2, v, o;
 	float n, coef;
@@ -345,7 +529,6 @@ elec* select(list* L, point p) {
 	}
 	return NULL;
 }
-
 point* selectPole(list* L, point p, screen s) {
 	elec* e;
 	point rp;
@@ -356,13 +539,70 @@ point* selectPole(list* L, point p, screen s) {
 		n = norm(sum(p, rp, -1));
 		if (n < 8.) return e->p1;
 
-		rp = getScreenPoint(s, *e->p2);
-		n = norm(sum(p, rp, -1));
-		if (n < 8.) return e->p2;
+		if (e->t <= GND) {
+			rp = getScreenPoint(s, *e->p2);
+			n = norm(sum(p, rp, -1));
+			if (n < 8.) return e->p2;
+		}
 
 		L = L->next;
 	}
 	return NULL;
+}
+type selectType(icon* I, point p) {
+	type t = -1;
+	icon* Itmp = I;
+	while (I) {
+		if (abs(3 + I->size - p.x) < I->size && abs(I->z - p.y) < I->size) {
+			unpressAll(Itmp);
+			I->pressed = 1;
+			t = I->t;
+		}
+		I = I->next;
+	}
+	return t;
+}
+void deselectAll(list* L) {
+	while (L) {
+		L->e->selected = 0;
+		L = L->next;
+	}
+}
+void unpressAll(icon* I) {
+	while (I) {
+		I->pressed = 0;
+		I = I->next;
+	}
+}
+
+// Simulation
+void drawCurrent(screen s, list* L, int T) {
+	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
+
+	elec* e;
+	point p1, p2, v;
+	float I, n;
+	int slotx, sloty;
+	while (L) {
+		e = L->e; p1 = getScreenPoint(s, *e->p1); p2 = getScreenPoint(s, *e->p2); I = e->I;
+		v = sum(p2, p1, -1);
+		n = norm(v); v = scale(v, 1.f / n);
+
+		for (int k = T%15; k <= n; k += 15) {
+			slotx = p1.x + (int)(v.x * k) - 1;
+			sloty = p1.y + (int)(v.y * k) - 1;
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = YELLOW;
+					sloty++;
+				}
+				slotx++;
+				sloty-=3;
+			}
+		}
+
+		L = L->next;
+	}
 }
 
 // Utils

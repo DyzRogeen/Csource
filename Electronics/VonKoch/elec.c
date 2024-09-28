@@ -6,6 +6,7 @@ point* createPoint(list* l, point p) {
 	pp->pprec_Connect = NULL;
 	pp->x = p.x;
 	pp->y = p.y;
+	pp->alt = 1;
 
 	tryConnect(l, pp);
 
@@ -18,6 +19,8 @@ elec* createElec(list* l, point p1, point p2, type t) {
 	elec* e = (elec*)calloc(1, sizeof(elec));
 	e->p1 = createPoint(l, p1);
 	e->p2 = createPoint(l, p2);
+	e->p1->e = e;
+	e->p2->e = e;
 	e->t = t;
 	e->selected = 1;
 	return e;
@@ -126,7 +129,7 @@ int areConnected(point* p, point* pv) {
 
 void printList(list* l) {
 
-	const char* enumToString[] = { "GENERATEUR", "RESISTANCE", "BOBINE", "CONDENSATEUR", "DIODE", "WIRE" };
+	const char* enumToString[] = { "VCC", "GND", "GENERATEUR" "RESISTANCE" "BOBINE", "CONDENSATEUR", "DIODE", "WIRE"};
 
 	point* p1, *p2;
 	while (l) {
@@ -145,4 +148,96 @@ void freeList(list* l) {
 	free(l->e->p2);
 	free(l->e);
 	free(l);
+}
+
+
+// TODO : OPTI les while avec des listes préfaites selon le type
+void initSimulation(list* l, int alt) {
+	elec* e;
+
+	// INIT VCC / GND
+	list* ltmp = l;
+	while (ltmp) {
+		e = ltmp->e;
+		if (e->t > GND) {
+			ltmp = ltmp->next;
+			continue;
+		}
+
+		if (propagateV(e->p1, alt) == 0) printf("COURT CIRCUIT !\n");
+		
+		ltmp = ltmp->next;
+	}
+
+	// INIT GENERATEUR
+	ltmp = l;
+	point* p1, * p2;
+	while (ltmp) {
+		e = ltmp->e;
+		if (e->t != GENERATEUR) {
+			ltmp = ltmp->next;
+			continue;
+		}
+		p1 = e->p1; p2 = e->p2;
+
+		if (p1->alt == alt && p2->alt == alt && p2->V - p1->V != e->U) printf("GENERATEUR FORCE !\n");
+		else if (p1->alt == alt) {
+			p2->V = p1->V + e->U;
+			if (propagateV(p2, alt) == 0) printf("COURT CIRCUIT G2 !\n");
+		} else if (p2->alt == alt) {
+			p1->V = p2->V - e->U;
+			if (propagateV(p1, alt) == 0) printf("COURT CIRCUIT G1 !\n");
+		} else {
+			p1->V = -e->U / 2;
+			p2->V =  e->U / 2;
+			if (propagateV(p1, alt) == 0) printf("COURT CIRCUIT G12 !\n");
+			if (propagateV(p2, alt) == 0) printf("COURT CIRCUIT G21 !\n");
+		}
+
+		ltmp = ltmp->next;
+	}
+
+}
+
+int propagateV(point* p, int alt) {
+	int tmp = propagateForward(p, alt);
+	return propagateBackward(p, alt) && tmp;
+}
+int propagateForward(point* p, int alt) {
+
+	if (p->alt == alt) return 1;
+	p->alt = alt;
+
+	float V = p->V;
+	elec* e = p->e;
+
+	point* pTmp = p->pnext_Connect;
+	type t;
+	while (pTmp) {
+		t = pTmp->e->t;
+		if (t == GND) return V == 0;
+		if (t == VCC) return V != 0;
+		pTmp->V = V;
+		if (t == WIRE) return propagateV(pTmp, alt);
+		pTmp = pTmp->pnext_Connect;
+	}
+}
+int propagateBackward(point* p, int alt) {
+
+	if (p->alt == alt) return 1;
+	p->alt = alt;
+
+	float V = p->V;
+	elec* e = p->e;
+
+	point* pTmp = p->pprec_Connect;
+	type t;
+	while (pTmp) {
+		t = pTmp->e->t;
+		if (t == GND) return V == 0;
+		if (t == VCC) return V != 0;
+		pTmp->V = V;
+		if (t == WIRE) return propagateV(pTmp, alt);
+		pTmp = pTmp->pprec_Connect;
+	}
 }
