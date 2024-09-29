@@ -72,6 +72,7 @@ float norm(point p);
 point unit(point p);
 point orthogonal(point p);
 float projectionCoef(point v1, point v2);
+Uint32 getColor(float V);
 
 point getScreenPoint(screen s, point p);
 point getSimuPoint(screen s, point p, int P1);

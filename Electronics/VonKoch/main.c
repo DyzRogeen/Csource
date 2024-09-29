@@ -71,7 +71,6 @@ void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, in
 		printf("%ds\n", Ttmp);
 	}
 
-
 	drawGUI(s, I);
 
 	SDL_Flip(w);
@@ -153,6 +152,11 @@ int main(int argc, char **argv)
 					p = getSimuPoint(s, setPoint(mPosx, mPosy), 0);
 					s.offsetx += p.x * zoomRatio;
 					s.offsety += p.y * zoomRatio;
+				}
+				// Init Simultation
+				if (k == SDLK_i) {
+					initSimulation(L, -1);
+					initSimulation(L,  1);
 				}
 				break;
 			case SDL_KEYUP:

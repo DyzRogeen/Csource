@@ -1,225 +1,90 @@
-﻿  elec.c
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(3,38): error C2082: redéfinition du paramètre formel 'createPoint'
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(3,38): error C2143: erreur de syntaxe : absence de ';' avant '{'
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(7,12): error C2231: '.x' : l'opérande gauche pointe vers 'struct', utilisez '->'
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(8,12): error C2231: '.y' : l'opérande gauche pointe vers 'struct', utilisez '->'
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(11,14): error C2065: 'l' : identificateur non déclaré
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(11,14): warning C4047: 'fonction' : les niveaux d'indirection de 'list *' et de 'int' sont différents
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(11,13): warning C4024: 'tryConnect' : types différents pour le paramètre formel et réel 1
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(13,11): warning C4047: 'return' : les niveaux d'indirection de 'int' et de 'point *' sont différents
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(155,46): warning C4029: la déclaration de la liste de paramètres formels est différente de la définition
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(195,5): error C2084: la fonction 'int propagateV(point *,int)' a déjà un corps
-C:\Users\Adrie\source\Electronics\VonKoch\elec.h(49): message : voir la définition précédente de 'propagateV'
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(196,25): warning C4013: 'propagateForward' non défini(e) ; extern retournant int pris par défaut
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(196,54): warning C4013: 'propagateBackward' non défini(e) ; extern retournant int pris par défaut
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(213,35): error C2198: 'propagateV' : pas assez d'arguments pour un appel
-C:\Users\Adrie\source\Electronics\VonKoch\elec.c(232,35): error C2198: 'propagateV' : pas assez d'arguments pour un appel
-  graph.c
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(21,8): error C2085: 'screen' : ne figure pas dans la liste de paramètres formels
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(27,6): error C2085: 'icon' : ne figure pas dans la liste de paramètres formels
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(29,1): error C2061: erreur de syntaxe : identificateur 'icon'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,18): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,18): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,28): error C2143: erreur de syntaxe : absence de ';' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,31): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(31,20): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(31,20): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(31,23): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(32,5): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,22): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,22): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,22): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,23): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,18): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,18): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,18): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,19): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,87): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,82): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,82): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,45): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,31): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,24): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,24): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,24): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,25): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,34): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,24): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,24): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,24): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,25): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,54): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2081: 'screen' : nom non conforme dans la liste de paramètres formels
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,45): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,21): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,21): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,26): error C2371: 'point' : redéfinition ; types de base différents
-C:\Users\Adrie\source\Electronics\VonKoch\elec.h(18): message : voir la déclaration de 'point'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,32): error C2146: erreur de syntaxe : absence de ';' avant l'identificateur 'p'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,33): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(63,21): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(63,21): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(63,24): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,25): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,25): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,25): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,26): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,42): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): fatal error C1003: le nombre d'erreurs est supérieur à 100 ; arrêt de la compilation
-  main.c
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(21,8): error C2085: 'screen' : ne figure pas dans la liste de paramètres formels
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(27,6): error C2085: 'icon' : ne figure pas dans la liste de paramètres formels
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(29,1): error C2061: erreur de syntaxe : identificateur 'icon'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,18): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,18): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,28): error C2143: erreur de syntaxe : absence de ';' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(30,31): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(31,20): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(31,20): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(31,23): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(32,5): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,22): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,22): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,22): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(34,23): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,18): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,18): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,18): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,19): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(36,87): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(38,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(39,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(40,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(41,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(42,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,19): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,19): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,19): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,20): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(43,80): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(44,82): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(45,82): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(52,45): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,21): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,21): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,21): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,22): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(55,31): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,24): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,24): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,24): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,25): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(56,34): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,24): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,24): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,24): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,25): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(58,54): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2081: 'screen' : nom non conforme dans la liste de paramètres formels
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,44): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(61,45): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,21): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,21): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,26): error C2371: 'point' : redéfinition ; types de base différents
-C:\Users\Adrie\source\Electronics\VonKoch\elec.h(18): message : voir la déclaration de 'point'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,32): error C2146: erreur de syntaxe : absence de ';' avant l'identificateur 'p'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(62,33): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(63,21): error C2143: erreur de syntaxe : absence de ')' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(63,21): error C2143: erreur de syntaxe : absence de '{' avant '*'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(63,24): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,25): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,25): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,25): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,26): error C2059: erreur de syntaxe : ','
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(65,42): error C2059: erreur de syntaxe : ')'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): error C2146: erreur de syntaxe : absence de ')' avant l'identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): error C2061: erreur de syntaxe : identificateur 's'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): error C2059: erreur de syntaxe : ';'
-C:\Users\Adrie\source\Electronics\VonKoch\graph.h(75,29): fatal error C1003: le nombre d'erreurs est supérieur à 100 ; arrêt de la compilation
-  Génération de code en cours...
+﻿  graph.c
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(89,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(83,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(83,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(89,29): warning C4101: 'p' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(111,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(130,46): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(130,72): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(138,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(138,66): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(152,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(152,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(156,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(156,54): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(113,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(104,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(104,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(173,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(194,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(194,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(200,28): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(204,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(204,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(175,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(166,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(166,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(223,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(245,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(249,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(225,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(240,1): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(216,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(216,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(268,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(282,29): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(283,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(284,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(269,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(270,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(261,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(261,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(268,29): warning C4101: 'p' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(306,70): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(320,29): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(321,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(322,32): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(327,35): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(327,65): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(328,35): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(328,65): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(332,36): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(332,66): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(333,36): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(333,66): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(307,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(308,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(299,6): warning C4101: 'slotx' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(299,13): warning C4101: 'sloty' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(306,29): warning C4101: 'p' : variable locale non référencée
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(340,30): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(341,30): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(348,23): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(349,23): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(352,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(353,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(356,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(357,29): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(367,32): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(368,32): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(381,25): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(382,25): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(385,31): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(386,31): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(389,31): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(390,31): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(402,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(404,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(419,29): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(420,29): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(423,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(428,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(489,1): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(587,28): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(587,57): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(623,37): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(624,37): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(660,30): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\source\Electronics\VonKoch\graph.c(670,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\source\Electronics\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

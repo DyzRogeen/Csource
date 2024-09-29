@@ -6,7 +6,8 @@ point* createPoint(list* l, point p) {
 	pp->pprec_Connect = NULL;
 	pp->x = p.x;
 	pp->y = p.y;
-	pp->alt = 1;
+	pp->alt = 0;
+	pp->V = 0;
 
 	tryConnect(l, pp);
 
@@ -23,6 +24,8 @@ elec* createElec(list* l, point p1, point p2, type t) {
 	e->p2->e = e;
 	e->t = t;
 	e->selected = 1;
+	if (t == GENERATEUR) e->U = 12;
+
 	return e;
 }
 
@@ -164,6 +167,8 @@ void initSimulation(list* l, int alt) {
 			continue;
 		}
 
+		e->p1->V = e->t == VCC ? 5 : 0;
+
 		if (propagateV(e->p1, alt) == 0) printf("COURT CIRCUIT !\n");
 		
 		ltmp = ltmp->next;
@@ -200,44 +205,58 @@ void initSimulation(list* l, int alt) {
 }
 
 int propagateV(point* p, int alt) {
+	if (p->alt == alt) return 1;
+	p->alt = alt;
+
 	int tmp = propagateForward(p, alt);
 	return propagateBackward(p, alt) && tmp;
 }
 int propagateForward(point* p, int alt) {
 
-	if (p->alt == alt) return 1;
-	p->alt = alt;
-
 	float V = p->V;
-	elec* e = p->e;
+	elec* e = p->e, *e_;
 
-	point* pTmp = p->pnext_Connect;
+	point* pTmp = p->pnext_Connect, *pProp;
 	type t;
+	int ret = 1;
 	while (pTmp) {
-		t = pTmp->e->t;
+		e_ = pTmp->e;
+		t = e_->t;
 		if (t == GND) return V == 0;
 		if (t == VCC) return V != 0;
 		pTmp->V = V;
-		if (t == WIRE) return propagateV(pTmp, alt);
+		if (t == WIRE) {
+			pProp = pTmp == e_->p1 ? e_->p2 : e_->p1;
+			pProp->V = V;
+			ret = propagateV(pProp, alt) && ret;
+		}
 		pTmp = pTmp->pnext_Connect;
 	}
+
+	return ret;
 }
 int propagateBackward(point* p, int alt) {
 
-	if (p->alt == alt) return 1;
-	p->alt = alt;
-
 	float V = p->V;
-	elec* e = p->e;
+	elec* e = p->e, * e_;
 
-	point* pTmp = p->pprec_Connect;
+	point* pTmp = p->pprec_Connect, * pProp;
 	type t;
+	int ret = 1;
 	while (pTmp) {
-		t = pTmp->e->t;
+		e_ = pTmp->e;
+		t = e_->t;
 		if (t == GND) return V == 0;
 		if (t == VCC) return V != 0;
 		pTmp->V = V;
-		if (t == WIRE) return propagateV(pTmp, alt);
+		if (t == WIRE) {
+			pProp = pTmp == e_->p1 ? e_->p2 : e_->p1;
+			pProp->V = V;
+			ret = propagateV(pProp, alt) && ret;
+		}
+		else pTmp->alt = alt;
 		pTmp = pTmp->pprec_Connect;
 	}
+
+	return ret;
 }
