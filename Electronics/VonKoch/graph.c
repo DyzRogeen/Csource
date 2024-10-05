@@ -244,7 +244,7 @@ void drawGUI(SDL_Surface* s) {
 	// Remplissage intérieur
 	for (i = 1; i < 48; i++)
 		for (j = 1; j < h - 1; j++)
-			*(pxls + i + j * w) = 0;
+			*(pxls + i + j * w) = 20;
 
 	for (type t = GENERATEUR; t <= WIRE; t++)
 		drawGUIBox(s, 18, 45 * t + 25, t);
