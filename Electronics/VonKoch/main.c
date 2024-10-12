@@ -1,11 +1,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "utils_SDL.h"
 #include "graph.h"
 #include "elec.h"
 
-void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, int area_selection, elec* selection, point* pole_selection) {
+int Ttmp = 0;
+
+void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, int area_selection, elec* selection, point* pole_selection, icon* I, type typeMode) {
 	SDL_Surface* w = s.w;
 
 	SDL_FillRect(w, &(w->clip_rect), DDGREY);
@@ -16,7 +19,7 @@ void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, in
 	list* tmpL = L;
 	while (tmpL) {
 		e = tmpL->e;
-		draw(s, *e->p1, *e->p2, e->t, WHITE, e->selected);
+		draw(s, *e->p1, *e->p2, e->t, LGREY, e->selected, 0);
 		tmpL = tmpL->next;
 	}
 
@@ -60,9 +63,15 @@ void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, in
 	else if ((poleTmp = selectPole(L, mPos2, s))) drawBox(s, getScreenPoint(s, *poleTmp), WHITE);
 
 	// Dessin de l'élément en cours de création
-	if (isMousePressed && !selection) draw(s, simuP1, simuP2, RESISTANCE, WHITE, 1);
+	if (isMousePressed && !selection) draw(s, simuP1, simuP2, typeMode, WHITE, 1, 0);
 
-	drawGUI(w);
+	drawCurrent(s, L, (int)(clock() / 100));
+	if (Ttmp != (int)(clock() / 1000)) {
+		Ttmp = (int)(clock() / 1000);
+		printf("%ds\n", Ttmp);
+	}
+
+	drawGUI(s, I);
 
 	SDL_Flip(w);
 
@@ -82,8 +91,8 @@ int main(int argc, char **argv)
 	int isMousePressed = 0, shiftMode = 0, area_selection = 0;
 	elec* selection = NULL;
 	point* pole_selection = NULL;
-	type typeMode;
-		
+	type typeMode = WIRE, tmpType = -1;
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "ERREUR - SDL_Init\n>>> %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
@@ -102,6 +111,8 @@ int main(int argc, char **argv)
 	s.offsetx = 0;
 	s.offsety = 0;
 	s.w = window;
+
+	icon* I = initIcons();
 
 	SDL_WM_SetCaption("Elec", NULL);
 
@@ -142,6 +153,11 @@ int main(int argc, char **argv)
 					s.offsetx += p.x * zoomRatio;
 					s.offsety += p.y * zoomRatio;
 				}
+				// Init Simultation
+				if (k == SDLK_i) {
+					initSimulation(L, -1);
+					initSimulation(L,  1);
+				}
 				break;
 			case SDL_KEYUP:
 				k = e.key.keysym.sym;
@@ -149,6 +165,11 @@ int main(int argc, char **argv)
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				SDL_GetMouseState(&mPos1x, &mPos1y);
+				if (mPos1x < 50 && (tmpType = selectType(I, setPoint(mPos1x, mPos1y))) != -1) {
+					typeMode = tmpType;
+					break;
+				}
+
 				mPos1x += s.offsetx;
 				mPos1y += s.offsety;
 
@@ -173,6 +194,10 @@ int main(int argc, char **argv)
 				isMousePressed = 1;
 				break;
 			case SDL_MOUSEBUTTONUP:
+				if (tmpType != -1) {
+					tmpType = -1;
+					break;
+				}
 				// Fin de sélection de zone
 				if (area_selection) {
 					area_selection = 0;
@@ -193,17 +218,18 @@ int main(int argc, char **argv)
 				}
 				// Ajout de l'elec dans la liste
 				SDL_GetMouseState(&mPos2x, &mPos2y);
-				addList(&L, createElec(L, getSimuPoint(s, mPos1, 1), getSimuPoint(s, setPoint(mPos2x, mPos2y), 0), RESISTANCE));
+				addList(&L, createElec(L, getSimuPoint(s, mPos1, 1), getSimuPoint(s, setPoint(mPos2x, mPos2y), 0), typeMode));
 				isMousePressed = 0;
 				break;
 			}
 		}
 
 		SDL_GetMouseState(&mPos2x, &mPos2y);
-		if (!pause) drawAll(s, L, mPos1, setPoint(mPos2x, mPos2y), isMousePressed, area_selection, selection, pole_selection);
+		if (!pause) drawAll(s, L, mPos1, setPoint(mPos2x, mPos2y), isMousePressed, area_selection, selection, pole_selection, I, typeMode);
 
 	}
 	freeList(L);
+	freeIcons(I);
 
 	return EXIT_SUCCESS;
 }
