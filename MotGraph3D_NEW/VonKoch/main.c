@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include "utils_SDL.h"
 #include "mot.h"
+#include "plan.h"
 
 void updateScreen(SDL_Surface * window, int* Z_Buffers, listO* lo, listS* S, cam C, listL* L, int camHasMoved, int* alt) {
 
@@ -44,17 +45,22 @@ int main(int argc, char** argv)
 	int mPosx, mPosy;
 	point mPos, premPos;
 	SDL_GetMouseState(&premPos.x, &premPos.y);
-	float speed = 5;
+	SDL_GetMouseState(&mPos.x, &mPos.y);
+	float speed = 10;
 	float jsp = 1, pct;
 
 	cam C = initCam(setPoint(0, 400, 0), setPoint(jsp, 0, 0));
 
 	listL* L = NULL;
 	addLight(&L, createLight(createPoint(0, 500, 300), 10, (Uint32)(255 << 16 | 255 << 8 | 255)));
+	addLight(&L, createLight(createPoint(300, 400, -300), 10, (Uint32)(150 << 16 | 200 << 8 | 75)));
 
-	listO* O = (listO*)calloc(1, sizeof(listO));
-	O->next = NULL;
-	O->o = createCube(setPoint(400, 1000, 800), setPoint(0, 0, 0), 400, (Uint32) (120 << 16 | 120 << 8 | 120), 1);
+	listO* O = createListO();
+
+	plan* pl = createPlan(20, 20, 10, setPoint(0, 300, 0));
+	addObj(&O, getObjFromPlan(pl));
+
+	addObj(&O, createCube(setPoint(400, 1000, 800), setPoint(0, 0, 0), 400, (Uint32) (120 << 16 | 120 << 8 | 120), 1));
 	addObj(&O, createCube(setPoint(400, 0, 800), setPoint(PI / 4, 0, PI / 4), 300, (Uint32) (200 << 16), 0));
 	addObj(&O, createCube(setPoint(400, 0, -800), setPoint(0, 0, 0), 300, (Uint32) (200 << 8), 0));
 	//ExtrudeFace(O->o, setPoint(-200, 100, 100));
@@ -77,8 +83,8 @@ int main(int argc, char** argv)
 
 	int* Z_Buffers = (int*)calloc(window->h * window->w, sizeof(int));
 	listS* S = createListS(createSphere(200, createPoint(400, 600, 0), SDL_MapRGB(window->format, 50, 50, 50)));
-	for (int i = -8; i < 8; i++)
-		addSphere(&S, createSphere(100, createPoint(500 * (float)i/5, 1500, 500 * (i % 5)), SDL_MapRGB(window->format, 50 * i, 20, 70 * (25 - i))));
+	//for (int i = -8; i < 8; i++)
+	//	addSphere(&S, createSphere(100, createPoint(500 * (float)i/5, 1500, 500 * (i % 5)), SDL_MapRGB(window->format, 50 * i, 20, 70 * (25 - i))));
 
 	// On met le titre sur la fenêtre
 	SDL_WM_SetCaption("VonKoch", NULL);
@@ -100,10 +106,10 @@ int main(int argc, char** argv)
 					quit = 1;
 				if (e.key.keysym.sym == SDLK_w) dirx = 1;
 				if (e.key.keysym.sym == SDLK_s) dirx = -1;
-				if (e.key.keysym.sym == SDLK_d) diry = 1;
-				if (e.key.keysym.sym == SDLK_a) diry = -1;
-				if (e.key.keysym.sym == SDLK_z) dirz = 1;
-				if (e.key.keysym.sym == SDLK_x) dirz = -1;
+				if (e.key.keysym.sym == SDLK_d) dirz = 1;
+				if (e.key.keysym.sym == SDLK_a) dirz = -1;
+				if (e.key.keysym.sym == SDLK_z) diry = 1;
+				if (e.key.keysym.sym == SDLK_x) diry = -1;
 				if (e.key.keysym.sym == SDLK_r) C = initCam(setPoint(0,400,0),setPoint(jsp,0,0));
 				if (e.key.keysym.sym == SDLK_e) jsp /= 10;
 				if (e.key.keysym.sym == SDLK_q) jsp *= 10;
@@ -112,8 +118,8 @@ int main(int argc, char** argv)
 				break;
 			case SDL_KEYUP:
 				if (e.key.keysym.sym == SDLK_w || e.key.keysym.sym == SDLK_s) dirx = 0;
-				if (e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_d) diry = 0;
-				if (e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_x) dirz = 0;
+				if (e.key.keysym.sym == SDLK_a || e.key.keysym.sym == SDLK_d) dirz = 0;
+				if (e.key.keysym.sym == SDLK_z || e.key.keysym.sym == SDLK_x) diry = 0;
 				if (e.key.keysym.sym == SDLK_p) roty = 0;
 
 			}
@@ -122,12 +128,17 @@ int main(int argc, char** argv)
 		SDL_GetMouseState(&mPosx, &mPosy);
 		if (mPosx - premPos.x || mPosy - premPos.y) {
 			rotateCam(&C, (mPosx - premPos.x) / 100.0, (mPosy - premPos.y) / -100.0);
+			//printf("DIR : (%f ; %f ; %f) lat : %f lon : %f\n", C.dir.x, C.dir.y, C.dir.z, C.lat, C.lon);
 			updateS = 1;
 		}
 
 		if (dirx || diry || dirz) {
 			pct = fabs(C.dir.x) / (fabs(C.dir.x) + fabs(C.dir.z));
-			moveCam(&C,setPoint((dirx * (C.dir.x + fabs(C.dir.y) * pct) - diry * (C.dir.z + fabs(C.dir.y) * (1 - pct))) * speed/jsp, dirz, (dirx * (C.dir.z + fabs(C.dir.y) * (1 - pct)) + diry * (C.dir.x + fabs(C.dir.y) * pct)) * speed/jsp));
+			moveCam(&C, scale(setPoint(
+				(dirx * C.dir.x * pct - dirz * C.dir.z * (1 - pct)) * fabs(C.dir.y),
+				diry,
+				(dirz * C.dir.x * pct + dirx * C.dir.z * (1 - pct)) * fabs(C.dir.y)
+			), speed / jsp));
 			updateS = 1;
 		}
 
@@ -148,5 +159,6 @@ int main(int argc, char** argv)
 
 	}
 	free(Z_Buffers);
+	free(pl);
 	return EXIT_SUCCESS;
 }

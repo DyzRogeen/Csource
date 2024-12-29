@@ -110,7 +110,7 @@ void drawG(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	}
 	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
 
-	int b_inf = (n - s.zoom) / 2 + 3, b_sup = (n + s.zoom) / 2 - 3;
+	int b_inf = (n - s.zoom/2) / 2, b_sup = (n + s.zoom/2) / 2;
 
 	// Gestion des couleurs
 	Uint32 color1, color2;
@@ -150,12 +150,12 @@ void drawG(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color1);
 	
 	p = sum(sum(p1, scale(v, b_inf), 1), scale(o, s.zoom / 2), -1);
-	if (isIcon) for (int k = 0; k < s.zoom; k++) line(p, o, k, w, h, pxls, color);
-	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color);
+	if (isIcon) for (int k = 0; k < s.zoom; k++) line(p, o, k, w, h, pxls, color1);
+	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color1);
 
 	p = sum(sum(p1, scale(v, b_sup), 1), scale(o, s.zoom), -1);
-	if (isIcon) for (int k = 0; k < s.zoom * 2; k++) line(p, o, k, w, h, pxls, color);
-	else for (int k = 0; k < s.zoom * 2; k++) line3(p, o, v, k, w, h, pxls, color);
+	if (isIcon) for (int k = 0; k < s.zoom * 2; k++) line(p, o, k, w, h, pxls, color2);
+	else for (int k = 0; k < s.zoom * 2; k++) line3(p, o, v, k, w, h, pxls, color2);
 
 	// Seconde patte
 	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color2);
@@ -173,6 +173,7 @@ void drawR(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
 
 	int b_inf = isIcon ? n / 6 : n / 2 - (n < 150 ? n / 3 : 50) * s.zoom / 25, b_sup = isIcon ? n * 5.f / 6 : n / 2 + (n < 150 ? n / 3 : 50) * s.zoom / 25;
+	int l = b_sup - b_inf;
 
 	// Gestion des couleurs
 	Uint32 color1, color2;
@@ -188,25 +189,27 @@ void drawR(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	}
 
 	// Première patte
-	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color1);
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color);
 	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color1);
 
 	p = sum(sum(p1, scale(v, b_inf), 1), scale(o, s.zoom / 2), -1);
 	if (isIcon) for (int k = 0; k <= s.zoom; k++) line(p, o, k, w, h, pxls, color);
-	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color);
+	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color1);
 
-	if (isIcon) for (int k = -1; k < b_sup - b_inf + 2; k++) line(p, v, k, w, h, pxls, color);
-	else for (int k = -1; k < b_sup - b_inf + 2; k++) line3(p, v, o, k, w, h, pxls, color);
+	if (isIcon) for (int k = -1; k < l + 2; k++) line(p, v, k, w, h, pxls, color);
+	else for (int k = -1; k < l + 2; k++)
+		line3(p, v, o, k, w, h, pxls, addColor(scaleColor(color1, (float)(l + 1 - k) / (l + 2)), scaleColor(color2, (float)(k + 1) / (l + 2))));
 	p = sum(p, scale(o, s.zoom), 1);
-	if (isIcon) for (int k = -1; k < b_sup - b_inf + 2; k++) line(p, v, k, w, h, pxls, color);
-	else for (int k = -1; k < b_sup - b_inf + 2; k++) line3(p, v, o, k, w, h, pxls, color);
+	if (isIcon) for (int k = -1; k < l + 2; k++) line(p, v, k, w, h, pxls, color);
+	else for (int k = -1; k < l + 2; k++)
+		line3(p, v, o, k, w, h, pxls, addColor(scaleColor(color1, (float)(l + 1 - k) / (l + 2)), scaleColor(color2, (float)(k + 1) / (l + 2))));
 
 	p = sum(sum(p1, scale(v, b_sup), 1), scale(o, s.zoom / 2), -1);
 	if (isIcon) for (int k = 0; k <= s.zoom; k++) line(p, o, k, w, h, pxls, color);
-	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color);
+	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color2);
 
 	// Seconde patte
-	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color2);
+	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color);
 	else for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color2);
 }
 void drawL(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {}
@@ -243,12 +246,12 @@ void drawC(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color1);
 	
 	p = sum(sum(p1, scale(v, b_inf), 1), scale(o, bound/2), -1);
-	if (isIcon) for (int k = 0; k < bound; k++) line(p, o, k, w, h, pxls, color);
-	else for (int k = 0; k < bound; k++) line3(p, o, v, k, w, h, pxls, color);
+	if (isIcon) for (int k = 0; k < bound; k++) line(p, o, k, w, h, pxls, color1);
+	else for (int k = 0; k < bound; k++) line3(p, o, v, k, w, h, pxls, color1);
 
 	p = sum(sum(p1, scale(v, b_sup), 1), scale(o, bound/2), -1);
-	if (isIcon) for (int k = 0; k < bound; k++) line(p, o, k, w, h, pxls, color);
-	else for (int k = 0; k < bound; k++) line3(p, o, v, k, w, h, pxls, color);
+	if (isIcon) for (int k = 0; k < bound; k++) line(p, o, k, w, h, pxls, color2);
+	else for (int k = 0; k < bound; k++) line3(p, o, v, k, w, h, pxls, color2);
 
 	// Seconde patte
 	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color2);
@@ -324,13 +327,13 @@ void drawGND(screen s, point p1, point p2, Uint32 color, int selected, int isIco
 	point v_2 = sum(p2, p_2, -1);
 	if (isIcon) {
 		drawLine(p_1, p_2, w, h, pxls, color);
-		drawLine(sum(p_2, scale(v_2, 0.4), 1), sum(p_1, scale(v_1, 0.4), 1), w, h, pxls, color);
-		drawLine(sum(p_2, scale(v_2, 0.8), 1), sum(p_1, scale(v_1, 0.8), 1), w, h, pxls, color);
+		drawLine(sum(p_2, scale(v_2, 0.4), 1), sum(p_1, scale(v_1, 0.4), 1), w, h, pxls, color1);
+		drawLine(sum(p_2, scale(v_2, 0.8), 1), sum(p_1, scale(v_1, 0.8), 1), w, h, pxls, color1);
 	}
 	else {
 		drawLine3(p_1, p_2, w, h, pxls, color);
-		drawLine3(sum(p_2, scale(v_2, 0.4), 1), sum(p_1, scale(v_1, 0.4), 1), w, h, pxls, color);
-		drawLine3(sum(p_2, scale(v_2, 0.8), 1), sum(p_1, scale(v_1, 0.8), 1), w, h, pxls, color);
+		drawLine3(sum(p_2, scale(v_2, 0.4), 1), sum(p_1, scale(v_1, 0.4), 1), w, h, pxls, color1);
+		drawLine3(sum(p_2, scale(v_2, 0.8), 1), sum(p_1, scale(v_1, 0.8), 1), w, h, pxls, color1);
 	}
 }
 
@@ -613,22 +616,24 @@ void drawCurrent(screen s, list* L, int T) {
 	elec* e;
 	point p1, p2, v;
 	float I, n;
-	int slotx, sloty;
+	int slotx, sloty, start;
 	while (L) {
-		e = L->e; p1 = getScreenPoint(s, *e->p1); p2 = getScreenPoint(s, *e->p2); I = e->I;
+		e = L->e; p1 = getScreenPoint(s, *e->p1); p2 = getScreenPoint(s, *e->p2); I = -enterOrExitNode(e->p1);
 		v = sum(p2, p1, -1);
 		n = norm(v); v = scale(v, 1.f / n);
+		start = (int)(200 * I * T)%25;
+		if (start < 0) start += 25;
 
-		for (int k = T%15; k <= n; k += 15) {
-			slotx = p1.x + (int)(v.x * k) - 1;
-			sloty = p1.y + (int)(v.y * k) - 1;
-			for (int i = 0; i < 3; i++) {
-				for (int j = 0; j < 3; j++) {
+		for (int k = start; k <= n - start; k += 25) {
+			slotx = p1.x + (int)(v.x * k) - 2;
+			sloty = p1.y + (int)(v.y * k) - 2;
+			for (int i = 0; i < 5; i++) {
+				for (int j = 0; j < 5; j++) {
 					if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = YELLOW;
 					sloty++;
 				}
 				slotx++;
-				sloty-=3;
+				sloty-=5;
 			}
 		}
 
@@ -669,6 +674,27 @@ float projectionCoef(point v1, point v2) {
 Uint32 getColor(float V) {
 	int Vp = 127 * V / 12;
 	return (128 - Vp) << 16 | (128 + Vp) << 8 | 128 - abs(Vp);
+}
+Uint32 addColor(Uint32 color1, Uint32 color2) {
+	Uint8* c1 = (Uint8*)&color1;
+	Uint8* c2 = (Uint8*)&color2;
+	Uint8 c[3];
+	int tmpc;
+
+	c[0] = (tmpc = (int)c1[0] + (int)c2[0]) > 255 ? 255 : tmpc;
+	c[1] = (tmpc = (int)c1[1] + (int)c2[1]) > 255 ? 255 : tmpc;
+	c[2] = (tmpc = (int)c1[2] + (int)c2[2]) > 255 ? 255 : tmpc;
+
+	return c[0] << 16 | c[1] << 8 | c[2];
+
+}
+Uint32 scaleColor(Uint32 color, float n) {
+	Uint8* scaledColor = (Uint8*)&color;
+	int tmpc;
+	scaledColor[0] = (tmpc = (int)scaledColor[0] * n) < 0 ? 0 : tmpc > 255 ? 255 : tmpc;
+	scaledColor[1] = (tmpc = (int)scaledColor[1] * n) < 0 ? 0 : tmpc > 255 ? 255 : tmpc;
+	scaledColor[2] = (tmpc = (int)scaledColor[2] * n) < 0 ? 0 : tmpc > 255 ? 255 : tmpc;
+	return scaledColor[0] << 16 | scaledColor[1] << 8 | scaledColor[2];
 }
 
 // Renvoie le point réèl à afficher à l'écran

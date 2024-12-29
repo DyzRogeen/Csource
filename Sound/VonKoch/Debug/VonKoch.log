@@ -1,0 +1,19 @@
+﻿  main.c
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(48,75): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(54,36): warning C4018: '>' : incompatibilité signed/unsigned
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(118,33): warning C4244: 'fonction' : conversion de 'double' en 'DWORD', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(151,3): warning C4098: 'playSound' : fonction 'void' retournant une valeur
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(242,3): warning C4098: 'playWave' : fonction 'void' retournant une valeur
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(223,30): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(293,77): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(293,124): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(314,23): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(313,18): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(336,37): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(337,37): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(335,19): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(368,47): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(367,19): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Sound\VonKoch\main.c(391,3): warning C4098: 'jsp' : fonction 'void' retournant une valeur
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Sound\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

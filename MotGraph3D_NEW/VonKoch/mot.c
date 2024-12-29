@@ -200,12 +200,24 @@ face* createFace(Uint32 color, int nbPoints, ...) {
 
 	f->points = fp;
 	f->G = setPoint(x / nbPoints, y / nbPoints, z / nbPoints);
-	f->color = color;
+
+	Uint8* c = (Uint8*)&color;
+	f->color = scale(setPoint(c[0], c[1], c[2]), 1.f / 255);
 	f->nbPoints = nbPoints;
 	f->next = NULL;
 
 	return f;
 
+}
+
+void addFace(face** F, face* f) {
+	if (!F || !f) return;
+	if (!*F) {
+		*F = f;
+		return;
+	}
+	f->next = *F;
+	*F = f;
 }
 
 void addPointFace(face *f, point3* p) {
@@ -332,9 +344,21 @@ obj* createCube(point3 pos, point3 rot, float size, Uint32 color, int isStatic) 
 	return o;
 }
 
+listO* createListO() {
+	listO* O = (listO*)calloc(1, sizeof(listO));
+	O->next = NULL;
+	O->o = NULL;
+	return O;
+}
+
 void addObj(listO** O, obj* o) {
 
 	listO* newO = (listO*)calloc(1, sizeof(listO));
+	if (!(*O)->o) {
+		(*O)->o = o;
+		return;
+	}
+
 	newO->o = o;
 	newO->next = *O;
 	*O = newO;
@@ -379,12 +403,15 @@ void rotateCam(cam* C, float lon, float lat) {
 	C->lat += lat;
 	if (C->lat > 0.99 * PI / 2) C->lat = 0.99 * PI / 2;
 	else if (C->lat < -0.99 * PI / 2) C->lat = -0.99 * PI / 2;
-
+	
 	lon = C->lon;
 	lat = C->lat;
 
 	float normDir = norm(C->dir);
-	C->dir = setPoint(normDir * cos(lat) * cos(lon), normDir * sin(lat), normDir * cos(lat) * sin(lon));
+	C->dir = setPoint(
+		normDir * cos(lat) * cos(lon),
+		normDir * sin(lat),
+		normDir * cos(lat) * sin(lon));
 
 	point3 dir = C->dir;
 	float nNorm = sqrtf(dir.x * dir.x + dir.y * dir.y) / normDir;
@@ -429,38 +456,38 @@ light* createLight(point3* pos, float intensity, Uint32 color) {
 void applyLights(face f, cam c, listL* L, Uint8 color[3]) {
 
 	point3 normal = f.normale;
-	point3 vfc = getUnitV(sum(c.pos, f.G, -1)), vlf, vr;
+	point3 vfc = getUnitV(sum(c.pos, f.G, -1)), vlf, uVlf, vr;
 	light* l;
-	Uint8* cf = (Uint8*)&f.color, *cl;
-	Uint8 colorSum[3] = { 0, 0, 0 };
-	float nlf, coef, coefSum = 1.f;
+	point3 cf = f.color, * cl;
+	int colorSum[3] = { 0, 0, 0 }, colComp;
+	float nlf, coef, coefSum = 0.f;
 
 	while (L) {
 		l = L->l;
-		vlf = sum(f.G, *l->pos, -1);
+		vlf = sum(f.G, *l->pos, -1); uVlf = getUnitV(vlf);
 
 		// Getting direction of the reflected light vector on the face
-		vr = getUnitV(sum(getUnitV(f.normale), getUnitV(vlf), 0));
+		//vr = getUnitV(sum(normal, uVlf, 0));
+		vr = getUnitV(sum(uVlf, scale(normal, 2 * scalar(uVlf, normal)), -1));
 
-		nlf = norm(vlf) / 10;
+		nlf = norm(vlf);
 
 		// Scalar product with the vector face-camera with all the other bullshit tweaked on ass makes the brightness coef
-		coef = (scalar(vr, vfc) * 4 - scalar(normal, vlf) / 4) * l->intensity / (nlf * nlf);
+		coef = (5000 * scalar(vr, vfc) * fabs(scalar(vr, vfc)) - 70 * scalar(normal, vlf)) * l->intensity / (nlf * nlf);
 
 		Uint8* cl = (Uint8*)&l->color;
 
-		coefSum += coef;
-		colorSum[0] += (coef < 0) ? 0 : cl[0] * coef;
-		colorSum[1] += (coef < 0) ? 0 : cl[1] * coef;
-		colorSum[2] += (coef < 0) ? 0 : cl[2] * coef;
+		coefSum++;
+		colorSum[0] += (coef < 0) ? 0 : ((colComp = (int)cl[0] * coef) > 255 ? 255 : colComp);
+		colorSum[1] += (coef < 0) ? 0 : ((colComp = (int)cl[1] * coef) > 255 ? 255 : colComp);
+		colorSum[2] += (coef < 0) ? 0 : ((colComp = (int)cl[2] * coef) > 255 ? 255 : colComp);
 
 		L = L->next;
 	}
-
 	// Moyenne des couleurs ajoutées
-	color[2] = (cf[0] + colorSum[2]) / coefSum;
-	color[1] = (cf[1] + colorSum[1]) / coefSum;
-	color[0] = (cf[2] + colorSum[0]) / coefSum;
+	color[2] = (colComp = (cf.x * colorSum[2]) / coefSum) > 255 ? 255 : colComp;
+	color[1] = (colComp = (cf.y * colorSum[1]) / coefSum) > 255 ? 255 : colComp;
+	color[0] = (colComp = (cf.z * colorSum[0]) / coefSum) > 255 ? 255 : colComp;
 
 
 }
@@ -498,7 +525,7 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		// if k < 0, point is between cam and plane.
 	
 		vpc = sum(pos, *p, -1);
-		// n = dir.x * (pos.x - p->x) + dir.y * (pos.y - p->y) + dir.z * (pos.z - p->z);
+		//n = dir.x * (pos.x - p->x) + dir.y * (pos.y - p->y) + dir.z * (pos.z - p->z);
 		n = scalar(dir, vpc);
 
 		if (n == 0) {
@@ -510,6 +537,8 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		k = (d - dir.x * p->x - dir.y * p->y - dir.z * p->z) / n;
 		if (k > 1) {
 			p->p.display = 0;
+			p = p->next;
+			continue;
 
 			X = (pos.x - p->x) * k + p->x - pcam.x;
 			Y = (pos.y - p->y) * k + p->y - pcam.y;
@@ -580,9 +609,9 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		p->p.display = 1;
 
 		// P = v*k + p
-		X = (pos.x - p->x) * k + p->x + pcam.x;
-		Y = (pos.y - p->y) * k + p->y + pcam.y;
-		Z = (pos.z - p->z) * k + p->z + pcam.z;		
+		X = (pos.x - p->x) * k + p->x - pcam.x;
+		Y = (pos.y - p->y) * k + p->y - pcam.y;
+		Z = (pos.z - p->z) * k + p->z - pcam.z;		
 
 		/*
 		* x*i + y*j = (X ; Y ; Z) => x*v1.x + y*v2.x = X | x*v1.y + y*v2.y = Y | x*v1.z + y*v2.z = Z
@@ -817,13 +846,13 @@ void displayFloorLines(SDL_Surface* window, int* Z_Buffers, cam c) {
 		// (X - Cx)² + (Y - Cy)² = radius² => X = sqrtf(radius² - (Y - Cy)²) + Cx
 		z = z_start + gridSize * i;
 		x = sqrtf(radius * radius - pow(z - cPos.z, 2));
-		P[4 * (i + ratio)] = createPoint(cPos.x + x, 0.f ,z);
-		P[4 * (i + ratio) + 1] = createPoint(cPos.x - x, 0.f, z);
+		P[4 * (i + ratio)] = createPoint(cPos.x + x, -100.f ,z);
+		P[4 * (i + ratio) + 1] = createPoint(cPos.x - x, -100.f, z);
 
 		x = x_start + gridSize * i;
 		z = sqrtf(radius * radius - pow(x - cPos.x, 2));
-		P[4 * (i + ratio) + 2] = createPoint(x, 0.f, cPos.z + z);
-		P[4 * (i + ratio) + 3] = createPoint(x, 0.f, cPos.z - z);
+		P[4 * (i + ratio) + 2] = createPoint(x, -100.f, cPos.z + z);
+		P[4 * (i + ratio) + 3] = createPoint(x, -100.f, cPos.z - z);
 
 	}
 
@@ -832,7 +861,7 @@ void displayFloorLines(SDL_Surface* window, int* Z_Buffers, cam c) {
 	pointsTo2dProjection(window->w/2, window->h/2, P[0], c);
 
 	for (int i = 0; i < nbPoints; i += 2) {
-		drawLine(window, P[i]->p, P[i + 1]->p, SDL_MapRGB(window->format ,255 * (i == (float)nbPoints / 2), 150, 0));
+		drawLine(window, P[i]->p, P[i + 1]->p, SDL_MapRGB(window->format , 0, 150, 0));
 	}
 
 	free(P);
@@ -851,7 +880,7 @@ void displayObj(SDL_Surface* window, int* Z_Buffers, obj o, cam c, listL* L, int
 
 		if (f->display) {
 			applyLights(*f, c, L, color);
-			colorFace(window, Z_Buffers, f->points, f->nbPoints, SDL_MapRGB(window->format, color[0], color[1], color[2]), alt);
+			colorFace(window, Z_Buffers, f->points, f->nbPoints, color[0] << 16 | color[1] << 8 | color[2], alt);
 		}
 		
 		f = f->next;
@@ -925,7 +954,7 @@ void colorTriangle(SDL_Surface* window, int* Z_Buffers, point p, point p2, point
 	*  *'''''''''''''''''''''''''''*
 	*/
 
-	for (int y = min_y + (v12.y != 0 && v13.y != 0 && v23.y != 0); y < max_y; y+=1) {
+	for (int y = min_y + (v12.y != 0 && v13.y != 0 && v23.y != 0); y <= max_y; y+=1) {
 		if (y < 0 || y >= window->h) continue;
 		if      ((p.y < y && y <= p2.y || p.y > y && y >= p2.y) && (p.y < y && y <= p3.y || p.y > y && y >= p3.y) && (v12.y != 0 && v13.y != 0))	colorRow(window, Z_Buffers, p.x + (y - p.y) * v12.x / v12.y, p.x + (y - p.y) * v13.x / v13.y,	y, z1 + z12 * (y - p.y) / v12.y, z1 + z13 * (y - p.y) / v13.y,	color, alt);
 		else if ((p.y <= y && y < p2.y || p.y >= y && y > p2.y) && (p2.y < y && y <= p3.y || p2.y > y && y >= p3.y) && (v12.y != 0 && v23.y != 0))	colorRow(window, Z_Buffers, p.x + (y - p.y) * v12.x / v12.y, p2.x + (y - p2.y) * v23.x / v23.y, y, z1 + z12 * (y - p.y) / v23.y, z2 + z23 * (y - p2.y) / v23.y, color, alt);
@@ -1058,7 +1087,7 @@ void ExtrudeFace(obj* o, point3 dir) {
 			listPf = listPf->next;
 
 			// Face creating resulting of extrusion
-			fTmp = createFace(f->color, 4, pTab[i], pTab[i - 1], pTab2[i - 1], pTab2[i]);
+			fTmp = createFace(WHITE, 4, pTab[i], pTab[i - 1], pTab2[i - 1], pTab2[i]);
 
 			// Correcting normal direction
 			vfo = sum(G, fTmp->G, -1);
@@ -1072,7 +1101,7 @@ void ExtrudeFace(obj* o, point3 dir) {
 		P = P->next;
 	}
 
-	fTmp = createFace(f->color, 4, pTab[0], pTab[nbPoints - 1], pTab2[nbPoints - 1], pTab2[0]);
+	fTmp = createFace(WHITE, 4, pTab[0], pTab[nbPoints - 1], pTab2[nbPoints - 1], pTab2[0]);
 
 	vfo = sum(G, fTmp->G, -1);
 	nf = fTmp->normale;

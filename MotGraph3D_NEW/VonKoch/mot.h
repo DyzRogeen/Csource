@@ -2,6 +2,7 @@
 
 #include "utils_SDL.h"
 #define PI	3.14159265359
+#define WHITE 255 << 16 | 255 << 8 | 255
 
 typedef struct sPoint {
 	float x;
@@ -26,7 +27,7 @@ typedef struct sFace {
 	point3 normale;
 	point3 G;
 	listP* points;
-	Uint32 color;
+	point3 color;
 	int display;
 	struct sFace* next;
 }face;
@@ -106,6 +107,7 @@ point3 setPoint(float x, float y, float z);
 
 // Faces methods
 face* createFace(Uint32 color, int nbPoints, ...);
+void addFace(face** F, face* f);
 void addPointFace(face *f, point3* p);
 
 // Spheres methods
@@ -116,6 +118,7 @@ sphere* createSphere(float radius, point3* pos, Uint32 color);
 // Objects methods
 obj* createObj3D(face* f, point3* p, int nbFaces, int nbVertexes, int isStatic);
 obj* createCube(point3 pos, point3 rot, float size, Uint32 color, int isStatic);
+listO* createListO();
 void addObj(listO** O, obj* o);
 
 // Graphic methods

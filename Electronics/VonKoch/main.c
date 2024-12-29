@@ -8,7 +8,7 @@
 
 int Ttmp = 0;
 
-void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, int area_selection, elec* selection, point* pole_selection, icon* I, type typeMode) {
+void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, int area_selection, int isSimuOn, elec* selection, point* pole_selection, icon* I, type typeMode) {
 	SDL_Surface* w = s.w;
 
 	SDL_FillRect(w, &(w->clip_rect), DDGREY);
@@ -65,10 +65,10 @@ void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, in
 	// Dessin de l'élément en cours de création
 	if (isMousePressed && !selection) draw(s, simuP1, simuP2, typeMode, WHITE, 1, 0);
 
-	drawCurrent(s, L, (int)(clock() / 100));
+	if (isSimuOn) drawCurrent(s, L, (int)(clock() / 100));
 	if (Ttmp != (int)(clock() / 1000)) {
 		Ttmp = (int)(clock() / 1000);
-		printf("%ds\n", Ttmp);
+		//printf("%ds\n", Ttmp);
 	}
 
 	drawGUI(s, I);
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 	point p, mPos1 = setPoint(mPos1x, mPos1y), mPos2;
 	float zoomRatio;
 
-	int isMousePressed = 0, shiftMode = 0, area_selection = 0;
+	int isMousePressed = 0, shiftMode = 0, area_selection = 0, isSimuOn = 0, altV = 3;
 	elec* selection = NULL;
 	point* pole_selection = NULL;
 	type typeMode = WIRE, tmpType = -1;
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 	}
 
 	screen s;
-	s.zoom = 25;
+	s.zoom = 24;
 	s.offsetx = 0;
 	s.offsety = 0;
 	s.w = window;
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 				// Zoom et Dézoom
 				if (k == SDLK_w && s.zoom < 50) {
 					s.zoom += 5;
-					zoomRatio = (float)(s.zoom + 5) / s.zoom + 5;
+					zoomRatio = (float)(s.zoom + 4) / s.zoom + 4;
 					SDL_GetMouseState(&mPosx, &mPosy);
 					p = getSimuPoint(s, setPoint(mPosx, mPosy), 0);
 					s.offsetx += p.x * zoomRatio;
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 				}
 				if (k == SDLK_q && s.zoom > 5) {
 					s.zoom -= 5;
-					zoomRatio = (float)(s.zoom - 5) / s.zoom - 5;
+					zoomRatio = (float)(s.zoom - 4) / s.zoom - 4;
 					SDL_GetMouseState(&mPosx, &mPosy);
 					p = getSimuPoint(s, setPoint(mPosx, mPosy), 0);
 					s.offsetx += p.x * zoomRatio;
@@ -155,8 +155,14 @@ int main(int argc, char **argv)
 				}
 				// Init Simultation
 				if (k == SDLK_i) {
-					initSimulation(L, -1);
-					initSimulation(L,  1);
+					initV(L, 3);
+					initI(L, 4);
+				}
+				if (k == SDLK_t) L = makeSerialEqCirc(L, 2);
+				if (k == SDLK_u) L = makeDerivEqCirc(L, 3);
+				if (k == SDLK_s) {
+					L = simulate(L);
+					isSimuOn = 1;
 				}
 				break;
 			case SDL_KEYUP:
@@ -182,6 +188,7 @@ int main(int argc, char **argv)
 				}
 				// Sélection d'un elec
 				if (selection = select(L, getSimuPoint(s, mPos1, 1))) {
+					printElec(selection);
 					disconnect(selection->p1);
 					disconnect(selection->p2);
 					break;
@@ -213,19 +220,23 @@ int main(int argc, char **argv)
 				if (selection) {
 					tryConnect(L, selection->p1);
 					tryConnect(L, selection->p2);
+					initV(L, altV);
+					altV *= -1;
 					selection = NULL;
 					break;
 				}
 				// Ajout de l'elec dans la liste
 				SDL_GetMouseState(&mPos2x, &mPos2y);
-				addList(&L, createElec(L, getSimuPoint(s, mPos1, 1), getSimuPoint(s, setPoint(mPos2x, mPos2y), 0), typeMode));
+				addList(&L, createElec(getSimuPoint(s, mPos1, 1), getSimuPoint(s, setPoint(mPos2x, mPos2y), 0), typeMode));
+				initV(L, altV);
+				altV *= -1;
 				isMousePressed = 0;
 				break;
 			}
 		}
 
 		SDL_GetMouseState(&mPos2x, &mPos2y);
-		if (!pause) drawAll(s, L, mPos1, setPoint(mPos2x, mPos2y), isMousePressed, area_selection, selection, pole_selection, I, typeMode);
+		if (!pause) drawAll(s, L, mPos1, setPoint(mPos2x, mPos2y), isMousePressed, area_selection, isSimuOn, selection, pole_selection, I, typeMode);
 
 	}
 	freeList(L);

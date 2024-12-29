@@ -19,7 +19,7 @@ typedef struct sPoint {
 
 typedef struct sElec {
 	point *p1, *p2;
-	float U, I;
+	float U, I, R, L, C;
 	type t;
 	int selected;
 }elec;
@@ -30,10 +30,11 @@ typedef struct sList {
 	struct sList* prec;
 }list;
 
-point* createPoint(list* l, point p);
-elec* createElec(list* l, point p1, point p2, type t);
+point* createPoint(point p);
+elec* createElec(point p1, point p2, type t);
 list* createList(elec* e);
 void addList(list** l, elec* e);
+void fuseLists(list** l1, list* l2);
 
 void deleteSelected(list** l);
 
@@ -43,9 +44,29 @@ void tryConnect(list* l, point* p);
 int areConnected(point* p, point* pv);
 
 void printList(list* l);
+void printElec(elec* e);
 void freeList(list* l);
 
-void initSimulation(list* l, int alt);
+list* simulate(list* l);
+void initV(list* l, int alt);
+void initI(list* l, int alt);
 int propagateV(point* p, int alt);
+void propagateI(point* p, float I, int alt);
+void nodeSum(point* p, int alt);
+float enterOrExitNode(point* p);
 int propagateForward(point* p, int alt);
 int propagateBackward(point* p, int alt);
+
+list* makeDerivEqCirc(list* l, int alt);
+float checkDeriv(point* p, elec* e, int alt, point* (*dir)(point*));
+list* makeSerialEqCirc(list* l, int alt);
+list* makeSerialREq(point* p, int alt);
+
+int isBifurc(point* p);
+
+point* neighborSwitch(point* p);
+point* poleSwitch(point* p);
+
+int cntElecList(list* l);
+point* pnext(point* p);
+point* pprec(point* p);

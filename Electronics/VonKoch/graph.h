@@ -14,7 +14,7 @@
 #define DDGREY 16 << 16 | 16 << 8 | 16
 #define RED 128 << 16
 #define GREEN 128 << 8
-#define YELLOW 128 << 16 | 128 << 8
+#define YELLOW 200 << 16 | 200 << 8
 
 typedef struct sScreen {
 	SDL_Surface* w;
@@ -73,6 +73,8 @@ point unit(point p);
 point orthogonal(point p);
 float projectionCoef(point v1, point v2);
 Uint32 getColor(float V);
+Uint32 addColor(Uint32 color1, Uint32 color2);
+Uint32 scaleColor(Uint32 color, float n);
 
 point getScreenPoint(screen s, point p);
 point getSimuPoint(screen s, point p, int P1);
