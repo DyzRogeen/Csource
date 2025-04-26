@@ -52,13 +52,13 @@ int main(int argc, char** argv)
 	cam C = initCam(setPoint(0, 400, 0), setPoint(jsp, 0, 0));
 
 	listL* L = NULL;
+	addLight(&L, createLight(createPoint(200, 1500, -300), 10, (Uint32)(255 << 16 | 255 << 8 | 255)));
 	addLight(&L, createLight(createPoint(0, 500, 300), 10, (Uint32)(255 << 16 | 255 << 8 | 255)));
-	addLight(&L, createLight(createPoint(300, 400, -300), 10, (Uint32)(150 << 16 | 200 << 8 | 75)));
 
 	listO* O = createListO();
 
-	plan* pl = createPlan(20, 20, 10, setPoint(0, 300, 0));
-	addObj(&O, getObjFromPlan(pl));
+	//plan* pl = createPlan(30, 30, 200, setPoint(0, -300, -300));
+	//addObj(&O, getObjFromPlan(pl));
 
 	addObj(&O, createCube(setPoint(400, 1000, 800), setPoint(0, 0, 0), 400, (Uint32) (120 << 16 | 120 << 8 | 120), 1));
 	addObj(&O, createCube(setPoint(400, 0, 800), setPoint(PI / 4, 0, PI / 4), 300, (Uint32) (200 << 16), 0));
@@ -159,6 +159,6 @@ int main(int argc, char** argv)
 
 	}
 	free(Z_Buffers);
-	free(pl);
+	//free(pl);
 	return EXIT_SUCCESS;
 }

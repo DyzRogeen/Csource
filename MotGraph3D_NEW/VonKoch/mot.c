@@ -153,7 +153,7 @@ point3 setPoint(float x, float y, float z) {
 
 // Faces methods
 
-face* createFace(Uint32 color, int nbPoints, ...) {
+face* createFace(Uint32 color, int revNorm, int nbPoints, ...) {
 
 	if (nbPoints < 3) return NULL;
 
@@ -174,7 +174,7 @@ face* createFace(Uint32 color, int nbPoints, ...) {
 	);
 
 	face* f = (face*)calloc(1,sizeof(face));
-	f->normale = getUnitV(normale);
+	f->normale = getUnitV(scale(normale, revNorm ? -1 : 1));
 
 	va_start(list, nbPoints);
 	listP* p = createListP(va_arg(list, point3*));
@@ -267,7 +267,7 @@ sphere* createSphere(float radius, point3* pos, Uint32 color) {
 }
 
 // Object
-obj* createObj3D(face* f, point3* p, int nbFaces, int nbVertexes, int isStatic) {
+obj* createObj3D(face* f, point3* p, int nbFaces, int nbVertexes, int isStatic, int correctNormals) {
 
 	obj* o = (obj*)calloc(1, sizeof(obj));
 
@@ -288,6 +288,8 @@ obj* createObj3D(face* f, point3* p, int nbFaces, int nbVertexes, int isStatic) 
 		p = p->next;
 	}
 	o->G = setPoint(x / nbVertexes, y / nbVertexes, z / nbVertexes);
+
+	if (!correctNormals) return o;
 
 	// Face normals orientation correction
 	point3 vfo;
@@ -329,16 +331,16 @@ obj* createCube(point3 pos, point3 rot, float size, Uint32 color, int isStatic) 
 	for (int i = 7; i > 0; i--) P[i - 1]->next = P[i];
 
 	face* F[6] = {
-		createFace(color, 4, a, b, c, d),
-		createFace(color, 4, e, f, g, h),
-		createFace(color, 4, a, b, f, e),
-		createFace(color, 4, c, d, h, g),
-		createFace(color, 4, a, d, h, e),
-		createFace(color, 4, b, c, g, f),
+		createFace(color, 0, 4, a, b, c, d),
+		createFace(color, 0, 4, e, f, g, h),
+		createFace(color, 0, 4, a, b, f, e),
+		createFace(color, 0, 4, c, d, h, g),
+		createFace(color, 0, 4, a, d, h, e),
+		createFace(color, 0, 4, b, c, g, f),
 	};
 	for (int i = 5; i > 0; i--) F[i - 1]->next = F[i];
 
-	obj* o = createObj3D(*F, *P, 6, 8, isStatic);
+	obj* o = createObj3D(*F, *P, 6, 8, isStatic, 1);
 	RotateObj(o, rot);
 
 	return o;
@@ -535,10 +537,10 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		}
 
 		k = (d - dir.x * p->x - dir.y * p->y - dir.z * p->z) / n;
-		if (k > 1) {
-			p->p.display = 0;
+		if (0 && k > 1) {
+			/*p->p.display = 0;
 			p = p->next;
-			continue;
+			continue;*/
 
 			X = (pos.x - p->x) * k + p->x - pcam.x;
 			Y = (pos.y - p->y) * k + p->y - pcam.y;
@@ -611,7 +613,13 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		// P = v*k + p
 		X = (pos.x - p->x) * k + p->x - pcam.x;
 		Y = (pos.y - p->y) * k + p->y - pcam.y;
-		Z = (pos.z - p->z) * k + p->z - pcam.z;		
+		Z = (pos.z - p->z) * k + p->z - pcam.z;
+
+		if (k > 1) {
+			X *= -10;
+			Y *= -10;
+			Z *= -10;
+		}
 
 		/*
 		* x*i + y*j = (X ; Y ; Z) => x*v1.x + y*v2.x = X | x*v1.y + y*v2.y = Y | x*v1.z + y*v2.z = Z
@@ -673,8 +681,8 @@ void drawSpheres(SDL_Surface* window, int* Z_Buffers, listS* S, listL* L, cam c,
 	sphere* s;
 	point p, pl;
 	point3 psc, psl, pl3;
-	light* l = L->l; // TODO : faire avec toutes les lumières
-	Uint8* colorS, color[3], *cl = &l->color;
+	light* lummm = L->l; // TODO : faire avec toutes les lumières
+	Uint8* colorS, color[3], *cl = &lummm->color;
 	while (S) {
 		s = S->s;
 		p = s->pos->p;
@@ -685,7 +693,7 @@ void drawSpheres(SDL_Surface* window, int* Z_Buffers, listS* S, listL* L, cam c,
 		}
 
 		psc = sum(c.pos, *s->pos, -1);
-		psl = sum(*l->pos, *s->pos, -1);
+		psl = sum(*lummm->pos, *s->pos, -1);
 
 		// Light handling : pl is the nearest point of the sphere from the light
 		lightDir = scalar(psc, psl); // A faire plus tard : quand la sphere est entre la lumiere et nous, prendre le point opposé au point pl et ajouter coefl quand norm augmente
@@ -699,7 +707,7 @@ void drawSpheres(SDL_Surface* window, int* Z_Buffers, listS* S, listL* L, cam c,
 
 		dist = fabs(scalar(psc, c.dir));
 		rad2 = coef * s->radius / dist;
-		lum = 100000.f * l->intensity * rad2 * rad2 * rad2 * rad2 / (normsl * normsl * normsl);
+		lum = 100000.f * lummm->intensity * rad2 * rad2 * rad2 * rad2 / (normsl * normsl * normsl);
 		for (y = -rad2; y <= rad2; y++) {
 
 			if (p.y + y < 0 || p.y + y >= h) continue;
@@ -861,7 +869,7 @@ void displayFloorLines(SDL_Surface* window, int* Z_Buffers, cam c) {
 	pointsTo2dProjection(window->w/2, window->h/2, P[0], c);
 
 	for (int i = 0; i < nbPoints; i += 2) {
-		drawLine(window, P[i]->p, P[i + 1]->p, SDL_MapRGB(window->format , 0, 150, 0));
+		drawLine(window, P[i]->p, P[i + 1]->p, 150 << 8);
 	}
 
 	free(P);
@@ -926,16 +934,16 @@ void colorRow(SDL_Surface* window, int* Z_Buffers, int x1, int x2, int y,  int z
 
 }
 
-void colorTriangle(SDL_Surface* window, int* Z_Buffers, point p, point p2, point p3, const Uint32 color, int alt) {
+void colorTriangle(SDL_Surface* window, int* Z_Buffers, point p1, point p2, point p3, const Uint32 color, int alt) {
 
-	int max_y = (p.y > p2.y) ? (p.y > p3.y ? p.y : p3.y) : (p2.y > p3.y ? p2.y : p3.y);
-	int min_y = (p.y < p2.y) ? (p.y < p3.y ? p.y : p3.y) : (p2.y < p3.y ? p2.y : p3.y);
+	int max_y = (p1.y > p2.y) ? (p1.y > p3.y ? p1.y : p3.y) : (p2.y > p3.y ? p2.y : p3.y);
+	int min_y = (p1.y < p2.y) ? (p1.y < p3.y ? p1.y : p3.y) : (p2.y < p3.y ? p2.y : p3.y);
 
-	point v12 = sum2(p2, p, -1);
-	point v13 = sum2(p3, p, -1);
+	point v12 = sum2(p2, p1, -1);
+	point v13 = sum2(p3, p1, -1);
 	point v23 = sum2(p3, p2, -1);
 
-	int z1 = p.depth;
+	int z1 = p1.depth;
 	int z2 = p2.depth;
 	int z3 = p3.depth;
 
@@ -956,9 +964,9 @@ void colorTriangle(SDL_Surface* window, int* Z_Buffers, point p, point p2, point
 
 	for (int y = min_y + (v12.y != 0 && v13.y != 0 && v23.y != 0); y <= max_y; y+=1) {
 		if (y < 0 || y >= window->h) continue;
-		if      ((p.y < y && y <= p2.y || p.y > y && y >= p2.y) && (p.y < y && y <= p3.y || p.y > y && y >= p3.y) && (v12.y != 0 && v13.y != 0))	colorRow(window, Z_Buffers, p.x + (y - p.y) * v12.x / v12.y, p.x + (y - p.y) * v13.x / v13.y,	y, z1 + z12 * (y - p.y) / v12.y, z1 + z13 * (y - p.y) / v13.y,	color, alt);
-		else if ((p.y <= y && y < p2.y || p.y >= y && y > p2.y) && (p2.y < y && y <= p3.y || p2.y > y && y >= p3.y) && (v12.y != 0 && v23.y != 0))	colorRow(window, Z_Buffers, p.x + (y - p.y) * v12.x / v12.y, p2.x + (y - p2.y) * v23.x / v23.y, y, z1 + z12 * (y - p.y) / v23.y, z2 + z23 * (y - p2.y) / v23.y, color, alt);
-		else if (v13.y != 0 && v23.y != 0)																											colorRow(window, Z_Buffers, p.x + (y - p.y) * v13.x / v13.y, p2.x + (y - p2.y) * v23.x / v23.y, y, z1 + z13 * (y - p.y) / v13.y, z2 + z23 * (y - p2.y) / v23.y, color, alt);
+		if      ((p1.y < y && y <= p2.y || p1.y > y && y >= p2.y) && (p1.y < y && y <= p3.y || p1.y > y && y >= p3.y) && (v12.y != 0 && v13.y != 0))	colorRow(window, Z_Buffers, p1.x + (y - p1.y) * v12.x / v12.y, p1.x + (y - p1.y) * v13.x / v13.y, y, z1 + z12 * (y - p1.y) / v12.y, z1 + z13 * (y - p1.y) / v13.y, color, alt);
+		else if ((p1.y <= y && y < p2.y || p1.y >= y && y > p2.y) && (p2.y < y && y <= p3.y || p2.y > y && y >= p3.y) && (v12.y != 0 && v23.y != 0))	colorRow(window, Z_Buffers, p1.x + (y - p1.y) * v12.x / v12.y, p2.x + (y - p2.y) * v23.x / v23.y, y, z1 + z12 * (y - p1.y) / v23.y, z2 + z23 * (y - p2.y) / v23.y, color, alt);
+		else if (v13.y != 0 && v23.y != 0)																												colorRow(window, Z_Buffers, p1.x + (y - p1.y) * v13.x / v13.y, p2.x + (y - p2.y) * v23.x / v23.y, y, z1 + z13 * (y - p1.y) / v13.y, z2 + z23 * (y - p2.y) / v23.y, color, alt);
 	}
 }
 
@@ -1087,7 +1095,7 @@ void ExtrudeFace(obj* o, point3 dir) {
 			listPf = listPf->next;
 
 			// Face creating resulting of extrusion
-			fTmp = createFace(WHITE, 4, pTab[i], pTab[i - 1], pTab2[i - 1], pTab2[i]);
+			fTmp = createFace(WHITE, 0, 4, pTab[i], pTab[i - 1], pTab2[i - 1], pTab2[i]);
 
 			// Correcting normal direction
 			vfo = sum(G, fTmp->G, -1);
@@ -1101,7 +1109,7 @@ void ExtrudeFace(obj* o, point3 dir) {
 		P = P->next;
 	}
 
-	fTmp = createFace(WHITE, 4, pTab[0], pTab[nbPoints - 1], pTab2[nbPoints - 1], pTab2[0]);
+	fTmp = createFace(WHITE, 0, 4, pTab[0], pTab[nbPoints - 1], pTab2[nbPoints - 1], pTab2[0]);
 
 	vfo = sum(G, fTmp->G, -1);
 	nf = fTmp->normale;

@@ -106,7 +106,7 @@ point3* createPoint(float x, float y, float z);
 point3 setPoint(float x, float y, float z);
 
 // Faces methods
-face* createFace(Uint32 color, int nbPoints, ...);
+face* createFace(Uint32 color, int revNorm, int nbPoints, ...);
 void addFace(face** F, face* f);
 void addPointFace(face *f, point3* p);
 
@@ -116,7 +116,7 @@ listS* createListS(sphere* s);
 sphere* createSphere(float radius, point3* pos, Uint32 color);
 
 // Objects methods
-obj* createObj3D(face* f, point3* p, int nbFaces, int nbVertexes, int isStatic);
+obj* createObj3D(face* f, point3* p, int nbFaces, int nbVertexes, int isStatic, int correctNormals);
 obj* createCube(point3 pos, point3 rot, float size, Uint32 color, int isStatic);
 listO* createListO();
 void addObj(listO** O, obj* o);

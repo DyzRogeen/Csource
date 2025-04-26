@@ -20,9 +20,20 @@ elec* createElec(point p1, point p2, type t) {
 	e->p1->e = e;
 	e->p2->e = e;
 	e->t = t;
+	e->I = 0;
+	e->amplU = 0;
 	e->selected = 1;
-	if (t == GENERATEUR) e->U = 12;
+	if (t == GENERATEUR) {
+		e->U = e->amplU = 12;
+		e->p1->V = -e->U / 2;
+		e->p2->V =  e->U / 2;
+		//e->Freq = 1;
+	}
 	if (t == RESISTANCE) e->R = 1000;
+	if (t == CONDENSATEUR) {
+		e->R = 1;
+		e->C = 0.1;
+	}
 
 	return e;
 }
@@ -44,6 +55,13 @@ void addList(list** l, elec* e) {
 	}
 	tryConnect(*l, e->p1);
 	tryConnect(*l, e->p2);
+	// TODO : FUSE WIRES
+	/*if (e->t == WIRE) {
+		point* neigh = neighborSwitch(e->p1);
+		if (cntConnectedPoles(e->p1) == 1 && neigh->e->t == WIRE) {
+			
+		}
+	}*/
 	list* tmp = createList(e);
 	tmp->next = *l;
 	(*l)->prec = tmp;
@@ -51,7 +69,7 @@ void addList(list** l, elec* e) {
 }
 void deleteSelected(list** l) {
 	
-	if (!*l || !l) return;
+	if (!l || !*l) return;
 	list* tmp = NULL;
 	elec* e = (*l)->e;
 	if (e->selected) {
@@ -61,8 +79,8 @@ void deleteSelected(list** l) {
 		tmp = *l;
 		if (tmp->next) (*l)->next->prec = (*l)->prec;
 		if (tmp->prec) {
-			deleteSelected(&(*l)->next);
 			(*l)->prec->next = (*l)->next;
+			deleteSelected(&(*l)->next);
 		}
 		else {
 			*l = (*l)->next;
@@ -138,8 +156,10 @@ void printList(list* l) {
 	printf("\n");
 }
 void printElec(elec* e) {
-	const char* enumToString[8] = { "VCC", "GND", "GENERATEUR", "RESISTANCE", "BOBINE", "CONDENSATEUR", "DIODE", "WIRE" };
-	printf("[%s | U : %.1fV (p1:%.1fV,p2:%.1fV) | I : %.1fmA | R : %fO] %d %d\n", enumToString[e->t], e->U, e->p1->V, e->p2->V, e->I * 1000, e->R, e->p1->alt, e->p2->alt);
+	const char* enumToString[8] = { "VCC", "GND", "GENERATEUR", "RESISTANCE", "BOBINE", "CONDENSATEUR", "DIODE", "WIRE"};
+	printf("[%s | U : %.1fV (p1:%.1fV,p2:%.1fV) | I : %.1fmA | R : %.1fO", enumToString[e->t], e->U, e->p1->V, e->p2->V, e->I * 1000, e->R);
+	if (e->t == CONDENSATEUR) printf(" | q : %.1fC", e->q);
+	printf("]\n");
 }
 void freeList(list* l) {
 	if (!l) return;
@@ -151,7 +171,7 @@ void freeList(list* l) {
 	l = NULL;
 }
 
-list* simulate(list* l) {
+/*list* simulate(list* l) {
 
 	int nbElec = cntElecList(l), nbElecPrec;
 	do { // Tant que ca a toujours un effet sur le nombre d'Elec...
@@ -164,11 +184,12 @@ list* simulate(list* l) {
 	initV(l, 3);
 	initI(l, 4);
 	return l;
-}
+}*/
 
 // TODO : OPTI les while avec des listes préfaites selon le type
 void initV(list* l, int alt) {
 	elec* e;
+	int GNDorVCCfound = 0;
 
 	// INIT VCC / GND
 	list* ltmp = l;
@@ -179,12 +200,34 @@ void initV(list* l, int alt) {
 			continue;
 		}
 
+		GNDorVCCfound = 1;
+
 		e->p1->V = e->t == VCC ? 5 : 0;
 
 		if (propagateV(e->p1, alt) == 0) printf("COURT CIRCUIT !\n");
 		
 		ltmp = ltmp->next;
 	}
+
+	if (GNDorVCCfound) return;
+
+	ltmp = l;
+	while (ltmp) {
+		e = ltmp->e;
+		if (e->amplU == 0) {
+			ltmp = ltmp->next;
+			continue;
+		}
+
+		e->p1->V = 0;
+		e->p2->V = e->U;
+
+		if (propagateV(e->p1, alt) == 0 || propagateV(e->p2, alt) == 0) printf("COURT CIRCUIT !\n");
+
+		ltmp = ltmp->next;
+	}
+
+	return;
 
 	// INIT GENERATEUR
 	ltmp = l;
@@ -197,7 +240,7 @@ void initV(list* l, int alt) {
 		}
 		p1 = e->p1; p2 = e->p2;
 
-		if (p1->alt == alt && p2->alt == alt && p2->V - p1->V != e->U) printf("GENERATEUR FORCE !\n");
+		if (e->Freq == 0 && p1->alt == alt && p2->alt == alt && p2->V - p1->V != e->U) printf("GENERATEUR FORCE !\n");
 		else if (p1->alt == alt) {
 			p2->V = p1->V + e->U;
 			if (propagateV(p2, alt) == 0) printf("COURT CIRCUIT G2 !\n");
@@ -215,12 +258,253 @@ void initV(list* l, int alt) {
 	}
 
 }
+int propagateV(point* p, int alt) {
+	if (p->alt == alt) return 1;
+	p->alt = alt;
 
+	int tmp = propagateForward(p, alt);
+	return propagateBackward(p, alt) && tmp;
+}
+int propagateForward(point* p, int alt) {
+
+	float V = p->V;
+	elec* e = p->e, * e_;
+
+	point* pTmp = p->pnext_Connect, * pProp;
+	type t;
+	int ret = 1;
+	while (pTmp) {
+		if (pTmp->alt == alt) return 0;
+		pTmp->alt = alt;
+
+		e_ = pTmp->e;
+		t = e_->t;
+		if (t == GND) return V == 0;
+		if (t == VCC) return V != 0;
+		pTmp->V = V;
+		if (t == WIRE) {
+			pProp = poleSwitch(pTmp);
+			pProp->V = V;
+			ret = propagateV(pProp, alt) && ret;
+		}
+		else if (t == GENERATEUR) {
+			pProp = poleSwitch(pTmp);
+			pProp->V = (pProp == e_->p1 ? -1 : 1) * e_->U + V;
+			ret = propagateV(pProp, alt) && ret;
+		}
+		pTmp = pTmp->pnext_Connect;
+	}
+
+	return ret;
+}
+int propagateBackward(point* p, int alt) {
+
+	float V = p->V;
+	elec* e = p->e, * e_;
+
+	point* pTmp = p->pprec_Connect, * pProp;
+	type t;
+	int ret = 1;
+	while (pTmp) {
+		if (pTmp->alt == alt) return 0;
+		pTmp->alt = alt;
+
+		e_ = pTmp->e;
+		t = e_->t;
+		if (t == GND) return V == 0;
+		if (t == VCC) return V != 0;
+		pTmp->V = V;
+		if (t == WIRE) {
+			pProp = poleSwitch(pTmp);
+			pProp->V = V;
+			ret = propagateV(pProp, alt) && ret;
+		}
+		else if (t == GENERATEUR) {
+			pProp = poleSwitch(pTmp);
+			pProp->V = (pProp == e_->p1 ? -1 : 1) * e_->U + V;
+			ret = propagateV(pProp, alt) && ret;
+		}
+		pTmp = pTmp->pprec_Connect;
+	}
+
+	return ret;
+}
+
+void simuI(list* l, int alt) {
+	elec* e;
+
+	list* ltmp = l;
+	while (ltmp) {
+		e = ltmp->e;
+
+		propI(e->p1, e->p1->V, 0, alt);
+
+		ltmp = ltmp->next;
+	}
+}
+float propI(point* p, float V, float R, int alt) {
+
+	if (p->alt == alt) return;
+
+	float Veq;
+	
+	if (p->e->t <= GND || p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4) Veq = p->V;	// Si le potentiel est set, on le met.
+	else p->V = Veq = getVeq(p, V, R, alt);										// Sinon, on va le chercher
+
+	float sumI = propIF(p, Veq, 0, alt);
+	p->alt = alt;
+
+	point* p_tmp = p->pnext_Connect;
+	p_tmp = p->pnext_Connect;
+	while (p_tmp) {
+		p_tmp->V = Veq;
+		sumI += propIF(p_tmp, Veq, 0, alt);
+		p_tmp->alt = alt; p_tmp = p_tmp->pnext_Connect;
+	}
+	p_tmp = p->pprec_Connect;
+	while (p_tmp) {
+		p_tmp->V = Veq;
+		sumI += propIF(p_tmp, Veq, 0, alt);
+		p_tmp->alt = alt; p_tmp = p_tmp->pprec_Connect;
+	}
+
+	return sumI;
+
+}
+float getVeq(point* p, float V, float R, int alt) {
+
+	float Vn[4] = { V, 0, 0, 0 };
+	float Rn[4] = { R, 0, 0, 0 };
+
+	int i = 1;
+	point* p_tmp = p->pnext_Connect;
+	while (p_tmp) {
+		fetchVR(p_tmp, Vn + i, Rn + i, alt);
+		p_tmp = p_tmp->pnext_Connect; i++;
+	}
+	p_tmp = p->pprec_Connect;
+	while (p_tmp) {
+		fetchVR(p_tmp, Vn + i, Rn + i, alt);
+		p_tmp = p_tmp->pprec_Connect; i++;
+	}
+
+	// Loi des mailles
+	if (i == 4)
+		return (
+		Rn[1] * Rn[2] * Rn[3] * Vn[0] +
+		Rn[0] * Rn[2] * Rn[3] * Vn[1] +
+		Rn[0] * Rn[1] * Rn[3] * Vn[2] +
+		Rn[0] * Rn[1] * Rn[2] * Vn[3]
+		) / (
+		Rn[1] * Rn[2] * Rn[3] +
+		Rn[0] * Rn[2] * Rn[3] +
+		Rn[0] * Rn[1] * Rn[3] +
+		Rn[0] * Rn[1] * Rn[2]);
+	if (i == 3)
+		return (
+		Rn[1] * Rn[2] * Vn[0] +
+		Rn[0] * Rn[2] * Vn[1] +
+		Rn[0] * Rn[1] * Vn[2]
+		) / (
+		Rn[1] * Rn[2] +
+		Rn[0] * Rn[2] +
+		Rn[0] * Rn[1]);
+	if (i == 2)
+		return (
+		Rn[1] * Vn[0] +
+		Rn[0] * Vn[1]
+		) / (Rn[0] + Rn[1]);
+	if (i == 1) return V;
+
+}
+void fetchVR(point* p, float* V, float* R, int alt) {
+	if (!p) return;
+	if (p->e->t <= GND || p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4) {
+		*V += p->V;
+		return;
+	}
+
+	// On traverse le dipôle
+	p = poleSwitch(p);
+
+	if (p->e->amplU != 0) *V += (p == p->e->p1 ? 1 : -1) * p->e->U;
+	else *R += p->e->R;	// On accumule les R
+
+	if (isBifurc(p)) {
+		// TODO
+	}
+	else {
+		fetchVR(neighborSwitch(p), V, R, alt);
+	}
+
+}
+float propIF(point* p, float V, float R, int alt) {
+	if (!p) return 0;
+	if (p->alt == alt) return p->e->I;
+
+	elec* e = p->e;
+	if (e->t <= GND) return 0;
+
+	float Vtmp = p->V;
+
+	// On traverse le dipôle voisin
+	p = poleSwitch(p);
+	R += e->R; // On accumule les R
+	if (e->amplU != 0)
+		V += (p->V > Vtmp ? 1 : -1) * e->U;
+
+	float I;
+	// Autre potentiel set trouvé
+	if ((e->t <= GND || p->alt == alt || p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4) && R != 0) I = (p->V - V) / R;
+	else if (isBifurc(p)) I = propI(p, V, R, alt); // Sinon on continue
+	else I = propIF(neighborSwitch(p), V, R, alt);
+
+	if (p->alt == alt) return I;
+
+	p->alt = alt;
+	e->I = fabs(I);// * (e->p1->V > e->p1->V ? -1 : 1) * (e->t == GENERATEUR ? -1 : 1);
+
+	Vtmp = p->V;
+	// On calcule les potentiels avec l'intensité trouvée
+	p = poleSwitch(p);
+	if (!(p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4)) {
+		if (e->t == WIRE) p->V = Vtmp;
+		else if (e->amplU != 0) p->V = (p == e->p1 ? -1 : 1) * e->U + Vtmp;
+		else {
+			e->U = I * e->R;
+			p->V = Vtmp - e->U;
+		}
+
+		propV(p);
+	}
+	
+	p->alt = alt;
+
+	return I;
+
+}
+void propV(point* p) {
+	float V = p->V;
+
+	point* ptmp = p->pnext_Connect;
+	while (ptmp) {
+		ptmp->V = V;
+		ptmp = ptmp->pnext_Connect;
+	}
+	ptmp = p->pprec_Connect;
+	while (ptmp) {
+		ptmp->V = V;
+		ptmp = ptmp->pprec_Connect;
+	}
+
+}
+
+/*
 void initI(list* l, int alt) {
 	list* ltmp = l; elec* e; point* p1, * p2;
 	while (ltmp) {
 		e = ltmp->e;
-		// On initialise ce pour quoi on peut calculer I.
+		// On initialise ceux pour quoi on peut calculer I.
 		if (e->t > GENERATEUR && e->t != WIRE) {
 			p1 = e->p1; p2 = e->p2;
 			if (p1->alt != alt && p2->alt != alt) {
@@ -251,25 +535,18 @@ void initI(list* l, int alt) {
 			if (p2->alt != alt && isBifurc(p2)) nodeSum(p2, alt);
 			ltmp = ltmp->next;
 		}
-	}*/
-}
-int propagateV(point* p, int alt) {
-	if (p->alt == alt) return 1;
-	p->alt = alt;
-
-	int tmp = propagateForward(p, alt);
-	return propagateBackward(p, alt) && tmp;
+	}/
 }
 void propagateI(point* p, float I, int alt) {
-	if (!p) return;
+	if (!p || p->alt == alt) return;
 	p->alt = alt;
-	I = p->e->t == GENERATEUR ? -I : I;
+	I = p->e->t == WIRE ? -I : I;
 	p->e->I = I;
 	p = poleSwitch(p);
 	if (!isBifurc(p)) propagateI(neighborSwitch(p), I, alt);
 	else nodeSum(p, alt);
-}
-// Loi des mailles
+}*/
+/*/ Loi des mailles
 void nodeSum(point* p, int alt) {
 	p->alt = alt;
 	float Isum = enterOrExitNode(p);
@@ -299,65 +576,10 @@ void nodeSum(point* p, int alt) {
 
 	propagateI(undefinedI, -Isum, alt);
 
-}
+}*/
 float enterOrExitNode(point* p) {
-	return p->e->I * (p->V > poleSwitch(p)->V ? -1 : 1);
-}
-
-int propagateForward(point* p, int alt) {
-
-	float V = p->V;
-	elec* e = p->e, *e_;
-
-	point* pTmp = p->pnext_Connect, *pProp;
-	type t;
-	int ret = 1;
-	while (pTmp) {
-		if (pTmp->alt == alt) return 0;
-		pTmp->alt = alt;
-
-		e_ = pTmp->e;
-		t = e_->t;
-		if (t == GND) return V == 0;
-		if (t == VCC) return V != 0;
-		pTmp->V = V;
-		if (t == WIRE) {
-			pProp = poleSwitch(pTmp);
-			pProp->V = V;
-			ret = propagateV(pProp, alt) && ret;
-		}
-		pTmp = pTmp->pnext_Connect;
-	}
-
-	return ret;
-}
-int propagateBackward(point* p, int alt) {
-
-	float V = p->V;
-	elec* e = p->e, * e_;
-
-	point* pTmp = p->pprec_Connect, * pProp;
-	type t;
-	int ret = 1;
-	while (pTmp) {
-		if (pTmp->alt == alt) return 0;
-		pTmp->alt = alt;
-
-		e_ = pTmp->e;
-		t = e_->t;
-		if (t == GND) return V == 0;
-		if (t == VCC) return V != 0;
-		pTmp->V = V;
-		if (t == WIRE) {
-			pProp = poleSwitch(pTmp);
-			pProp->V = V;
-			ret = propagateV(pProp, alt) && ret;
-		}
-		else pTmp->alt = alt;
-		pTmp = pTmp->pprec_Connect;
-	}
-
-	return ret;
+	elec* e = p->e;
+	return e->I * (e->p1->V > e->p1->V ? -1 : 1) * (e->t == GENERATEUR ? -1 : 1);
 }
 
 list* makeDerivEqCirc(list* l, int alt) {
@@ -505,6 +727,19 @@ void fuseLists(list** l1, list* l2) {
 	return *l1;
 }
 
+void resetElecs(list* l) {
+	elec* e;
+	while (l) {
+		e = l->e;
+
+		if (e->t == CONDENSATEUR) {
+			e->amplU = e->U = e->q = 0;
+		}
+
+		l = l->next;
+	}
+}
+
 point* neighborSwitch(point* p) {
 	return p->pnext_Connect ? p->pnext_Connect : p->pprec_Connect;
 }
@@ -513,6 +748,21 @@ point* poleSwitch(point* p) {
 	return p == e->p1 ? e->p2 : e->p1;
 }
 
+int cntConnectedPoles(point* p) {
+	int cnt = 0;
+
+	point* pTmp = p->pnext_Connect;
+	while (pTmp) {
+		cnt++;
+		pTmp = pTmp->pnext_Connect;
+	}
+	pTmp = p->pprec_Connect;
+	while (pTmp) {
+		cnt++;
+		pTmp = pTmp->pprec_Connect;
+	}
+	return cnt;
+}
 int cntElecList(list* l) {
 	int nbElec = 0;
 	while (l) {

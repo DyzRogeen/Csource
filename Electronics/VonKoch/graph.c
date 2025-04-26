@@ -1,5 +1,41 @@
 #include "graph.h"
 
+// POPUPS POUR RENSEIGNER VALEURS
+welem* createWElem(eType type, char* label) {
+	welem* w = (welem*)calloc(1, sizeof(welem));
+	w->type = type;
+	strcpy(w->label, label);
+	w->next = NULL;
+	return w;
+}
+void freeWElem(welem* w) {
+	if (w->next) freeWElem(w->next);
+	free(w);
+}
+
+graph* createGraph(float UpixRatio, float IpixRatio, float secPixRatio) {
+	graph* g = (graph*)calloc(1, sizeof(graph));
+
+	g->tmpLast = -1;
+	g->overflow = 0;
+	g->index = 0;
+	g->toDraw = 1;
+
+	g->UpixRatio = UpixRatio; // pxl/V
+	g->IpixRatio = IpixRatio * 1000; // pxl/mA
+	g->secPixRatio = secPixRatio; // pxl/s
+	g->tabLength = 6480 / secPixRatio; // Largeur graph : 648 et on veut le nombre de ms à faire rentrer dedans
+	g->Utab = (float*)calloc(g->tabLength, sizeof(float));
+	g->Itab = (float*)calloc(g->tabLength, sizeof(float));
+
+	return g;
+}
+void freeGraph(graph* g) {
+	free(g->Utab);
+	free(g->Itab);
+	free(g);
+}
+
 icon* createIcon(int size, int z, int pressed, type t) {
 	icon* i = (icon*)calloc(1, sizeof(icon));
 	i->next = NULL;
@@ -32,17 +68,17 @@ icon* initIcons() {
 
 // Dessin
 void drawGrid(screen s) {
-	int w = s.w->w;
-	int h = s.w->h;
+	int w = s.w->w, rectW = s.w->clip_rect.w;
+	int h = s.w->h, rectH = s.w->clip_rect.h;
 	Uint32* pxls = s.w->pixels;
 
 	int zoom = s.zoom;
-	int X_start = -s.offsetx % zoom;
+	int X_start = (- 2 - s.offsetx) % zoom;
 	int Y_start = -s.offsety % zoom;
 	int slot;
 
-	for (int i = 0; i < w; i += zoom)
-		for (int j = 0; j < h; j += zoom) {
+	for (int i = 50; i < rectW; i += zoom)
+		for (int j = 0; j < rectH; j += zoom) {
 			slot = X_start + i + (Y_start + j) * w;
 			if (X_start + i >= 0 && X_start + i < w && Y_start + j >= 0 && Y_start + j < h) *(pxls + slot) = GREY;
 		}
@@ -96,8 +132,8 @@ void drawW(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	}
 	else if (!isIcon) color = getColor(p1.V);
 
-	if (isIcon) for (int k = 0; k < n; k++) line(p1, v, k, w, h, pxls, color);
-	else for (int k = 0; k < n; k++) line3(p1, v, o, k, w, h, pxls, color);
+	if (isIcon) for (int k = 0; k <= n; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k <= n; k++) line3(p1, v, o, k, w, h, pxls, color);
 }
 void drawG(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
 	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
@@ -158,8 +194,88 @@ void drawG(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	else for (int k = 0; k < s.zoom * 2; k++) line3(p, o, v, k, w, h, pxls, color2);
 
 	// Seconde patte
-	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color2);
-	else for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color2);
+	if (isIcon) for (int k = b_sup; k <= n; k++) line(p1, v, k, w, h, pxls, color2);
+	else for (int k = b_sup; k <= n; k++) line3(p1, v, o, k, w, h, pxls, color2);
+}
+void drawAD(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
+	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
+	int slotx, sloty, slotxPrev1, slotyPrev1, slotxPrev2, slotyPrev2;
+
+	if (isIcon) s.zoom = 10;
+	else {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
+	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
+
+	int b_inf = (n - 1.2 * s.zoom) / 2, b_sup = (n + 1.2 * s.zoom) / 2;
+	int l = b_sup - b_inf;
+
+	// Gestion des couleurs
+	Uint32 color1, color2;
+	if (selected) {
+		color1 = color2 = color = CYAN;
+		drawBox(s, p1, color);
+		drawBox(s, p2, color);
+	}
+	else if (isIcon) color1 = color2 = color;
+	else {
+		color1 = getColor(p1.V);
+		color2 = getColor(p2.V);
+	}	
+
+	// Première patte
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color1);
+	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color1);
+
+	float sine, radius = (n / 2 - b_inf);
+
+	slotxPrev1 = slotxPrev2 = p1.x + v.x * b_inf;
+	slotyPrev1 = slotyPrev2 = p1.y + v.y * b_inf;
+	if (isIcon) for (int k = b_inf; k < b_sup; k++) {
+		sine = sin(acos((n / 2 - k) / radius)) * radius;
+		slotx = p1.x + v.x * k + sine * o.x;
+		sloty = p1.y + v.y * k + sine * o.y;
+		//if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = color1;
+		drawLine(setPoint(slotx, sloty), setPoint(slotxPrev1, slotyPrev1), w, h, pxls, color1);
+		slotxPrev1 = slotx;
+		slotyPrev1 = sloty;
+
+		
+		slotx -= 2 * sine * o.x;
+		sloty -= 2 * sine * o.y;
+		//if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) *(pxls + slotx + sloty * w) = color1;
+		drawLine(setPoint(slotx, sloty), setPoint(slotxPrev2, slotyPrev2), w, h, pxls, color1);
+		slotxPrev2 = slotx;
+		slotyPrev2 = sloty;
+	}
+	else for (int k = b_inf; k < b_sup; k++) {
+		sine = sin(acos((n / 2 - k) / radius)) * radius;
+		Uint32 c = addColor(scaleColor(color1, (float)(b_sup - k) / l), scaleColor(color2, (float)(k - b_inf) / l));
+
+		slotx = p1.x + v.x * k + sine * o.x;
+		sloty = p1.y + v.y * k + sine * o.y;
+		if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) {
+			*(pxls + slotx + sloty * w) = c;
+			*(pxls + slotx + 1 + sloty * w) = c;
+			*(pxls + slotx - 1 + sloty * w) = c;
+			*(pxls + slotx + (sloty + 1) * w) = c;
+			*(pxls + slotx + (sloty - 1) * w) = c;
+		}
+		slotx -= 2 * sine * o.x;
+		sloty -= 2 * sine * o.y;
+		if (slotx >= 0 && slotx < w && sloty >= 0 && sloty < h) {
+			*(pxls + slotx + sloty * w) = c;
+			*(pxls + slotx + 1 + sloty * w) = c;
+			*(pxls + slotx - 1 + sloty * w) = c;
+			*(pxls + slotx + (sloty + 1) * w) = c;
+			*(pxls + slotx + (sloty - 1) * w) = c;
+		}
+	}
+
+	// Seconde patte
+	if (isIcon) for (int k = b_sup; k <= n; k++) line(p1, v, k, w, h, pxls, color2);
+	else for (int k = b_sup; k <= n; k++) line3(p1, v, o, k, w, h, pxls, color2);
 }
 void drawR(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
 	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
@@ -209,8 +325,8 @@ void drawR(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	else for (int k = 0; k < s.zoom; k++) line3(p, o, v, k, w, h, pxls, color2);
 
 	// Seconde patte
-	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color);
-	else for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color2);
+	if (isIcon) for (int k = b_sup; k <= n; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = b_sup; k <= n; k++) line3(p1, v, o, k, w, h, pxls, color2);
 }
 void drawL(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {}
 void drawC(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
@@ -254,8 +370,8 @@ void drawC(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	else for (int k = 0; k < bound; k++) line3(p, o, v, k, w, h, pxls, color2);
 
 	// Seconde patte
-	if (isIcon) for (int k = b_sup; k < n; k++) line(p1, v, k, w, h, pxls, color2);
-	else for (int k = b_sup; k < n; k++) line3(p1, v, o, k, w, h, pxls, color2);
+	if (isIcon) for (int k = b_sup; k <= n; k++) line(p1, v, k, w, h, pxls, color2);
+	else for (int k = b_sup; k <= n; k++) line3(p1, v, o, k, w, h, pxls, color2);
 
 }
 void drawD(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {}
@@ -369,8 +485,9 @@ void drawLine(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color) {
 	for (int k = 0; k <= n; k++) {
 		slotx = p1.x + (int)(v.x * k);
 		sloty = p1.y + (int)(v.y * k);
+		if (slotx < 0 || sloty < 0) continue;
 		*(pxls + slotx + sloty * w) = color;
-		*(pxls + slotx + 1 + sloty * w) = color;
+		//*(pxls + slotx + 1 + sloty * w) = color;
 	}
 }
 void drawLine3(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color) {
@@ -434,6 +551,126 @@ void drawSelectedArea(SDL_Surface* s, point p1, point p2) {
 	}
 }
 
+void drawGraph(screen s, elec* e, float Ttmp) {
+	graph* g = s.g;
+
+	if (g->tmpLast == (int)Ttmp && !g->toDraw) return;
+	g->toDraw = 0;
+
+	int w = s.w->w, h = s.w->h, i, j, heigth = 154, ypos = h - heigth, y0 = ypos + 77;
+	Uint32* pxls = s.w->pixels;
+
+	// Contours
+	for (i = ypos; i < h; i++) *(pxls + w - 1 + i * w) = WHITE;
+	for (j = 51; j < w; j++) {
+		*(pxls + j + (h - 1) * w) = WHITE;
+		*(pxls + j + ypos * w) = WHITE;
+		*(pxls + j + (ypos - 1) * w) = GREY;
+		*(pxls + j + (ypos - 2) * w) = DGREY;
+	}
+
+	// Remplissage intérieur
+	{
+		for (i = 51; i < w - 147; i++)
+			for (j = ypos + 1; j < ypos + 7; j++)
+				*(pxls + i + j * w) = *(pxls + i + (j + 146) * w) = 20;
+
+		for (j; j < h - 7; j++) {
+			for (i = 51; i < 66; i++)
+				*(pxls + i + j * w) = 20;
+			for (i = w - 165; i < w - 1; i++)
+				*(pxls + i + j * w) = 20;
+		}
+
+		// Contours
+		for (i = 66; i < w - 163; i++)
+			*(pxls + i + (ypos + 7) * w) = *(pxls + i + (ypos + 147) * w) = LGREY;
+		for (j = ypos + 8; j < ypos + 147; j++)
+			*(pxls + 66 + j * w) = *(pxls + w - 164 + j * w) = LGREY;
+
+		for (i = 67; i < w - 164; i++)
+			for (j = ypos + 8; j < ypos + 146; j++)
+				*(pxls + i + j * w) = 0;
+	}
+
+	// Graduations
+	{
+		// Abscisse
+		for (i = 67; i < w - 164; i++)
+			*(pxls + i + y0 * w) = LGREY;
+		for (i = 67; i < w - 164; i += g->secPixRatio)
+			*(pxls + i + (y0 - 1) * w) = LGREY;
+
+		// Ordonnée
+		for (j = y0 + 5 * g->UpixRatio; j < ypos + 147; j += 5 * g->UpixRatio) {
+			*(pxls + 67 + j * w) = LGREY;
+			for (i = 68; i < w - 164; i++)
+				*(pxls + i + j * w) = DGREY;
+		}
+		for (j = y0 - 5 * g->UpixRatio; j > ypos + 8; j -= 5 * g->UpixRatio) {
+			*(pxls + 67 + j * w) = LGREY;
+			for (i = 68; i < w - 164; i++)
+				*(pxls + i + j * w) = DGREY;
+		}
+	}
+
+	if (g->tmpLast != (int)Ttmp) {
+		g->tmpLast = (int)Ttmp;
+
+		g->Utab[g->index % g->tabLength] = e->U;
+		g->Itab[g->index % g->tabLength] = e->I;
+		g->index++;
+	}
+	
+	for (i = 1; i < g->index % g->tabLength; i++) {
+		drawLine(
+			setPoint(67 + (i - 1) * g->secPixRatio / 10, y0 - g->Utab[i - 1] * g->UpixRatio),
+			setPoint(67 + i * g->secPixRatio / 10, y0 - g->Utab[i] * g->UpixRatio),
+			w, h, pxls, LRED);
+		drawLine(
+			setPoint(67 + (i - 1) * g->secPixRatio / 10, y0 - g->Itab[i - 1] * g->IpixRatio),
+			setPoint(67 + i * g->secPixRatio / 10, y0 - g->Itab[i] * g->IpixRatio),
+			w, h, pxls, LBLUE);
+	}
+
+	// Graph Dim on va dire (w - 210)x140 à partir de (55;155)
+
+
+}
+
+void drawParamBar(screen s, elec* e) {
+	int w = s.w->w, h = s.w->h, i, j, larg = 150, xpos = w - larg;
+	Uint32* pxls = s.w->pixels;
+
+	// Contours
+	for (i = xpos; i < w; i++) *(pxls + i) = WHITE;
+	for (j = 0; j < h - 156; j++) {
+		*(pxls + w - 1 + j * w) = WHITE;
+		*(pxls + xpos + 2 + j * w) = WHITE;
+		*(pxls + xpos + 1 + j * w) = GREY;
+		*(pxls + xpos + j * w) = DGREY;
+	}
+
+	// Remplissage intérieur
+	for (i = w - larg + 2; i < w - 1; i++)
+		for (j = 1; j < h - 154; j++)
+			*(pxls + i + j * w) = 20;
+
+	/*
+	TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
+	SDL_Color White = { 255, 255, 255 };
+	SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "put your text here", White);
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(s.w, surfaceMessage);
+
+	SDL_Rect Message_rect; //create a rect
+	Message_rect.x = 0;  //controls the rect's x coordinate 
+	Message_rect.y = 0; // controls the rect's y coordinte
+	Message_rect.w = 100; // controls the width of the rect
+	Message_rect.h = 100; // controls the height of the rect
+	SDL_RenderCopy(s.w, Message, NULL, &Message_rect);*/
+
+}
+
 void drawGUI(screen s, icon* I) {
 	int w = s.w->w, h = s.w->h, i, j;
 	Uint32* pxls = s.w->pixels;
@@ -442,12 +679,12 @@ void drawGUI(screen s, icon* I) {
 	for (i = 0; i < 50; i++) *(pxls + i) = *(pxls + i + (h - 1) * w) = WHITE;
 	for (j = 0; j < h; j++) {
 		*(pxls + j * w) = WHITE;
-		*(pxls + 49 + j * w) = WHITE;
-		*(pxls + 50 + j * w) = GREY;
-		*(pxls + 51 + j * w) = DGREY;
+		*(pxls + 48 + j * w) = WHITE;
+		*(pxls + 49 + j * w) = GREY;
+		*(pxls + 50 + j * w) = DGREY;
 	}
 	// Remplissage intérieur
-	for (i = 1; i < 49; i++)
+	for (i = 1; i < 48; i++)
 		for (j = 1; j < h - 1; j++)
 			*(pxls + i + j * w) = 20;
 
@@ -490,7 +727,7 @@ void drawGUIBox(screen s, icon* i) {
 	}
 
 	float p = size / 3;
-	draw(s, setPoint(p + dec + i->pressed, z - 2 * p + i->pressed), setPoint(p * 5 + dec + i->pressed, z + 2 * p + i->pressed), i->t, WHITE, 0, 1);
+	draw(s, setPoint(p + dec + i->pressed, z - 2 * p + i->pressed), setPoint(p * 5 + dec + i->pressed, z + 2 * p + i->pressed), i->t, i->pressed ? CYAN : WHITE, 0, 1);
 
 }
 
@@ -569,6 +806,16 @@ point* selectPole(list* L, point p, screen s) {
 	float n;
 	while (L) {
 		e = L->e;
+
+		if (0 && e->t == WIRE) {
+			rp = getSimuPoint(s, p, 0);
+			point ve = sum(*e->p1, *e->p2, -1), vp = sum(*e->p1, rp, -1);
+			if (norm(sum(p, getScreenPoint(s, rp), -1)) < 8. && (ve.x == 0 && vp.x == 0 || ve.y / ve.x == vp.y / vp.x)) {
+				drawBox(s, getScreenPoint(s, rp), WHITE);
+				return NULL;
+			}
+		}
+
 		rp = getScreenPoint(s, *e->p1);
 		n = norm(sum(p, rp, -1));
 		if (n < 8.) return e->p1;

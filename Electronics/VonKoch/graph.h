@@ -1,5 +1,6 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,12 +13,25 @@
 #define GREY 128 << 16 | 128 << 8 | 128
 #define DGREY 64 << 16 | 64 << 8 | 64
 #define DDGREY 16 << 16 | 16 << 8 | 16
+#define LRED 255 << 16
 #define RED 128 << 16
+#define LBLUE 255
+#define BLUE 128
 #define GREEN 128 << 8
 #define YELLOW 200 << 16 | 200 << 8
 
+typedef enum elemType {TEXT}eType;
+
+typedef struct sGraph {
+	float UpixRatio, IpixRatio, secPixRatio;
+	float *Utab, *Itab;
+	int tmpLast, index, tabLength, overflow;
+	int toDraw;
+}graph;
+
 typedef struct sScreen {
 	SDL_Surface* w;
+	graph* g;
 	int offsetx, offsety, zoom;
 }screen;
 
@@ -26,6 +40,18 @@ typedef struct sIconCase {
 	int size, z, pressed;
 	struct sIconCase* next;
 }icon;
+
+typedef struct sWindowElem {
+	eType type;
+	char* label;
+	struct sWindowElem* next;
+}welem;
+
+welem* createWElem(eType type, char* label);
+void freeWElem(welem* w);
+
+graph* createGraph(float UpixRatio, float IpixRatio, float secPixRatio);
+void freeGraph(graph* g);
 
 icon* createIcon(int size, int z, int pressed, type t);
 void addIcon(icon** I, icon* i);
@@ -38,6 +64,7 @@ void draw(screen s, point p1, point p2, type t, Uint32 color, int selected, int 
 
 void drawW(screen s, point p1, point p2, Uint32 color, int selected, int isIcon);
 void drawG(screen s, point p1, point p2, Uint32 color, int selected, int isIcon);
+void drawAD(screen s, point p1, point p2, Uint32 color, int selected, int isIcon);
 void drawR(screen s, point p1, point p2, Uint32 color, int selected, int isIcon);
 void drawL(screen s, point p1, point p2, Uint32 color, int selected, int isIcon);
 void drawC(screen s, point p1, point p2, Uint32 color, int selected, int isIcon);
@@ -53,6 +80,8 @@ void drawLine3(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color);
 void drawBox(screen s, point p, Uint32 color);
 void drawSelectedArea(SDL_Surface* s, point p1, point p2);
 
+void drawGraph(screen s, elec* e, float Ttmp);
+void drawParamBar(screen s, elec* e);
 void drawGUI(screen s, icon* I);
 void drawGUIBox(screen s, icon* i);
 

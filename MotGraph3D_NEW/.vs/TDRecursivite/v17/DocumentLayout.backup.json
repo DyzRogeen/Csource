@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\mot.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\plan.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\plan.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\plan.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\plan.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\plan.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\plan.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -30,21 +30,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "mot.c",
-              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\mot.c",
-              "RelativeDocumentMoniker": "VonKoch\\mot.c",
-              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\mot.c",
-              "RelativeToolTip": "VonKoch\\mot.c",
-              "ViewState": "AgIAAOMCAAAAAAAAAADgv3ADAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-07T08:53:02.872Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 4,
@@ -53,14 +40,13 @@
               "RelativeDocumentMoniker": "VonKoch\\mot.h",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\mot.h",
               "RelativeToolTip": "VonKoch\\mot.h",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwB0AAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAAwHYAAABiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-27T09:44:32.565Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-27T09:44:32.565Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "plan.h",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\plan.h",
               "RelativeDocumentMoniker": "VonKoch\\plan.h",
@@ -73,13 +59,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "mot.c",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\mot.c",
+              "RelativeDocumentMoniker": "VonKoch\\mot.c",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\mot.c",
+              "RelativeToolTip": "VonKoch\\mot.c",
+              "ViewState": "AgIAAJoCAAAAAAAAAADgv/sCAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-11-07T08:53:02.872Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "plan.c",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\plan.c",
               "RelativeDocumentMoniker": "VonKoch\\plan.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\plan.c",
               "RelativeToolTip": "VonKoch\\plan.c",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwB0AAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAzwAoAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-12-27T09:17:11.231Z",
               "EditorCaption": ""
@@ -92,7 +91,7 @@
               "RelativeDocumentMoniker": "VonKoch\\main.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\main.c",
               "RelativeToolTip": "VonKoch\\main.c",
-              "ViewState": "AgIAABQAAAAAAAAAAADgvzcAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAAAKEAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-11-07T08:42:57.255Z",
               "EditorCaption": ""

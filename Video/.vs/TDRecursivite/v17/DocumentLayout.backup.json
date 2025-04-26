@@ -1,0 +1,87 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\video.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\video.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\utils_SDL.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\utils_SDL.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "utils_SDL.h",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\utils_SDL.h",
+              "RelativeDocumentMoniker": "VonKoch\\utils_SDL.h",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\utils_SDL.h",
+              "RelativeToolTip": "VonKoch\\utils_SDL.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAAAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-11T10:12:42.89Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "video.h",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.h",
+              "RelativeDocumentMoniker": "VonKoch\\video.h",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.h",
+              "RelativeToolTip": "VonKoch\\video.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-01-11T10:02:58.273Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "video.c",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.c",
+              "RelativeDocumentMoniker": "VonKoch\\video.c",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.c",
+              "RelativeToolTip": "VonKoch\\video.c",
+              "ViewState": "AgIAADYAAAAAAAAAAADgv0IAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-01-11T10:02:46.057Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.c",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\main.c",
+              "RelativeDocumentMoniker": "VonKoch\\main.c",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\main.c",
+              "RelativeToolTip": "VonKoch\\main.c",
+              "ViewState": "AgIAADsAAAAAAAAAAADwv1YAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2024-11-07T08:39:07.823Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
