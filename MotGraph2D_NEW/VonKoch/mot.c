@@ -12,7 +12,7 @@ pointf* createPoint(float x, float y) {
 listP* createList(pointf* p) {
 	listP* P = (listP*)calloc(1, sizeof(listP));
 	P->p = p;
-	P->v = setPoint(0, 0);
+	P->v = createPoint(0, 0);
 	P->next = NULL;
 	return P;
 }
@@ -57,7 +57,7 @@ listO* createListO(obj* o) {
 	}
 	o->pRot = scale(sumP, 1.f / nbP);
 	o->vRot = 0.f;
-	o->v = setPoint(0.f, 0.f);
+	o->v = createPoint(0, 0);
 
 	O->o = o;
 	O->next = NULL;
@@ -166,16 +166,16 @@ void colorObj(SDL_Surface* window, listP* lP, int nbPoints, Uint32 color) {
 	freeListP(fpLeft);
 }
 
-void displayVector(SDL_Surface* window, obj o, pointf p, int scale) {
+void displayVector(SDL_Surface* window, obj* o, pointf p, int scale) {
 
-	pointf v = sum(o.v, rot2v(o, p), 1);
+	pointf v = sum(*(o->v), rot2v(*o, p), 1);
 	_SDL_DrawLine(window, p.x, p.y, p.x + v.x * scale, p.y + v.y * scale, 255, 0, 0);
 
 }
 
-void movePoint(obj o, pointf* p) {
-	*p = sum(*p, o.v, 1);
-	*p = sum(*p, rot2v(o, *p), 1);
+void movePoint(obj* o, pointf* p) {
+	*p = sum(*p, *(o->v), 1);
+	*p = sum(*p, rot2v(*o, *p), 1);
 }
 
 /*void test(SDL_Surface* window, obj* o, listP* pl) {
@@ -257,12 +257,14 @@ void test2(SDL_Surface* window, obj* o, listP* pc, pointf vc) {
 }*/
 
 void seekCollision(listO* O) {
-	listO* O2 = O;
+	listO* O2;
 	obj *o1, *o2;
 
 	while (O) {
 
 		o1 = O->o;
+
+		O2 = O->next;
 
 		while (O2) {
 
@@ -282,11 +284,13 @@ void seekCollision(listO* O) {
 }
 
 // Détection asymétrique, collision d'un sommet de o1 dans o2
+// Non en fait maintenant c'est :
+// Détection symétrique des points de collision entre 2 objets.
 void collide(obj* o1, obj* o2) {
 
 	listP* P1 = o1->points;
 	listP* P2;
-	pointf p1, p2, segc1, segc2, v2;
+	pointf p1, p2, segc1, segc2, v1, v2;
 	//float min1, max1, min2, max2;
 	float proj;
 	int hasNext = 1;
@@ -294,10 +298,15 @@ void collide(obj* o1, obj* o2) {
 	while (P1)
 	{
 		p1 = *(P1->p);
+
+		v1 = sum((P1->next == NULL) ? *(o1->points->p) : *(P1->next->p), p1, -1);
+
 		P2 = o2->points;
+
 		while (P2) {
 			p2 = *(P2->p);
-			hasNext = (P2->next);
+
+			v2 = sum((P2->next == NULL) ? *(o2->points->p) : *(P2->next->p), p2, -1);
 
 			/*v2 = sum(hasNext ? *(P2->next->p) : *(o2->points->p), p2, -1);
 			projSeg(p2, v2, P1, &min1, &max1);
@@ -308,7 +317,7 @@ void collide(obj* o1, obj* o2) {
 				break;
 			}*/
 
-			proj = projectionCoef(sum(p1, p2, -1), sum(hasNext ? *(P2->next->p) : *(o2->points->p), p2, -1));
+			/*proj = projectionCoef(sum(p1, p2, -1), sum(hasNext ? *(P2->next->p) : *(o2->points->p), p2, -1));
 
 			// Si au moins un point est hors d'une projection, il n'y aura pas de collision : on passe ce point.
 			if (proj < 0.f && proj > 1.f) break;
@@ -318,13 +327,59 @@ void collide(obj* o1, obj* o2) {
 				getSegContact(p1, (P1->next ? *(P1->next->p) : *(o1->points->p)), o2->points, &segc1.x, &segc1.y, &segc2.x, &segc2.y);
 				contact(o1, o2, p1, segc1, segc2);
 				break;
+			}*/
+
+			// [ v1_x -v2_x ][ t ] = [ -X01 + X02 ]
+			// [ v1_y -v2_y ][ d ]   [ -Y01 + Y02 ]
+
+			// Si le point de contact est hors du segement 1, on passe
+			float t = (v2.y * (p1.x - p2.x) - v2.x * (p1.y - p2.y)) / (v2.x * v1.y - v1.x * v2.y);
+			if (t > 1.f || t < 0.f) {
+				P2 = P2->next;
+				continue;
 			}
 
-			P2 = P2->next;
+			// Si le point de contact est hors du segement 2, on passe;
+			float d = (v1.y * (p1.x - p2.x) - v1.x * (p1.y - p2.y)) / (v2.x * v1.y - v1.x * v2.y);
+			if (d > 1.f || d < 0.f) {
+				P2 = P2->next;
+				continue;
+			}
+
+			pointf p_contact = sum(p1, scale(v1, t), 1); // ou sum(p2, scale(v2, d), 1);
+
+			handleCollision(o1, o2, p_contact);
+
+			break;
 		}
 
 		P1 = P1->next;
 	}
+
+}
+
+void handleCollision(obj* o1, obj* o2, pointf p_contact) {
+	listP* P1 = o1->points;
+	listP* P2 = o2->points;
+	pointf vo1p, tan1, v1, vRot1, v2, vRot2;
+
+	if (!o1->isStatic) {
+
+		vo1p = unit(sum(p_contact, o1->pRot, -1));
+
+		tan1 = orthogonal(vo1p);
+		v1 = scale(tan1, projectionCoef(*o1->v, tan1));
+
+		//vRot1 = sum(*o1->v, rot2v(*o1, p_contact), 1);
+
+		o1->vRot = -norm(v1) / norm(sum(p_contact, o1->pRot, -1));
+		*o1->v = sum(*o1->v, scale(vo1p, projectionCoef(*o1->v, vo1p)), 1);
+
+
+	}
+	
+	if (!o2->isStatic)
+		o2->v->y *= -1;
 
 }
 
@@ -384,10 +439,10 @@ void contact(obj* o1, obj* o2, pointf pc1, pointf p1segc2, pointf p2segc2) {
 	if (o1->isStatic) {
 
 		// Vecteur réponse au contact
-		vc = scale(orth, projectionCoef(sum(o2->v, sum(scale(rot2v(*o2, p1segc2), distRatio), scale(rot2v(*o2, p2segc2), 1 - distRatio), 1), 1), orth));
+		vc = scale(orth, projectionCoef(sum(*(o2->v), sum(scale(rot2v(*o2, p1segc2), distRatio), scale(rot2v(*o2, p2segc2), 1 - distRatio), 1), 1), orth));
 		// Addition à la vitesse de l'obj
-		o2->v = sum(o2->v, scale(unit(segco2), projectionCoef(vc, segco2)), 1);
-
+		*(o2->v) = sum(*(o2->v), scale(unit(segco2), projectionCoef(vc, segco2)), 1);
+		
 		o2->vRot += projectionCoef(segco2, orthogonal(vc)) * norm(vc);
 
 	}
@@ -395,10 +450,10 @@ void contact(obj* o1, obj* o2, pointf pc1, pointf p1segc2, pointf p2segc2) {
 
 		//printf("oui\n");
 
-		v1 = sum(o1->v, rot2v(*o1, pc1), 1);
+		v1 = sum(*(o1->v), rot2v(*o1, pc1), 1);
 
 		// Addition à la vitesse de l'obj
-		o1->v = sum(o1->v, v1, -1);
+		*(o1->v) = sum(*(o1->v), v1, -1);
 
 		// Vecteur réponse au contact
 		vc = scale(orth, projectionCoef(v1, orth) * (v1.x * orth.x + v1.y * orth.y < 0 ? -1 : 1));
@@ -514,7 +569,7 @@ void printObj(obj* o) {
 	if (o->isStatic)printf("[ STATIC , pRot : ");
 	else {
 		printf("[v : ");
-		printPnt(o->v);
+		printPnt(*(o->v));
 		printf(" , vRot : %1.f , pRot : ", o->vRot);
 	}
 	printPnt(o->pRot);
@@ -529,6 +584,7 @@ void freeListP(listP* P) {
 	if (!P) return;
 	freeListP(P->next);
 	free(P->p);
+	free(P->v);
 	free(P);
 }
 
@@ -536,6 +592,7 @@ void freeObj(obj* o) {
 	if (!o) return;
 	printObj(o);
 	freeListP(o->points);
+	free(o->v);
 	free(o);
 	o = NULL;
 }

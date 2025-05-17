@@ -19,6 +19,8 @@ void normIMGs(SDL_Surface* win, Uint32* pxlsH, Uint32* pxlsV);
 
 void blackWhite(SDL_Surface* win);
 
+void detectCorners(SDL_Surface* win);
+
 
 // UTILS
 

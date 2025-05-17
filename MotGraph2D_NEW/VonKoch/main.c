@@ -16,21 +16,21 @@ void displayAll(SDL_Surface* window, listO* O) {
 
 	while (O) {
 		o = O->o;
-		o->v.y += 0.001;
+		o->v->y += 0.00001;
 		if (!o->isStatic) {
 			P = o->points;
 
 			offScreen = 1;
 			while (P) {
 				p = P->p;
-				movePoint(*o, p);
-				displayVector(window, *o, *p, 200);
+				movePoint(o, p);
+				displayVector(window, o, *p, 200);
 
 				offScreen = offScreen && (p->x < 0.f || p->x > w || p->y < 0.f || p->y > h);
 				
 				P = P->next;
 			}
-			movePoint(*o, &(o->pRot));
+			movePoint(o, &(o->pRot));
 
 			if (offScreen) {
 				//printf("OFFSCREEN !\n");

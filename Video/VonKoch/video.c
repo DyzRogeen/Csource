@@ -65,20 +65,28 @@ void convolution(SDL_Surface* win, float* filter, int w_filter, int h_filter) {
 }
 
 void gaussianNoiseReducer(SDL_Surface* win) {
-	float filter[25] = {
+	/*int filter[25] = {
 		2, 4, 5, 4, 2,
 		4, 9,12, 9, 4,
-		5,12,15,12,15,
+		5,12,15,12, 5,
 		4, 9,12, 9, 4,
 		2, 4, 5, 4, 2,
+	};*/
+
+	int filter[25] = {
+		1, 4, 6, 4, 1,
+		4,16,24,16, 4,
+		6,24,36,24, 6,
+		4,16,24,16, 4,
+		1, 4, 6, 4, 1,
 	};
 
 	int w = win->w, h = win->h, slot = 0, val_pxl, slot_filter, slot_win = 0;
 	Uint32* pxls = win->pixels, * pxls_copy = copyPxls(win);
 	Uint8* pxl;
 
-	for (int x = 0; x < w; x++)
-		for (int y = 0; y < h; y++) {
+	for (int y = 0; y < h; y++)
+		for (int x = 0; x < w; x++) {
 			
 			val_pxl = slot_filter = 0;
 			for (int j = -2; j <= 2; j++)
@@ -89,11 +97,11 @@ void gaussianNoiseReducer(SDL_Surface* win) {
 						continue;
 					}
 
-					val_pxl += (*(pxls_copy + x + i + (y + j) * w) & 255) * filter[slot_filter++];
+					val_pxl += (*(pxls_copy + x + i + (y + j) * w) & 255) * filter[slot_filter];
 				}
 
-			val_pxl /= 159;
-			//val_pxl = val_pxl > 20 ? val_pxl : 0;
+			val_pxl /= 25;
+			val_pxl = val_pxl > 60 ? val_pxl : 0;
 
 			pxl = pxls + slot_win;
 			pxl[0] = pxl[1] = pxl[2] = val_pxl;
@@ -140,6 +148,139 @@ void blackWhite(SDL_Surface* win) {
 			valBW = (pxl[0] + pxl[1] + pxl[2]) / 3;
 			pxl[0] = pxl[1] = pxl[2] = valBW;
 		}
+}
+
+void detectCorners(SDL_Surface* win) {
+	int w = win->w, h = win->h, slot = 0;
+	Uint32* pxls = win->pixels;
+	int pxl, pxl_m1, pxl_bis;
+	int disparityFound = 0;
+
+	int areaDetection = 7;
+	int deltaMax = 50;
+	int side = (areaDetection - 1) / 2;
+
+	int seuil = 20;
+	float diag_side = (float)side / sqrt(2);
+	int nb_brighter, nb_darker, streak_bright, streak_dark;
+
+	for (int x = side + 1; x < w - side; x++)
+		for (int y = side + 1; y < h - side; y++) {
+
+			nb_brighter = nb_darker = streak_bright = streak_dark = 0;
+			slot = x + y * w;
+			pxl = *(pxls + slot) & 255;
+
+			pxl_bis = *(pxls + slot - side) & 255;
+			if (pxl - pxl_bis < -seuil) {
+				nb_brighter++;
+				streak_bright++;
+				streak_dark = 0;
+			}
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			pxl_bis = *(pxls + slot + side) & 255;
+			if (pxl - pxl_bis < -seuil) nb_brighter++;
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			pxl_bis = *(pxls + slot - side * w) & 255;
+			if (pxl - pxl_bis < -seuil) nb_brighter++;
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			pxl_bis = *(pxls + slot + side * w) & 255;
+			if (pxl - pxl_bis < -seuil) nb_brighter++;
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			pxl_bis = *(pxls + (int)(slot - diag_side - diag_side * w)) & 255;
+			if (pxl - pxl_bis < -seuil) nb_brighter++;
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			pxl_bis = *(pxls + (int)(slot - diag_side + diag_side * w)) & 255;
+			if (pxl - pxl_bis < -seuil) nb_brighter++;
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			pxl_bis = *(pxls + (int)(slot + diag_side - diag_side * w)) & 255;
+			if (pxl - pxl_bis < -seuil) nb_brighter++;
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			pxl_bis = *(pxls + (int)(slot + diag_side + diag_side * w)) & 255;
+			if (pxl - pxl_bis < -seuil) nb_brighter++;
+			else if (pxl - pxl_bis > seuil) nb_darker++;
+
+			// TODO regarder si 2 à 3 ou 6 points brigter ou darker sont consécutifs
+
+			if (nb_brighter > 2 )
+				*(pxls + x + y * w) |= 255 << 16;
+
+			continue;
+
+			/* Vertical changes
+				
+				(exemple avec zone de rechereche 5x5)
+				=========== Disparités sur ligne 1 ?
+				 . . . . .
+				=========== Sinon sur ligne 2 ?
+				 . . . . .
+				=========== Sinon sur ligne 3 ?
+			*/
+			disparityFound = 0;
+			for (int n = -1; n <= 1 && !disparityFound; n++) { // On observe 3 lignes, les 2 bords et la ligne du centre
+
+				slot = x - side + (y - side * n) * w;
+				for (int i = 0; i < areaDetection; i++) {
+					pxl = *(pxls + slot) & 255;
+
+					// S'il y a du changement, on inspecte la direction suivante
+					if (i != 0 && abs(pxl_m1 - pxl) > deltaMax) {
+						disparityFound = 1;
+						break;
+					}
+
+					pxl_m1 = pxl;
+					slot++;
+				}
+
+			}
+			
+
+			if (!disparityFound) continue; // Si la zone est "lisse" dans une direction, on admet que ca ne peut pas être un coin.
+
+
+			/* Horizontal changes
+			* 
+			* On revérifie les disparités mais cette fois sur 3 colonnes de la zone de recherche.
+			*   c1   c2   c3
+				|| . || . ||
+				|| . || . ||
+				|| . || . ||
+				|| . || . ||
+				|| . || . ||
+			*/
+			disparityFound = 0;
+			for (int n = -1; n <= 1 && !disparityFound; n++) { // On observe 3 colones, les 2 bords et la colones du centre.
+
+				slot = x - side * n + (y - side) * w;
+				for (int i = 0; i < areaDetection; i++) {
+					pxl = *(pxls + slot) & 255;
+
+					// S'il y a du changement, on inspecte la direction suivante
+					if (i != 0 && abs(pxl_m1 - pxl) > deltaMax) {
+						disparityFound = 1;
+						break;
+					}
+
+					pxl_m1 = pxl;
+					slot += w;
+				}
+
+			}
+
+			if (disparityFound) { // S'il y a du changement dans les 2 directions, on peut admettre que c'est un coin.
+				*(pxls + x + y * w) |= 255 << 16; // On le colorie en rouge.
+			}
+
+		}
+
 }
 
 

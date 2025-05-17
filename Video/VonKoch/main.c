@@ -72,9 +72,6 @@ int main(int argc, char **argv)
 				break;
 			case SDL_KEYDOWN:
 
-				mapPxls(window, img);
-
-
 				key = e.key.keysym.sym;
 				if (key == SDLK_ESCAPE)
 					quit = 1;
@@ -84,26 +81,39 @@ int main(int argc, char **argv)
 					blackWhite(window);
 				if (key == SDLK_g)
 					gaussianNoiseReducer(window);
+				if (key == SDLK_c)
+					detectCorners(window);
 				if (key == SDLK_1) {
+					mapPxls(window, img);
+
 					convolution(window, filter, 3, 1);
 					
 					free(pxlsV);
 					pxlsV = copyPxls(window);
 				}
 				if (key == SDLK_2) {
+					mapPxls(window, img);
+
 					convolution(window, filter, 1, 3);
 
 					free(pxlsH);
 					pxlsH = copyPxls(window);
 				}
-				if (key == SDLK_3) normIMGs(window, pxlsH, pxlsV);
+				if (key == SDLK_3) {
+					mapPxls(window, img);
+					normIMGs(window, pxlsH, pxlsV);
+				}
 				if (key == SDLK_4) {
+					mapPxls(window, img);
+
 					convolution(window, filterGH, gaussFilterDim, gaussFilterDim);
 
 					free(pxlsV);
 					pxlsV = copyPxls(window);
 				}
 				if (key == SDLK_5) {
+					mapPxls(window, img);
+
 					convolution(window, filterGV, gaussFilterDim, gaussFilterDim);
 
 					free(pxlsH);

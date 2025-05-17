@@ -16,7 +16,7 @@ typedef struct sPointF {
 }pointf;
 
 typedef struct sListP {
-	pointf v;
+	pointf* v;
 	pointf* p;
 	struct sListP* next;
 }listP;
@@ -24,7 +24,7 @@ typedef struct sListP {
 typedef struct sObj {
 	listP* points;
 	int nbPoints;
-	pointf v;
+	pointf* v;
 	// vitesse de rot à 1pxl du pRot
 	float vRot;
 	pointf pRot;
@@ -58,9 +58,9 @@ void colorTriangle(SDL_Surface* window, pointf p1, pointf p2, pointf p3, const U
 
 void colorObj(SDL_Surface* window, listP* lP, int nbPoints, Uint32 color);
 
-void displayVector(SDL_Surface* window, obj o, pointf p, int scale);
+void displayVector(SDL_Surface* window, obj* o, pointf p, int scale);
 
-void movePoint(obj o, pointf* p);
+void movePoint(obj* o, pointf* p);
 
 //void test(SDL_Surface* window, obj* o, listP* pl);
 
@@ -69,6 +69,8 @@ void contact(obj* o1, obj* o2, pointf pc1, pointf p1segc2, pointf p2segc2);
 void seekCollision(listO* O);
 
 void collide(obj* o1, obj* o2);
+
+void handleCollision(obj* o1, obj* o2, pointf p_contact);
 
 void getSegContact(pointf p, pointf pn, listP* P, float* x1, float* y1, float* x2, float* y2);
 

@@ -1,15 +1,4 @@
-﻿  mot.c
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(106,21): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(105,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(136,227): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(137,232): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(138,153): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(116,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(117,1): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(172,27): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(172,32): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(172,51): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(172,70): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\source\MotGraph2D_NEW\VonKoch\mot.c(299,24): warning C4047: '=' : les niveaux d'indirection de 'int' et de 'sListP *' sont différents
-  VonKoch.vcxproj -> C:\Users\Adrie\source\MotGraph2D_NEW\bin\VonKoch_d.exe
-          1 fichier(s) copié(s).
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(89,3): error : Impossible de résoudre le SDK «Microsoft.NET.Sdk». Exactement l’un des messages de sondage ci-dessous indique pourquoi nous n’avons pas pu résoudre le Kit de développement logiciel (SDK). Examinez et résolvez ce message pour spécifier correctement le Kit de développement logiciel (SDK).
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(89,3): error :   NuGetSdkResolver n’a pas résolu ce SDK, car aucune version n’était spécifiée dans le projet ou global.json.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(89,3): error :   MSB4276: Le programme de résolution du SDK par défaut n’a pas pu résoudre le SDK «Microsoft.NET.Sdk», car le répertoire «C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Sdks\Microsoft.NET.Sdk\Sdk» n’existait pas.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(89,11): error MSB4236: Le SDK 'Microsoft.NET.Sdk' spécifié est introuvable.
