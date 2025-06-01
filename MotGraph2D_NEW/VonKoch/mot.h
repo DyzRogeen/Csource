@@ -62,6 +62,8 @@ void displayVector(SDL_Surface* window, obj* o, pointf p, int scale);
 
 void movePoint(obj* o, pointf* p);
 
+pointf nextPos(obj* o, pointf p);
+
 //void test(SDL_Surface* window, obj* o, listP* pl);
 
 void contact(obj* o1, obj* o2, pointf pc1, pointf p1segc2, pointf p2segc2);
@@ -70,7 +72,7 @@ void seekCollision(listO* O);
 
 void collide(obj* o1, obj* o2);
 
-void handleCollision(obj* o1, obj* o2, pointf p_contact);
+void handleCollision(obj* o1, obj* o2, pointf p1, pointf p_contact, pointf s_contact);
 
 void getSegContact(pointf p, pointf pn, listP* P, float* x1, float* y1, float* x2, float* y2);
 

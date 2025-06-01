@@ -174,8 +174,13 @@ void displayVector(SDL_Surface* window, obj* o, pointf p, int scale) {
 }
 
 void movePoint(obj* o, pointf* p) {
-	*p = sum(*p, *(o->v), 1);
 	*p = sum(*p, rot2v(*o, *p), 1);
+	*p = sum(*p, *o->v, 1);
+}
+
+// Projection du point à t + 1.
+pointf nextPos(obj* o, pointf p) {
+	return sum(sum(p, rot2v(*o, p), 1), *o->v, 1);
 }
 
 /*void test(SDL_Surface* window, obj* o, listP* pl) {
@@ -270,7 +275,7 @@ void seekCollision(listO* O) {
 
 			o2 = O2->o;
 
-			if (o1 != o2 && longestRange(o1) + longestRange(o2) >= norm(sum(o1->pRot, o2->pRot, -1))) {
+			if (o1 != o2 && !(o1->isStatic && o2->isStatic) && longestRange(o1) + longestRange(o2) >= norm(sum(o1->pRot, o2->pRot, -1))) {
 				collide(o1, o2);
 			}
 
@@ -288,6 +293,8 @@ void seekCollision(listO* O) {
 // Détection symétrique des points de collision entre 2 objets.
 void collide(obj* o1, obj* o2) {
 
+	float coefTan = 2 / (PI);
+
 	listP* P1 = o1->points;
 	listP* P2;
 	pointf p1, p2, segc1, segc2, v1, v2;
@@ -297,16 +304,19 @@ void collide(obj* o1, obj* o2) {
 
 	while (P1)
 	{
-		p1 = *(P1->p);
+		p1 = *P1->p;
 
-		v1 = sum((P1->next == NULL) ? *(o1->points->p) : *(P1->next->p), p1, -1);
+		if (!o1->isStatic) v1 = sum(nextPos(o1, p1), p1, -1);
 
 		P2 = o2->points;
 
 		while (P2) {
-			p2 = *(P2->p);
 
-			v2 = sum((P2->next == NULL) ? *(o2->points->p) : *(P2->next->p), p2, -1);
+			p2 = nextPos(o2, *P2->p);
+
+			if (!o1->isStatic) v1 = sum(nextPos(o1, p1), p1, -1);//
+
+			v2 = sum(nextPos(o2, P2->next == NULL ? *o2->points->p : *P2->next->p), p2, -1);
 
 			/*v2 = sum(hasNext ? *(P2->next->p) : *(o2->points->p), p2, -1);
 			projSeg(p2, v2, P1, &min1, &max1);
@@ -316,7 +326,6 @@ void collide(obj* o1, obj* o2) {
 				(min2 < min1 && min1 > max2 && min2 < max1 && max1 > max2))){ // Segment 1 contenu dans segment 2
 				break;
 			}*/
-
 			/*proj = projectionCoef(sum(p1, p2, -1), sum(hasNext ? *(P2->next->p) : *(o2->points->p), p2, -1));
 
 			// Si au moins un point est hors d'une projection, il n'y aura pas de collision : on passe ce point.
@@ -332,15 +341,26 @@ void collide(obj* o1, obj* o2) {
 			// [ v1_x -v2_x ][ t ] = [ -X01 + X02 ]
 			// [ v1_y -v2_y ][ d ]   [ -Y01 + Y02 ]
 
+			float det = (v2.x * v1.y - v1.x * v2.y);
+
+			// Fonction d'adoucissement aux alentours de 0 pour éviter la div par 0.
+			//det = coefTan * fabs(atan(30.0 * det)) / det;
+
+			// Nan en fait c'est nul on va juste enlever le cas où det = 0.
+			if (det == 0) {
+				P2 = P2->next;
+				continue;
+			}
+
 			// Si le point de contact est hors du segement 1, on passe
-			float t = (v2.y * (p1.x - p2.x) - v2.x * (p1.y - p2.y)) / (v2.x * v1.y - v1.x * v2.y);
+			float t = (v2.y * (p1.x - p2.x) - v2.x * (p1.y - p2.y)) / det;
 			if (t > 1.f || t < 0.f) {
 				P2 = P2->next;
 				continue;
 			}
 
 			// Si le point de contact est hors du segement 2, on passe;
-			float d = (v1.y * (p1.x - p2.x) - v1.x * (p1.y - p2.y)) / (v2.x * v1.y - v1.x * v2.y);
+			float d = (v1.y * (p1.x - p2.x) - v1.x * (p1.y - p2.y)) / det;
 			if (d > 1.f || d < 0.f) {
 				P2 = P2->next;
 				continue;
@@ -348,7 +368,7 @@ void collide(obj* o1, obj* o2) {
 
 			pointf p_contact = sum(p1, scale(v1, t), 1); // ou sum(p2, scale(v2, d), 1);
 
-			handleCollision(o1, o2, p_contact);
+			handleCollision(o1, o2, p1, p_contact, unit(v2));
 
 			break;
 		}
@@ -358,9 +378,9 @@ void collide(obj* o1, obj* o2) {
 
 }
 
-void handleCollision(obj* o1, obj* o2, pointf p_contact) {
-	listP* P1 = o1->points;
+void handleCollision(obj* o1, obj* o2, pointf p1, pointf p_contact, pointf s_contact) {
 	listP* P2 = o2->points;
+	pointf* p;
 	pointf vo1p, tan1, v1, vRot1, v2, vRot2;
 
 	if (!o1->isStatic) {
@@ -372,9 +392,20 @@ void handleCollision(obj* o1, obj* o2, pointf p_contact) {
 
 		//vRot1 = sum(*o1->v, rot2v(*o1, p_contact), 1);
 
-		o1->vRot = -norm(v1) / norm(sum(p_contact, o1->pRot, -1));
-		*o1->v = sum(*o1->v, scale(vo1p, projectionCoef(*o1->v, vo1p)), 1);
+		o1->vRot = (projectionCoef(*o1->v, tan1) > 0 ? 1 : -1) * norm(v1) / norm(sum(p_contact, o1->pRot, -1));
 
+		*o1->v = sum(*o1->v, scale(vo1p, -projectionCoef(*o1->v, vo1p)), 1);
+
+		pointf v_contact = scale(unit(sum(p_contact, p1, -1)), -1);
+		o1->pRot = sum(o1->pRot, v_contact, 1);
+
+		listP* P1 = o1->points;
+		pointf* p;
+		while (P1) {
+			p = P1->p;
+			*p = sum(*p, v_contact, 1);
+			P1 = P1->next;
+		}
 
 	}
 	

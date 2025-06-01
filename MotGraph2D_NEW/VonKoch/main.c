@@ -16,7 +16,7 @@ void displayAll(SDL_Surface* window, listO* O) {
 
 	while (O) {
 		o = O->o;
-		o->v->y += 0.00001;
+		o->v->y += 0.0001;
 		if (!o->isStatic) {
 			P = o->points;
 

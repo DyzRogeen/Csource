@@ -1,4 +1,12 @@
-﻿  graph.c
+﻿  elec.c
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(35,10): warning C4305: '=' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(205,26): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(347,21): warning C4033: 'propI' doit retourner une valeur
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(465,9): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(587,15): warning C4101: 'ptmp2' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(587,9): warning C4101: 'ptmp' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(727,2): warning C4098: 'fuseLists' : fonction 'void' retournant une valeur
+  graph.c
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(27,22): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(125,67): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(119,6): warning C4101: 'slotx' : variable locale non référencée
@@ -122,5 +130,34 @@ C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(922,19): warni
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(941,47): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(942,47): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(943,47): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+  main.c
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(37,34): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(68,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(68,56): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(99,34): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(121,28): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(121,36): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(199,35): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(199,42): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(200,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(201,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(207,35): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(207,42): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(208,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(209,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(228,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(228,66): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(238,22): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(238,30): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(292,80): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(292,88): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(300,45): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(300,53): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+  utils_SDL.c
+  Génération de code en cours...
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(419,1): warning C4715: 'getVeq' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(373,1): warning C4715: 'propI' : les chemins de contrôle ne retournent pas tous une valeur
+MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\Desktop\source\Csource\Electronics\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
   VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Electronics\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

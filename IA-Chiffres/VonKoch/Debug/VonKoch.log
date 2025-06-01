@@ -1,4 +1,33 @@
-﻿  main.c
-C:\Users\Adrie\source\IA-Chiffres\VonKoch\main.c(24,6): warning C4101: 'number' : variable locale non référencée
-  VonKoch.vcxproj -> C:\Users\Adrie\source\IA-Chiffres\bin\VonKoch_d.exe
+﻿  graph.c
+  main.c
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(77,28): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(77,42): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(77,159): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(78,28): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(78,42): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(78,170): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(79,28): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(79,42): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(79,166): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(80,28): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(80,42): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(80,178): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\graph.c(137,21): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\main.c(24,6): warning C4101: 'number' : variable locale non référencée
+  NNetwork.c
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(19,8): warning C4013: 'time' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(32,77): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(81,86): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(131,25): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(214,14): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(263,25): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(266,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(267,24): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(365,26): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
+  utils_SDL.c
+  Génération de code en cours...
+C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\VonKoch\NNetwork.c(330,1): warning C4172: retour de l’adresse de la variable locale ou temporaire : v
+MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\IA-Chiffres\bin\VonKoch_d.exe
           1 fichier(s) copié(s).
