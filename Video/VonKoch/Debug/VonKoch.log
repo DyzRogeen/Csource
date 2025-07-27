@@ -1,4 +1,6 @@
-﻿  video.c
+﻿  main.c
+  utils_SDL.c
+  video.c
 C:\Users\Adrie\Desktop\source\Csource\Video\VonKoch\video.c(13,6): warning C4142: 'getGaussianDiffFilter' : redéfinition bénigne du type
       C:\Users\Adrie\Desktop\source\Csource\Video\VonKoch\video.h(12,8):
       voir la déclaration de 'getGaussianDiffFilter'
@@ -17,5 +19,8 @@ C:\Users\Adrie\Desktop\source\Csource\Video\VonKoch\video.c(129,55): warning C42
 C:\Users\Adrie\Desktop\source\Csource\Video\VonKoch\video.c(119,18): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Video\VonKoch\video.c(147,8): warning C4133: '=' : types incompatibles - de 'Uint32 *' à 'Uint8 *'
 C:\Users\Adrie\Desktop\source\Csource\Video\VonKoch\video.c(164,32): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+  Génération de code en cours...
+MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\Desktop\source\Csource\Video\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
   VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Video\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

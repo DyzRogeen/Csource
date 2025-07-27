@@ -1,4 +1,4 @@
-#include "../SDL-1.2.15/include/SDL.h"
+#include "../SDL2-2.28.1/include/SDL.h"
 
 /**	
  *	@brief	Fonction permettant de dessiner un pixel dans une fenêtre SDL.

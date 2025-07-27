@@ -1,11 +1,13 @@
 #pragma once
 #include <math.h>
-#include "utils_SDL.h"
+#include <stdio.h>
 #include "neuralNet.h"
+#include "../SDL2-2.28.1/include/SDL.h"
 
-#define WHITE 1 << 25 - 1
-#define RED 255 << 16
-#define BLUE 255
+
+#define WHITE 255 << 16 | 255 << 8 | 255 | 255 << 24
+#define RED 255 << 16 | 255 << 24
+#define BLUE 255 | 255 << 24
 
 typedef struct sPointf {
 	float x, y;
@@ -20,13 +22,15 @@ typedef struct sNeuron {
 	float val;
 }neuron;
 
-void drawNeuron(SDL_Surface* window, point p, float val, int size);
+void drawNeuron(SDL_Surface* window, int px, int py, float val, int size);
 
 void drawLink(SDL_Surface* window, point p1, point p2, int size, float w);
 
-void drawNetwork(SDL_Surface* window, NeuralNetwork n);
+void drawNetwork(SDL_Surface* window, NeuralNetwork* n);
 
-int getMaxLayerSize(LayerList* ll);
+void drawLayer(SDL_Surface* window, layer* l, layer* l_next, int x, int y, int size, int space, int margin);
+
+int getMaxLayerSize(LayerList* ll, int maxSize);
 
 
 pointf unit(pointf v);

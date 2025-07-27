@@ -1,52 +1,59 @@
 #pragma once
-#include <functional>
 #include <time.h>
+#include <math.h>
 
-class NeuralNetwork {
+#define E 2.71828
 
-	LayerList* layerList = NULL;
-	int size = 0;
-
-public:
-	NeuralNetwork(){};
-	int getSize() { return this->size; };
-	int setSize(int size) { this->size = size; };
-	LayerList* getLayers() { return this->layerList; };
-	NeuralNetwork addLayer(int size, std::function<float(float)> activation);
-	void init();
-	void setInputValues(float* vals);
-	void propagate();
-	void clear();
-};
-
-class Layer {
+typedef struct sLayer {
 
 	int size;
-	float bias;
+	float* h; // Avant la fonction d'activation (utile dans la rétropropadation pour éviter de le recalculer)
+	float* e; // Erreur
 	float* nodeVals;
 	float* W_mat;
-	std::function<float(float)> activation;
+	float (*activation)(float);
+	float (*deriv)(float);
 
-public:
-	Layer(int size, std::function<float(float)> activation);
-	int getSize() { return this->size; }
-	void setValues(float* vals);
-	float* getValues() { return this->nodeVals; }
-	float* getWeights() { return this->getWeights(); }
-	void init(int size_next);
-	void propagate(int size_next, float* vals_next);
-	void clear();
-
-};
+}layer;
 
 typedef struct LayerListS {
-	Layer layer;
+	layer* layer;
 	struct LayerListS* next;
 	struct LayerListS* prec;
 }LayerList;
 
-float ReLu(float x);
+typedef struct sNeuralNetwork {
 
-LayerList* createList(Layer l);
-void addLayerToList(LayerList** ll, Layer l);
+	LayerList* layerList;
+	LayerList* lastLayer;
+	int size;
+
+}NeuralNetwork;
+
+float ReLu(float x);
+float dReLu(float x);
+float sigmoid(float x);
+float dsigmoid(float x);
+
+NeuralNetwork* createNetwork();
+void addLayer(NeuralNetwork* n, int size, float (*activation)(float), float (*deriv)(float));
+void init(NeuralNetwork* n);
+void setInputValues(NeuralNetwork* n, float* vals);
+void initOutputErrors(layer* l, float* t);
+void propagate(NeuralNetwork* n);
+void retroPropagate(NeuralNetwork* n, float* t);
+void clear(NeuralNetwork* n);
+
+layer* createLayer(int size, float (*activation)(float), float (*deriv)(float));
+void initLayer(layer* l, int size_next);
+void setValues(layer* l, float* vals);
+void propagateLayer(layer* l, layer* l_next);
+void retroPropagateLayer(layer* l_prec, layer* l);
+void clearLayer(layer* l);
+
+void normalize(float* y, int N, float mean);
+void printNetwork(NeuralNetwork* n);
+void printLayer(layer* l, int size_next);
+LayerList* createList(layer* l);
+void addLayerToList(NeuralNetwork* n, LayerList** ll, layer* l);
 void freeLayerList(LayerList* l);

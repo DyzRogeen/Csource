@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\neuralNet.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\convolNet.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\convolNet.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\neuralNet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\neuralNet.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\convolNet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\convolNet.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\graph.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\graph.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -30,71 +38,95 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "graph.h",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.h",
               "RelativeDocumentMoniker": "VonKoch\\graph.h",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.h",
               "RelativeToolTip": "VonKoch\\graph.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAABcAAAAAAAAAAAAgwCAAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-05-30T09:39:00.505Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-30T09:39:00.505Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "graph.cpp",
-              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.cpp",
-              "RelativeDocumentMoniker": "VonKoch\\graph.cpp",
-              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.cpp",
-              "RelativeToolTip": "VonKoch\\graph.cpp",
-              "ViewState": "AgIAADIAAAAAAAAAAAAjwEIAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-05-30T09:38:32.83Z",
-              "EditorCaption": ""
+              "DocumentIndex": 5,
+              "Title": "graph.c",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.c",
+              "RelativeDocumentMoniker": "VonKoch\\graph.c",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\graph.c",
+              "RelativeToolTip": "VonKoch\\graph.c",
+              "ViewState": "AgIAAEwAAAAAAAAAAAApwGMAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-05-30T09:38:32.83Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "neuralNet.h",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.h",
               "RelativeDocumentMoniker": "VonKoch\\neuralNet.h",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.h",
               "RelativeToolTip": "VonKoch\\neuralNet.h",
-              "ViewState": "AgIAACQAAAAAAAAAAAAAwDEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAQwCYAAABbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-05-28T07:31:12.451Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "neuralNet.cpp",
-              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.cpp",
-              "RelativeDocumentMoniker": "VonKoch\\neuralNet.cpp",
-              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.cpp",
-              "RelativeToolTip": "VonKoch\\neuralNet.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-05-28T07:31:22.475Z",
+              "DocumentIndex": 0,
+              "Title": "neuralNet.c",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.c",
+              "RelativeDocumentMoniker": "VonKoch\\neuralNet.c",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.c",
+              "RelativeToolTip": "VonKoch\\neuralNet.c",
+              "ViewState": "AgIAACMAAAAAAAAAAAApwDIAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-07-06T08:17:31.928Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\main.cpp",
-              "RelativeDocumentMoniker": "VonKoch\\main.cpp",
-              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\main.cpp",
-              "RelativeToolTip": "VonKoch\\main.cpp",
-              "ViewState": "AgIAABAAAAAAAAAAAAAkwCYAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-03T08:20:54.91Z",
+              "DocumentIndex": 4,
+              "Title": "convolNet.h",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\convolNet.h",
+              "RelativeDocumentMoniker": "VonKoch\\convolNet.h",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\convolNet.h",
+              "RelativeToolTip": "VonKoch\\convolNet.h",
+              "ViewState": "AgIAABoAAAAAAAAAAAAgwE0AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-07-05T08:13:14.872Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "convolNet.c",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\convolNet.c",
+              "RelativeDocumentMoniker": "VonKoch\\convolNet.c",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\convolNet.c",
+              "RelativeToolTip": "VonKoch\\convolNet.c",
+              "ViewState": "AgIAAHEBAAAAAAAAAADgv88AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-07-23T08:46:02.508Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "main.c",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\main.c",
+              "RelativeDocumentMoniker": "VonKoch\\main.c",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\main.c",
+              "RelativeToolTip": "VonKoch\\main.c",
+              "ViewState": "AgIAAJAAAAAAAAAAAADwvyYBAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-07-20T08:58:22.394Z",
               "EditorCaption": ""
             }
           ]

@@ -1,99 +1,13 @@
-﻿  graph.cpp
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,11): error C2143: erreur de syntaxe : absence de ';' avant '*'
-  (compiler le fichier source 'graph.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,2): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-  (compiler le fichier source 'graph.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,29): error C2238: jetons inattendus avant ';'
-  (compiler le fichier source 'graph.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,11): error C2143: erreur de syntaxe : absence de ';' avant '*'
-  (compiler le fichier source 'graph.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,2): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-  (compiler le fichier source 'graph.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,25): error C2334: jetons inattendus avant '{' ; corps apparent de la fonction ignoré
-  (compiler le fichier source 'graph.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(9,24): warning C4244: 'initialisation' : conversion de 'float' en 'Uint32', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(14,15): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(16,46): warning C4554: '<<' : vérifiez si la priorité des opérateurs n'est pas une cause possible d'erreur ; utilisez des parenthèses pour rendre les priorités plus claires
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(31,48): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(31,38): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(31,78): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(31,68): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(33,19): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(37,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(38,24): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(40,10): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(40,27): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(53,20): error C2039: 'getLayers' n'est pas membre de 'NeuralNetwork'
-      C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(12,7):
-      voir la déclaration de 'NeuralNetwork'
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(67,3): error C3861: 'drawLayer' : identificateur introuvable
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(71,2): error C3861: 'drawLayer' : identificateur introuvable
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\graph.cpp(106,22): warning C4244: 'argument' : conversion de 'double' en 'float', perte possible de données
-  main.cpp
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,11): error C2143: erreur de syntaxe : absence de ';' avant '*'
-  (compiler le fichier source 'main.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,2): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-  (compiler le fichier source 'main.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,29): error C2238: jetons inattendus avant ';'
-  (compiler le fichier source 'main.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,11): error C2143: erreur de syntaxe : absence de ';' avant '*'
-  (compiler le fichier source 'main.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,2): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-  (compiler le fichier source 'main.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,25): error C2334: jetons inattendus avant '{' ; corps apparent de la fonction ignoré
-  (compiler le fichier source 'main.cpp')
-  
-  neuralNet.cpp
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,11): error C2143: erreur de syntaxe : absence de ';' avant '*'
-  (compiler le fichier source 'neuralNet.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,2): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-  (compiler le fichier source 'neuralNet.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(14,29): error C2238: jetons inattendus avant ';'
-  (compiler le fichier source 'neuralNet.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,11): error C2143: erreur de syntaxe : absence de ';' avant '*'
-  (compiler le fichier source 'neuralNet.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,2): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
-  (compiler le fichier source 'neuralNet.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(21,25): error C2334: jetons inattendus avant '{' ; corps apparent de la fonction ignoré
-  (compiler le fichier source 'neuralNet.cpp')
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.cpp(7,24): error C2039: 'layerList' n'est pas membre de 'NeuralNetwork'
-      C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(12,7):
-      voir la déclaration de 'NeuralNetwork'
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.cpp(13,24): error C2039: 'layerList' n'est pas membre de 'NeuralNetwork'
-      C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(12,7):
-      voir la déclaration de 'NeuralNetwork'
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.cpp(21,8): error C2039: 'layerList' n'est pas membre de 'NeuralNetwork'
-      C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(12,7):
-      voir la déclaration de 'NeuralNetwork'
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.cpp(25,24): error C2039: 'layerList' n'est pas membre de 'NeuralNetwork'
-      C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(12,7):
-      voir la déclaration de 'NeuralNetwork'
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.cpp(34,22): error C2039: 'layerList' n'est pas membre de 'NeuralNetwork'
-      C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(12,7):
-      voir la déclaration de 'NeuralNetwork'
-  
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.cpp(47,12): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.cpp(52,22): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
-  Génération de code en cours...
+﻿  neuralNet.c
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(7,37): warning C4013: 'calloc' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(38,57): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(67,2): warning C4013: 'free' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(89,2): warning C4013: 'srand' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(94,26): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(98,37): warning C4013: 'rand' non défini(e) ; extern retournant int pris par défaut
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(142,14): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(178,25): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(181,14): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(181,37): warning C4305: 'fonction' : troncation de 'double' à 'float'
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

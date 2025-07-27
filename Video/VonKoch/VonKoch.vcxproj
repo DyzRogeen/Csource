@@ -100,6 +100,7 @@
     <ClCompile Include="video.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\SDL2_image-2.6.3\include\SDL_image.h" />
     <ClInclude Include="huff.h" />
     <ClInclude Include="utils_SDL.h" />
     <ClInclude Include="video.h" />

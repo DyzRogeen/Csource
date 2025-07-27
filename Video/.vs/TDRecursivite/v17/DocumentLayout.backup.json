@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\SDL2_image-2.6.3\\include\\SDL_image.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:SDL2_image-2.6.3\\include\\SDL_image.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\video.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -26,11 +30,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "SDL_image.h",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\SDL2_image-2.6.3\\include\\SDL_image.h",
+              "RelativeDocumentMoniker": "SDL2_image-2.6.3\\include\\SDL_image.h",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\SDL2_image-2.6.3\\include\\SDL_image.h",
+              "RelativeToolTip": "SDL2_image-2.6.3\\include\\SDL_image.h",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-07-06T08:04:25.999Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "utils_SDL.h",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\utils_SDL.h",
               "RelativeDocumentMoniker": "VonKoch\\utils_SDL.h",
@@ -42,7 +59,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "video.h",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.h",
               "RelativeDocumentMoniker": "VonKoch\\video.h",
@@ -54,20 +71,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "video.c",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.c",
               "RelativeDocumentMoniker": "VonKoch\\video.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\video.c",
               "RelativeToolTip": "VonKoch\\video.c",
-              "ViewState": "AgIAAMkAAAAAAAAAAAAAwM4AAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAHQAAAAAAAAAAAAUwLAAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-01-11T10:02:46.057Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "main.c",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Video\\VonKoch\\main.c",
               "RelativeDocumentMoniker": "VonKoch\\main.c",
