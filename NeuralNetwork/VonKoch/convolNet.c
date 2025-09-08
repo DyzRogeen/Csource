@@ -1,5 +1,4 @@
 #include "convolNet.h"
-#define max(a,b) a > b ? a : b
 
 sData applyFilter(sData D, sFilter F, float(*activation)(float)) {
 	float* filter, bias = F.bias;
@@ -150,22 +149,24 @@ void retroPropagateConvolution(CNNLayer* l) {
 
 	sData* D_in = l_prec->datas, *D_out = l->datas;
 	sFilter* filter, *ftmp = l->filters;
-	int nbDatas_prec = l_prec->nbDatas;
+	int nbDatas_prec = l_prec->nbDatas, j;
 	float (*deriv)(float) = l->deriv;
 
 	if (l_prec->type != INITIAL)
 		for (int i = 0; i < nbDatas_prec; i++) {
 			filter = ftmp;
+			j = 0;
 			while (filter) {
-				updateLoss(filter, D_in[i], D_out[i], deriv, i == 0);
+				updateLoss(filter, D_in[i], D_out[j++], deriv, i == 0);
 				filter = filter->next;
 			}	
 		}
 
 	for (int i = 0; i < nbDatas_prec; i++) {
 		filter = ftmp;
+		j = 0;
 		while (filter) {
-			updateFilter(filter, D_in[i], D_out[i]);
+			updateFilter(filter, D_in[i], D_out[j++]);
 			filter = filter->next;
 		}
 	}
@@ -223,11 +224,10 @@ void updateFilter(sFilter* f, sData D_in, sData D_out) {
 					sum += data_in[i + j * w_in] * L_out[slot_out++];
 
 			// w = w - a * dL/dw
-			*(filter++) -= a * sum;
+			*(filter) -= a * sum;
 
-			w_bound++;
+			filter++;
 		}
-		h_bound++;
 	}
 
 	// Maj du biais
@@ -238,28 +238,31 @@ void updateFilter(sFilter* f, sData D_in, sData D_out) {
 }
 
 void updateLoss(sFilter* f, sData D_in, sData D_out, float(*deriv)(float), int isFirstUpdate) {
-	int w_prec = D_in.w, h_prec = D_in.h, w = D_out.w, h = D_out.h, filter_size = f->filter_size, stride = f->stride, sum, x, y, i0, j0;
-	float* L_prec = D_in.L, * L = D_out.L, *filter = f->filter, *data = D_out.data;
+	int w_prec = D_in.w, h_prec = D_in.h, w = D_out.w, h = D_out.h, filter_size = f->filter_size, stride = f->stride, x, y, i0, j0;
+	float* L_prec = D_in.L, * L = D_out.L, *filter = f->filter, *data = D_out.data, sum;
 
 	// Pour chaque valeur de la data de la couche précédente...
 	for (int y_prec = 0; y_prec < h_prec; y_prec++) {
 
 		j0 = y_prec < filter_size ? y_prec : filter_size - 1; // Pour pas que le filtre dépasse de la data prec
-		y = y_prec / stride; // Coordonnées du premier y à traîter
 
 		for (int x_prec = 0; x_prec < w_prec; x_prec++) {
 
 			i0 = x_prec < filter_size ? x_prec : filter_size - 1;
+			y = max(0, (y_prec - filter_size + 1)) / stride; // Coordonnées du premier y à traîter
 
-			// On cherche le couple (y; w) dans lequelle elle est impliquée
+			// On cherche le couple (y; w) dans lequel elle est impliquée
 			// dL/dx = somme[dL/dz * dz/dy * dy/dx] avec
 			// dL/dz => loss de la couche actuelle
 			// dz/dy => dérivée de la fonction d'activation de la donnée actuelle
 			// dy/dx => poids concerné du filtre (w)
 			sum = 0;
-			for (int j = j0; j > 0 && y < h; j -= stride) {
-				x = x_prec / stride;
-				for (int i = i0; i > 0 && x < w; i -= stride) sum += L[x + y * w] * deriv(data[x++ + y * w]) * filter[i + j * filter_size];
+			for (int j = j0; j >= 0 && y < h; j -= stride) {
+				x = max(0, (x_prec - filter_size + 1)) / stride;
+				for (int i = i0; i >= 0 && x < w; i -= stride) {
+					sum += L[x + y * w] * deriv(data[x + y * w]) * filter[i + j * filter_size];
+					x++;
+				}
 				y++;
 			}
 
@@ -271,6 +274,134 @@ void updateLoss(sFilter* f, sData D_in, sData D_out, float(*deriv)(float), int i
 		}
 	}
 
+}
+
+void convolFromIMG(SDL_Surface* win, CNNLayer* l, int RGBmode) {
+
+	sData* D, * Dres, * Dtmp, * Dtmp2;
+	int nbData, init = 1;
+
+	if (RGBmode) {
+		D = getRGBDataFromPxls(win);
+		nbData = 3;
+	}
+	else {
+		D = getDataFromPxls(win);
+		nbData = 1;
+	}
+
+	l->datas = D;
+	l->nbDatas = nbData;
+
+	convol(l, RGBmode);
+
+}
+
+void convol(CNNLayer* l, int RGBmode) {
+
+	sData* D = l->datas, * Dres, * Dtmp, * Dtmp2;
+
+	// Nombre de canaux de la couche initiale
+	int nbData = l->nbDatas;
+	l = l->next;
+
+	while (l) {
+
+		switch (l->type) {
+		case CONVOLUTIONAL:
+
+			Dres = (sData*)malloc(nbData * l->nbFilters * sizeof(sData));
+			Dtmp = Dtmp2 = Dres;
+
+			for (int i = 0; i < nbData; i++) {
+				Dtmp = applyConvolution(D[i], l);
+				for (int j = 0; j < l->nbFilters; j++) Dres[j] = Dtmp[j];
+				Dres += l->nbFilters;
+			}
+			nbData *= l->nbFilters;
+
+			// Nettoyage des données si existantes
+			if (l->datas != NULL) {
+				Dtmp = l->datas;
+				for (int i = 0; i < l->nbDatas; i++) free(Dtmp[i].data);
+				free(Dtmp);
+			}
+
+			l->datas = Dtmp2;
+			l->nbDatas = nbData;
+
+			D = Dtmp2;
+			//displayDatas(D, nbData, RGBmode);
+
+
+			break;
+		case POOLING:
+			Dres = (sData*)malloc(nbData * sizeof(sData));
+			for (int i = 0; i < nbData; i++) Dres[i] = maxPool(D[i], l->pooling_size);
+
+			// Nettoyage des données si existantes
+			if (l->datas != NULL) {
+				for (int i = 0; i < l->nbDatas; i++) {
+					free(l->datas[i].data);
+					free(l->datas[i].maxIndexes);
+				}
+				free(l->datas);
+			}
+
+			l->datas = D = Dres;
+			l->nbDatas = nbData;
+			displayDatas(D, nbData, RGBmode);
+			break;
+		default:
+			break;
+		}
+
+		l = l->next;
+	}
+
+}
+
+void CNNStepTab(float* tab, int height, int width, CNNLayer* l, NeuralNetwork* N, int nbIterations, float* y) {
+
+	sData* D = malloc(sizeof(sData));
+	D[0] = createCNNData(tab, height, width);
+	l->datas = D;
+	l->nbDatas = 1;
+
+	CNNStep(NULL, l, N, nbIterations, 0, y);
+}
+
+void CNNStep(SDL_Surface* win, CNNLayer* CNN, NeuralNetwork* N, int nbIterations, int RGBmode, float* y) {
+
+	// TODO : prendre une autre image à chaque fois
+
+	for (int i = 0; i < nbIterations; i++) {
+		// Propagation CNN
+		if (win == NULL) convol(CNN, 0);
+		else convolFromIMG(win, CNN, RGBmode);
+		// Applatissage vers partie fully-connected
+		flatten(CNN, N);
+		// Propagation Réseau Dense
+		propagate(N);
+
+		// RétroPropagation Réseau Dense
+		retroPropagate(N, y);
+		// Rétropropagation des pertes Réseau Dense vers CNN
+		mapLoss(CNN, N);
+		// Rétropropagation CNN
+		retroPropagateCNN(CNN);
+
+	}
+	
+	free(y);
+
+}
+
+void guessTab(float* tab, CNNLayer* CNN, NeuralNetwork* N) {
+	convol(CNN, 0);
+	flatten(CNN, N);
+	propagate(N);
+	maxIndex(N->lastLayer->layer->nodeVals, 1);
 }
 
 // UTILS
@@ -373,15 +504,189 @@ void freeCNNLayer(CNNLayer* L) {
 	freeCNNLayer(L->next);
 
 	sData* D = L->datas;
-	for (int i = 0; i < L->nbFilters; i++) {
-		free(D[i].data);
-		free(D[i].L);
-		if (L->type == POOLING) free(D[i].maxIndexes);
+	if (D != NULL) {
+		for (int i = 0; i < L->nbFilters; i++) {
+			free(D[i].data);
+			free(D[i].L);
+			if (L->type == POOLING) free(D[i].maxIndexes);
+		}
+		free(D);
 	}
-	free(D);
 
 	if (L->type == INITIAL) return;
 
 	freeFilters(L->filters);
 	free(L);
+}
+
+float mini(float a, float b) {
+	return a < b ? a : b;
+}
+
+float maxi(float a, float b) {
+	return a > b ? a : b;
+}
+
+// SDL UTILS
+
+int countNbWindows(CNNLayer* l) {
+	int cnt = l->nbDatas;
+	while (l) {
+		cnt *= l->nbFilters;
+		l = l->next;
+	}
+	return cnt;
+}
+
+int countFlattenSize(CNNLayer* l, int w, int h) {
+	if (!l) return w * h;
+	if (l->type == INITIAL) return countFlattenSize(l->next, w, h);
+
+	CNNLayer* l_next = l->next;
+	int cnt = 0;
+	if (l->type == CONVOLUTIONAL) {
+		sFilter* filter = l->filters;
+		int minus;
+		while (filter) {
+			minus = filter->filter_size - 1;
+			cnt += countFlattenSize(l_next, (w - minus) / filter->stride, (h - minus) / filter->stride);
+			filter = filter->next;
+		}
+	}
+	else if (l->type == POOLING)
+		cnt += countFlattenSize(l_next, w / l->pooling_size, h / l->pooling_size);
+	return cnt;
+}
+
+void renderSurface(SDL_Renderer* renderer, SDL_Surface* surface) {
+	SDL_RenderClear(renderer);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_RenderPresent(renderer);
+	SDL_DestroyTexture(texture);
+}
+
+void mapImg(SDL_Surface* win, SDL_Surface* img) {
+
+	int w = win->w, h = win->h, bpp = img->format->BytesPerPixel;
+	Uint32* pxls = win->pixels;
+	Uint8* img_pxls = img->pixels;
+	for (int i = 0; i < h * w; i++) {
+		*(pxls++) = (0xFF000000 | img_pxls[0] << 16 | img_pxls[1] << 8 | img_pxls[2]);
+		img_pxls += bpp;
+	}
+
+}
+
+void mapDataOnSurface(SDL_Surface* s, sData dR, sData dG, sData dB) {
+	int w = dR.w, h = dR.h, s_w = s->w, slot;
+	int pxl_size = s_w / w;
+	float* dataR = dR.data;
+	float* dataG = dG.data;
+	float* dataB = dB.data;
+	Uint32* pxls = s->pixels, pxl;
+
+	for (int i = 0; i < w * h; i++) {
+		pxl = 0xFF000000 | (Uint8)(maxi(0, 255 * mini(1, dataR[i]))) << 16 | (Uint8)(maxi(0, 255 * mini(1, dataG[i]))) << 8 | (Uint8)(maxi(0, 255 * mini(1, dataB[i])));
+		//pxl = 0xFF000000 | (Uint8)max(0, min(255, dataR[i])) << 16 | (Uint8)max(0, min(255, dataG[i])) << 8 | (Uint8)max(0, min(255, dataB[i]));
+		slot = (i % w + (i / w) * s_w) * pxl_size;
+		for (int y = 0; y < pxl_size; y++)
+			for (int x = 0; x < pxl_size; x++)
+				pxls[slot + x + y * s_w] = pxl;
+
+	}
+
+
+}
+
+sData* getRGBDataFromPxls(SDL_Surface* win) {
+	int w = win->w, h = win->h;
+	int length = w * h;
+	Uint8* pxl = win->pixels;
+
+	float* dataR = (float*)calloc(length, sizeof(float));
+	float* dataG = (float*)calloc(length, sizeof(float));
+	float* dataB = (float*)calloc(length, sizeof(float));
+	for (int i = 0; i < length; i++) {
+		dataR[i] = pxl[2];
+		dataG[i] = pxl[1];
+		dataB[i] = pxl[0];
+		pxl += 4;
+	}
+
+	sData* D = (sData*)malloc(3 * sizeof(sData));
+	D[0] = createCNNData(dataR, h, w);
+	D[1] = createCNNData(dataG, h, w);
+	D[2] = createCNNData(dataB, h, w);
+
+	return D;
+}
+
+sData* getDataFromPxls(SDL_Surface* win) {
+	int w = win->w, h = win->h;
+	int length = w * h;
+	Uint8* pxl = win->pixels;
+
+	float* data = (float*)calloc(length, sizeof(float));
+	for (int i = 0; i < length; i++) {
+		data[i] = (pxl[2] + pxl[1] + pxl[0]) / 3;
+		pxl += 4;
+	}
+
+	sData* D = (sData*)malloc(sizeof(sData));
+	*D = createCNNData(data, h, w);
+
+	return D;
+}
+
+SDL_Surface** displayDatas(sData* D, int nbDataPerCanal, int RGBmode) {
+
+	SDL_Surface** windows = (SDL_Surface**)calloc(nbDataPerCanal, sizeof(SDL_Surface*)), * window, * surface;
+	SDL_Renderer* renderer;
+	SDL_Texture* texture;
+	sData dR, dG, dB;
+
+	int forced_w = 100, forced_h;
+
+	if (RGBmode) nbDataPerCanal /= 3;
+
+	int dx = 0;
+	for (int i = 0; i < nbDataPerCanal; i++) {
+		dR = D[i];
+
+		if (RGBmode) {
+			dG = D[i + nbDataPerCanal];
+			dB = D[i + 2 * nbDataPerCanal];
+		}
+
+		if (dR.w > 50) {
+			forced_w = dR.w;
+			forced_h = dR.h;
+		}
+		else {
+			forced_w = 100;
+			forced_h = forced_w * dR.h / dR.w;
+		}
+
+		window = SDL_CreateWindow("Neural Network", dx, 20, forced_w, forced_h, SDL_WINDOW_SHOWN);
+		surface = SDL_CreateRGBSurface(0, forced_w, forced_h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+		renderer = SDL_CreateRenderer(window, 0, 0);
+
+		dx += 30;
+
+		if (RGBmode) mapDataOnSurface(surface, dR, dG, dB);
+		else		 mapDataOnSurface(surface, dR, dR, dR);
+		renderSurface(renderer, surface);
+
+		SDL_FreeSurface(surface);
+		SDL_DestroyRenderer(renderer);
+
+		windows[i] = window;
+
+	}
+
+	//free(D);
+
+	return windows;
+
 }

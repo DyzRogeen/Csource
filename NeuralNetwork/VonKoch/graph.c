@@ -1,6 +1,4 @@
 #include "graph.h"
-#define max(a,b) a > b ? a : b
-#define min(a,b) a < b ? a : b
 
 void drawNetwork(SDL_Surface* window, NeuralNetwork* n) {
 	Uint32* pxls = (Uint32*)window->pixels;

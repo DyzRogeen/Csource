@@ -8,6 +8,8 @@
 #define WHITE 255 << 16 | 255 << 8 | 255 | 255 << 24
 #define RED 255 << 16 | 255 << 24
 #define BLUE 255 | 255 << 24
+#define max(a,b) a > b ? a : b
+#define min(a,b) a < b ? a : b
 
 typedef struct sPointf {
 	float x, y;

@@ -1,13 +1,37 @@
-﻿  neuralNet.c
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(7,37): warning C4013: 'calloc' non défini(e) ; extern retournant int pris par défaut
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(38,57): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(67,2): warning C4013: 'free' non défini(e) ; extern retournant int pris par défaut
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(89,2): warning C4013: 'srand' non défini(e) ; extern retournant int pris par défaut
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(94,26): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(98,37): warning C4013: 'rand' non défini(e) ; extern retournant int pris par défaut
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(142,14): warning C4305: 'initialisation' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(178,25): warning C4305: 'fonction' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(181,14): warning C4305: 'fonction' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.c(181,37): warning C4305: 'fonction' : troncation de 'double' à 'float'
+﻿  main.c
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(6,9): warning C4005: 'max' : redéfinition de macro
+  (compiler le fichier source 'main.c')
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h(1282,17):
+      voir la définition précédente de « max »
+  
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\neuralNet.h(7,9): warning C4005: 'min' : redéfinition de macro
+  (compiler le fichier source 'main.c')
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h(1283,17):
+      voir la définition précédente de « min »
+  
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(25,48): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(19,25): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(20,25): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(40,15): warning C4244: 'initialisation' : conversion de 'float' en 'Uint8', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(77,24): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(79,25): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(80,87): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(80,97): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(80,107): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(80,113): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(64,16): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(107,17): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(155,7): warning C4101: 'dump' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(193,8): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(290,10): warning C4133: '=' : types incompatibles - de 'SDL_Window *' à 'SDL_Surface *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(296,33): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(304,11): warning C4133: '=' : types incompatibles - de 'SDL_Window *' à 'SDL_Surface *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(306,36): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(314,11): warning C4133: '=' : types incompatibles - de 'SDL_Window *' à 'SDL_Surface *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(316,37): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(426,21): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(430,21): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(434,21): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\VonKoch\main.c(187,15): warning C4101: 'texture' : variable locale non référencée
   VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\NeuralNetwork\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

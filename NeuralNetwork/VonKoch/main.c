@@ -1,6 +1,9 @@
+#define _CRT_SECURE_NO_WARNINGS 0
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "graph.h"
 #include "neuralNet.h"
 #include "convolNet.h"
@@ -8,6 +11,9 @@
 #include "../SDL2-2.28.1/include/SDL.h"
 
 #define PI	3.14159265359
+#define DRAWTAB_RESOLUTION 16
+#define DRAWTAB_HEIGHT 512
+#define DRAWTAB_WIDTH 512
 
 void step(NeuralNetwork* n, int numIter) {
 	float x = rand() % 201 - 100;
@@ -25,343 +31,212 @@ void step(NeuralNetwork* n, int numIter) {
 
 }
 
-int countNbWindows(CNNLayer* l) {
-	int cnt = l->nbDatas;
-	while (l) {
-		cnt *= l->nbFilters;
-		l = l->next;
-	}
-	return cnt;
-}
-
-int countFlattenSize(CNNLayer* l, int w, int h) {
-	if (!l) return w * h;
-	if (l->type == INITIAL) return countFlattenSize(l->next, w, h);
-	
-	CNNLayer* l_next = l->next;
-	int cnt = 0;
-	if (l->type == CONVOLUTIONAL) {
-		sFilter* filter = l->filters;
-		int minus;
-		while (filter) {
-			minus = filter->filter_size - 1;
-			cnt += countFlattenSize(l_next, (w - minus) / filter->stride, (h - minus) / filter->stride);
-			filter = filter->next;
-		}
-	}
-	else if (l->type == POOLING)
-		cnt += countFlattenSize(l_next, w / l->pooling_size, h / l->pooling_size);
-	return cnt;
-}
-
-void renderSurface(SDL_Renderer* renderer, SDL_Surface* surface) {
-	SDL_RenderClear(renderer);
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
-	SDL_RenderPresent(renderer);
-	SDL_DestroyTexture(texture);
-}
-
-void mapImg(SDL_Surface* win, SDL_Surface* img) {
-
-	int w = win->w, h = win->h, bpp = img->format->BytesPerPixel;
+void drawPixelTab(SDL_Surface* win, int x, int y, int ratio_w, int ratio_h, float val) {
 	Uint32* pxls = win->pixels;
-	Uint8* img_pxls = img->pixels;
-	for (int i = 0; i < h * w; i++) {
-		*(pxls++) = (0xFF000000 | img_pxls[0] << 16 | img_pxls[1] << 8 | img_pxls[2]);
-		img_pxls += bpp;
-	}
 
+	int w = win->w;
+	int x_start = x * ratio_w;
+	int y_start = y * ratio_h;
+	Uint8 comp = min(255, 255 * val);
+	Uint32 pxl = 0xFF000000 | comp << 16 | comp << 8 | comp;
+
+	for (int i = y_start; i < y_start + ratio_h; i++)
+		for (int j = x_start; j < x_start + ratio_w; j++)
+			*(pxls + j + i * w) = pxl;
 }
 
-void mapDataOnSurface(SDL_Surface* s, sData dR, sData dG, sData dB) {
-	int w = dR.w, h = dR.h, s_w = s->w, slot;
-	int pxl_size = s_w / w;
-	float* dataR = dR.data;
-	float* dataG = dG.data;
-	float* dataB = dB.data;
-	Uint32* pxls = s->pixels, pxl;
-
-	for (int i = 0; i < w * h; i++) {
-		pxl = 0xFF000000 | (Uint8)max(0, 255 * min(1, dataR[i])) << 16 | (Uint8)max(0, 255 * min(1, dataG[i])) << 8 | (Uint8)max(0, 255 * min(1, dataB[i]));
-		//pxl = 0xFF000000 | (Uint8)max(0, min(255, dataR[i])) << 16 | (Uint8)max(0, min(255, dataG[i])) << 8 | (Uint8)max(0, min(255, dataB[i]));
-		//pxls[i] = dataToPxl(dataR[i], dataG[i], dataB[i]);
-		slot = (i % w + (i / w) * s_w) * pxl_size;
-		for (int y = 0; y < pxl_size; y++)
-			for (int x = 0; x < pxl_size; x++)
-				pxls[slot + x + y * s_w] = pxl;
-
-	}
-
-
+float norme(float x1, float y1, float x2, float y2) {
+	return sqrtf(powf(x2 - x1, 2) + powf(y2 - y1, 2));
 }
 
-Uint32 dataToPxl(float R, float G, float B) {
-	Uint8 r = max(0, min(255, R));
-	Uint8 g = max(0, min(255, G));
-	Uint8 b = max(0, min(255, B));
-	return 0xFF000000 | r << 16 | g << 8 | b;
+float* ctov(int figure) {
+	float* v = (float*)calloc(10, sizeof(float));
+	v[figure] = 1;
+	return v;
 }
 
-sData* getRGBDataFromPxls(SDL_Surface* win) {
+void drawOnTab(SDL_Surface* win, point pos, int resolution, float* tab) {
 	int w = win->w, h = win->h;
-	int length = w * h;
-	Uint8* pxl = win->pixels;
+	int posx = pos.x, posy = pos.y;
 
-	float* dataR = (float*)calloc(length, sizeof(float));
-	float* dataG = (float*)calloc(length, sizeof(float));
-	float* dataB = (float*)calloc(length, sizeof(float));
-	for (int i = 0; i < length; i++) {
-		dataR[i] = pxl[2];
-		dataG[i] = pxl[1];
-		dataB[i] = pxl[0];
-		pxl+=4;
+	int pixel_ratio_w = w / resolution;
+	int pixel_ratio_h = h / resolution;
+	float l_max = pixel_ratio_w;
+
+	int x = posx / pixel_ratio_w;
+	int y = posy / pixel_ratio_h;
+
+	int x_start = x - ((posx % pixel_ratio_w) < pixel_ratio_w / 2), x_end = x_start + 2;
+	int y_start = y - ((posy % pixel_ratio_h) < pixel_ratio_h / 2), y_end = y_start + 2;
+	x_start = max(0, x_start); x_end = min(resolution, x_end);
+	y_start = max(0, y_start); y_end = min(resolution, y_end);
+
+	float tmpVal;
+	int center_x, center_y;
+	for (int i = y_start; i < y_end; i++) {
+		center_y = (i + 0.5) * pixel_ratio_h;
+		for (int j = x_start; j < x_end; j++) {
+			center_x = (j + 0.5) * pixel_ratio_w;
+			tab[j + i * resolution] = tmpVal = mini(1, maxi(tab[j + i * resolution], 1 - norme(center_x, center_y, posx, posy) / l_max));
+			drawPixelTab(win, j, i, pixel_ratio_w, pixel_ratio_w, tmpVal);
+		}
 	}
-
-	sData* D = (sData*)malloc(3 * sizeof(sData));
-	D[0] = createCNNData(dataR, h, w);
-	D[1] = createCNNData(dataG, h, w);
-	D[2] = createCNNData(dataB, h, w);
-
-	return D;
-}
-
-sData* getDataFromPxls(SDL_Surface* win) {
-	int w = win->w, h = win->h;
-	int length = w * h;
-	Uint8* pxl = win->pixels;
-
-	float* data = (float*)calloc(length, sizeof(float));
-	for (int i = 0; i < length; i++) {
-		data[i] = (pxl[2] + pxl[1] + pxl[0]) / 3;
-		pxl += 4;
-	}
-
-	sData* D = (sData*)malloc(sizeof(sData));
-	*D = createCNNData(data, h, w);
-
-	return D;
-}
-
-SDL_Surface** displayDatas(sData* D, int nbDataPerCanal, int RGBmode) {
-
-	SDL_Surface** windows = (SDL_Surface**)calloc(nbDataPerCanal, sizeof(SDL_Surface*)), * window, * surface;
-	SDL_Renderer* renderer;
-	SDL_Texture* texture;
-	sData dR, dG, dB;
-
-	int forced_w = 100, forced_h;
-
-	if (RGBmode) nbDataPerCanal /= 3;
-
-	int dx = 0;
-	for (int i = 0; i < nbDataPerCanal; i++) {
-		dR = D[i];
 		
-		if (RGBmode) {
-			dG = D[i + nbDataPerCanal];
-			dB = D[i + 2 * nbDataPerCanal];
-		}
+}
 
-		if (dR.w > 50) {
-			forced_w = dR.w;
-			forced_h = dR.h;
-		}
+void saveTab(float* tab, int figure) {
+	FILE* f = fopen("database_chiffres2.txt", "a");
+	fprintf(f, "%d,%d", DRAWTAB_RESOLUTION, figure);
+
+	char buffer[1024] = "", tmp[3] = "";
+	int cnt0 = 0;
+	float tmpVal;
+
+	// Compression des 0
+	for (int i = 0; i < DRAWTAB_RESOLUTION * DRAWTAB_RESOLUTION; i++) {
+		tmpVal = tab[i];
+		if (tmpVal < 0.04) cnt0++;
 		else {
-			forced_w = 100;
-			forced_h = forced_w * dR.h / dR.w;
+			if (cnt0 == 1) strcat(buffer, " 0");
+			else if (cnt0 > 1) {
+				strcat(buffer, " 0|");
+				_itoa(cnt0, tmp, 10);
+				strcat(buffer, tmp);
+			}
+			strcat(buffer, " ");
+			_itoa(tmpVal * 255, tmp, 16);
+			strcat(buffer, tmp);
+			cnt0 = 0;
 		}
-
-		window = SDL_CreateWindow("Neural Network", dx, 20, forced_w, forced_h, SDL_WINDOW_SHOWN);
-		surface = SDL_CreateRGBSurface(0, forced_w, forced_h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-		renderer = SDL_CreateRenderer(window, 0, 0);
-
-		dx += 30;
-
-		if (RGBmode) mapDataOnSurface(surface, dR, dG, dB);
-		else		 mapDataOnSurface(surface, dR, dR, dR);
-		renderSurface(renderer, surface);
-		
-		SDL_FreeSurface(surface);
-		SDL_DestroyRenderer(renderer);
-
-		windows[i] = window;
-
+	}
+	if (cnt0 == 1) strcat(buffer, " 0");
+	else if (cnt0 > 1) {
+		strcat(buffer, " 0|");
+		_itoa(cnt0, tmp, 10);
+		strcat(buffer, tmp);
 	}
 
-	//free(D);
-
-	return windows;
-
+	fprintf(f, "%s\n", buffer);
+	fclose(f);
 }
 
-SDL_Surface** convol(SDL_Surface* win, CNNLayer* l, int RGBmode) {
+int readLine(FILE* f, float* tab) {
+	char tmpBuffer[10];
 
-	sData* D, *Dres, *Dtmp, *Dtmp2;
-	int nbData, init = 1;
-
-	if (RGBmode) {
-		D = getRGBDataFromPxls(win);
-		nbData = 3;
-	} else {
-		D = getDataFromPxls(win);
-		nbData = 1;
+	int resolution, figure, tmp = 0, i;
+	if(fscanf(f, "%d,%d", &resolution, &figure) == -1) return -1;
+	for (i = 0; i < resolution * resolution; i++) {
+		fscanf(f, " %31s", tmpBuffer);
+		if (!strncmp(tmpBuffer, "0|", 2)) {
+			tmp = atoi(tmpBuffer + 2);
+			for (int j = 0; j < tmp; j++) tab[i++] = 0;
+			i--;
+		}
+		else tab[i] = (float)(strtol(tmpBuffer, NULL, 16)) / 255;
 	}
 
+	return figure;
+}
+
+void learnTab(float* tab, int height, int width, CNNLayer* l, NeuralNetwork* N, int nbIterations) {
+	FILE* f = fopen("database_chiffres2.txt", "r");
+
+	sData* D = malloc(sizeof(sData));
+	D[0] = createCNNData(tab, height, width);
 	l->datas = D;
-	l->nbDatas = nbData;
-	l = l->next;
+	l->nbDatas = 1;
 
-	while (l) {
+	int cnt = 1;
+	int figure = readLine(f, tab);
+	printf("Learning line %d.\n", cnt++);
+	CNNStep(NULL, l, N, nbIterations, 0, ctov(figure));
 
-		switch(l->type) {
-		case CONVOLUTIONAL:
 
-			Dres = (sData*)malloc(nbData * l->nbFilters * sizeof(sData));
-			Dtmp = Dtmp2 = Dres;
-
-			for (int i = 0; i < nbData; i++) {
-				Dtmp = applyConvolution(D[i], l);
-				for (int j = 0; j < l->nbFilters; j++) Dres[j] = Dtmp[j];
-				Dres += l->nbFilters;
-			}
-			nbData *= l->nbFilters;
-
-			// Nettoyage des données si existantes
-			if (l->datas != NULL) {
-				Dtmp = l->datas;
-				for (int i = 0; i < l->nbDatas; i++) free(Dtmp[i].data);
-				free(Dtmp);
-			}
-
-			l->datas = Dtmp2;
-			l->nbDatas = nbData;
-
-			// Free initial D
-			//if (0 && init) {
-			//	free(D[0].data);
-			//	free(D[0].L);
-			//	if (RGBmode) {
-			//		free(D[1].data);
-			//		free(D[1].L);
-			//		free(D[2].data);
-			//		free(D[2].L);
-			//	}
-			//	init = 0;
-			//	free(D);
-			//}
-
-			D = Dtmp2;
-
-			break;
-		case POOLING:
-			Dres = (sData*)malloc(nbData * sizeof(sData));
-			for (int i = 0; i < nbData; i++) Dres[i] = maxPool(D[i], l->pooling_size);
-
-			// Nettoyage des données si existantes
-			if (l->datas != NULL) {
-				for (int i = 0; i < l->nbDatas; i++) {
-					free(l->datas[i].data);
-					free(l->datas[i].maxIndexes);
-				}
-				free(l->datas);
-			}
-
-			l->datas = D = Dres;
-			l->nbDatas = nbData;
-			break;
-		default:
-			break;
-		}
-
-		l = l->next;
+	char dump[1024];
+	while (fscanf(f, "\n") != -1) {
+		figure = readLine(f, tab);
+		if (figure == -1) break;
+		printf("Learning line %d.\n", cnt++);
+		CNNStep(NULL, l, N, nbIterations, 0, ctov(figure));
 	}
+	fclose(f);
 
-	return displayDatas(D, nbData, RGBmode);
+	printf("Learning done.\n");
 
 }
 
-SDL_Surface** CNNStep(SDL_Surface* win, CNNLayer* CNN, NeuralNetwork* N, int nbIterations, int RGBmode) {
+void displayTab(SDL_Surface* win, float* tab) {
+	int ratio_w = DRAWTAB_WIDTH / DRAWTAB_RESOLUTION;
+	int ratio_h = DRAWTAB_HEIGHT / DRAWTAB_RESOLUTION;
+	for (int y = 0; y < DRAWTAB_RESOLUTION; y++)
+		for (int x = 0; x < DRAWTAB_RESOLUTION; x++)
+			drawPixelTab(win, x, y, ratio_w, ratio_h, *(tab++));
+}
 
-	// TODO : prendre une autre image à chaque fois
-	SDL_Surface** imgs = NULL;
-
-	for (int i = 0; i < nbIterations; i++) {
-		// Propagation CNN
-		imgs = convol(win, CNN, RGBmode);
-		// Applatissage vers partie fully-connected
-		flatten(CNN, N);
-		// Propagation Réseau Dense
-		propagate(N);
-
-		// RétroPropagation Réseau Dense
-		retroPropagate(N, (float[1]) {-1}); // TODO : Remplacer 1 si chat, -1 si chien
-		// Rétropropagation des pertes Réseau Dense vers CNN
-		mapLoss(CNN, N);
-		// Rétropropagation CNN
-		retroPropagateCNN(CNN);
-
-	}
-
-	return imgs;
-
+void clearTab(SDL_Surface* s, SDL_Renderer* r, float* tab) {
+	for (int i = 0; i < DRAWTAB_RESOLUTION * DRAWTAB_RESOLUTION; i++) tab[i] = 0;
+	SDL_FillRect(s, &s->clip_rect, 0xFF000000);
+	renderSurface(r, s);
 }
 
 int main(int argc, char **argv)
 {
-	SDL_Surface * window, *img, *CNNview, ** windows = NULL;
-	SDL_Surface* surface, *CNNSurface;
-	SDL_Renderer* renderer, *CNNRenderer;
+	SDL_Surface * window, *img, *CNNview, *drawTab;
+	SDL_Surface* surface, *CNNSurface, *drawSurface;
+	SDL_Renderer* renderer, *CNNRenderer, *drawRenderer;
 	SDL_Texture* texture;
 	int quit = 0;
-	int nbWindows, RGBmode = 1;
+	int RGBmode = 1, drawing = 0;
 	SDL_Event e;
 	point mousePos;
 
 	srand(time(NULL));
 
-	// Filtres de Sobel
-	float filterH[25] = { 
-		1, 1, 0, -1, -1,
-		1, 1, 0, -1, -1,
-		5, 1, 0, -1, -5,
-		1, 1, 0, -1, -1,
-		1, 1, 0, -1, -1,
-	};
-	float filterW[25] = {
-		 1,  1,  5,  1,  1,
-		 1,  1,  1,  1,  1,
-		 0,  0,  0,  0,  0,
-		-1, -1, -1, -1, -1,
-		-1, -1, -5, -1, -1,
-	};
-	// Filtre Laplacien
-	float filterC[9] = {
-		0, 1, 0,
-		1,-4, 1,
-		0, 1, 0,
-	};
-	// Filtres d'Emboss
-	float filterE1[9] = {
-		-2,-1, 0,
-		-1, 1, 1,
-		 0, 1, 2,
-	};
-	float filterE2[9] = {
-		 0,-1,-2,
-		 1, 1,-1,
-		 2, 1, 0,
-	};
-	float filterE3[9] = {
-		 2, 1, 0,
-		 1, 1,-1,
-		 0,-1,-2,
-	};
-	float filterE4[9] = {
-		 0, 1, 2,
-		-1, 1, 1,
-		-2,-1, 0,
-	};
+	// Filtres statiques
+	{
+		// Filtres de Sobel
+		float filterH[25] = {
+			1, 1, 0, -1, -1,
+			1, 1, 0, -1, -1,
+			5, 1, 0, -1, -5,
+			1, 1, 0, -1, -1,
+			1, 1, 0, -1, -1,
+		};
+		float filterW[25] = {
+			 1,  1,  5,  1,  1,
+			 1,  1,  1,  1,  1,
+			 0,  0,  0,  0,  0,
+			-1, -1, -1, -1, -1,
+			-1, -1, -5, -1, -1,
+		};
+		// Filtre Laplacien
+		float filterC[9] = {
+			0, 1, 0,
+			1,-4, 1,
+			0, 1, 0,
+		};
+		// Filtres d'Emboss
+		float filterE1[9] = {
+			-2,-1, 0,
+			-1, 1, 1,
+			 0, 1, 2,
+		};
+		float filterE2[9] = {
+			 0,-1,-2,
+			 1, 1,-1,
+			 2, 1, 0,
+		};
+		float filterE3[9] = {
+			 2, 1, 0,
+			 1, 1,-1,
+			 0,-1,-2,
+		};
+		float filterE4[9] = {
+			 0, 1, 2,
+			-1, 1, 1,
+			-2,-1, 0,
+		};
+	}
 
 	if (!(img = IMG_Load("../dataset/10006.jpg"))) {
 		printf("Unable to open file.\n");
@@ -370,62 +245,106 @@ int main(int argc, char **argv)
 
 	// Init CNN
 	CNNLayer* CNN = createInitCNN();
+	{
 
-	CNNLayer* l = createConvolutionalLayer(createDynamicFilter(5, 3), ReLu, dReLu);
-	addFilter(l, createDynamicFilter(5, 3));
-	addFilter(l, createDynamicFilter(3, 2));
-	addFilter(l, createDynamicFilter(3, 2));
-	addCNNLayer(CNN, l);
+		CNNLayer* l = createConvolutionalLayer(createDynamicFilter(5, 3), ReLu, dReLu);
+		addFilter(l, createDynamicFilter(5, 3));
+		addFilter(l, createDynamicFilter(3, 2));
+		addFilter(l, createDynamicFilter(3, 2));
+		addCNNLayer(CNN, l);
 
-	addCNNLayer(CNN, createPoolingLayer(MAX, 2));
+		addCNNLayer(CNN, createPoolingLayer(MAX, 2));
 
-	CNNLayer* l2 = createConvolutionalLayer(createDynamicFilter(5, 3), ReLu, dReLu);
-	addFilter(l2, createDynamicFilter(5, 3));
-	addFilter(l2, createDynamicFilter(5, 3));
-	addFilter(l2, createDynamicFilter(3, 2));
-	addFilter(l2, createDynamicFilter(3, 2));
-	addFilter(l2, createDynamicFilter(3, 2));
-	addCNNLayer(CNN, l2);
+		CNNLayer* l2 = createConvolutionalLayer(createDynamicFilter(5, 3), ReLu, dReLu);
+		addFilter(l2, createDynamicFilter(5, 3));
+		addFilter(l2, createDynamicFilter(5, 3));
+		addFilter(l2, createDynamicFilter(3, 2));
+		addFilter(l2, createDynamicFilter(3, 2));
+		addFilter(l2, createDynamicFilter(3, 2));
+		addCNNLayer(CNN, l2);
 
-	addCNNLayer(CNN, createPoolingLayer(MAX, 2));
+		addCNNLayer(CNN, createPoolingLayer(MAX, 2));
+
+	}
 
 	int flatten_size = countFlattenSize(CNN, img->w, img->h) * (RGBmode ? 3 : 1);
 
 	// Init Réseau Dense
 	NeuralNetwork* neuralNetwork = createNetwork();
-	addLayer(neuralNetwork, flatten_size, ReLu, dReLu);
-	addLayer(neuralNetwork, 24, ReLu, dReLu);
-	addLayer(neuralNetwork, 18, ReLu, dReLu);
-	addLayer(neuralNetwork, 1, ReLu, dReLu);
+	{
+		addLayer(neuralNetwork, flatten_size, ReLu, dReLu);
+		addLayer(neuralNetwork, 24, ReLu, dReLu);
+		addLayer(neuralNetwork, 18, ReLu, dReLu);
+		addLayer(neuralNetwork, 1, ReLu, dReLu);
 
-	init(neuralNetwork);
+		init(neuralNetwork);
+	}
 
 	// Init Fenêtre Réseau Dense
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		fprintf(stderr, "ERREUR - SDL_Init\n>>> %s\n", SDL_GetError());
-		exit(EXIT_FAILURE);
-	}
+	{
+		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+			fprintf(stderr, "ERREUR - SDL_Init\n>>> %s\n", SDL_GetError());
+			exit(EXIT_FAILURE);
+		}
+		atexit(SDL_Quit);
+		window = SDL_CreateWindow("Neural Network", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+		if (window == NULL) {
+			fprintf(stderr, "ERREUR - impossible de passer en : %dx%dx%d\n>>> %s\n", 640, 480, 32, SDL_GetError());
+			exit(EXIT_FAILURE);
+		}
+		surface = SDL_CreateRGBSurface(0, 640, 480, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+		renderer = SDL_CreateRenderer(window, 0, 0);
 
-	atexit(SDL_Quit);
-	window = SDL_CreateWindow("Neural Network", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-	if (window == NULL) {
-		fprintf(stderr, "ERREUR - impossible de passer en : %dx%dx%d\n>>> %s\n", 640, 480, 32, SDL_GetError());
-		exit(EXIT_FAILURE);
+		/*drawNetwork(surface, neuralNetwork);
+		renderSurface(renderer, surface);*/
 	}
-	surface = SDL_CreateRGBSurface(0, 640, 480, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-	renderer = SDL_CreateRenderer(window, 0, 0);
-
-	drawNetwork(surface, neuralNetwork);
-	renderSurface(renderer, surface);
 
 	// Affichage Image d'origine
-	CNNview = SDL_CreateWindow("CNNview", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, img->w, img->h, SDL_WINDOW_SHOWN);
-	CNNSurface = SDL_CreateRGBSurface(0, img->w, img->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-	CNNRenderer = SDL_CreateRenderer(CNNview, 0, 0);
-	mapImg(CNNSurface, img);
-	renderSurface(CNNRenderer, CNNSurface);
+	{
+		CNNview = SDL_CreateWindow("CNNview", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, img->w, img->h, SDL_WINDOW_SHOWN);
+		CNNSurface = SDL_CreateRGBSurface(0, img->w, img->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+		CNNRenderer = SDL_CreateRenderer(CNNview, 0, 0);
+		mapImg(CNNSurface, img);
+		renderSurface(CNNRenderer, CNNSurface);
+	}
 
-	//windows = convol(CNNSurface, CNN, 0);
+	// Fenêtre de dessin
+	float* tab = (float*)calloc(DRAWTAB_RESOLUTION * DRAWTAB_RESOLUTION, sizeof(float));
+	{
+		drawTab = SDL_CreateWindow("Draw Tab", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, DRAWTAB_WIDTH, DRAWTAB_HEIGHT, SDL_WINDOW_SHOWN);
+		drawSurface = SDL_CreateRGBSurface(0, DRAWTAB_WIDTH, DRAWTAB_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+		drawRenderer = SDL_CreateRenderer(drawTab, 0, 0);
+
+		clearTab(drawSurface, drawRenderer, tab);
+	}
+
+	CNNLayer* CNNTab = createInitCNN();
+	CNNLayer* l = createConvolutionalLayer(createDynamicFilter(3, 2), ReLu, dReLu);
+	addFilter(l, createDynamicFilter(3, 2));
+	addFilter(l, createDynamicFilter(3, 2));
+	addFilter(l, createDynamicFilter(3, 2));
+	addCNNLayer(CNNTab, l);
+
+	CNNLayer* l2 = createConvolutionalLayer(createDynamicFilter(3, 1), ReLu, dReLu);
+	addFilter(l2, createDynamicFilter(3, 1));
+	addFilter(l2, createDynamicFilter(3, 1));
+	addFilter(l2, createDynamicFilter(3, 1));
+	addCNNLayer(CNNTab, l2);
+
+	flatten_size = countFlattenSize(CNNTab, DRAWTAB_RESOLUTION, DRAWTAB_RESOLUTION);
+
+	NeuralNetwork* neuralNetworkTab = createNetwork();
+	addLayer(neuralNetworkTab, flatten_size, ReLu, dReLu);
+	addLayer(neuralNetworkTab, 24, ReLu, dReLu);
+	addLayer(neuralNetworkTab, 18, ReLu, dReLu);
+	addLayer(neuralNetworkTab, 10, ReLu, dReLu);
+
+	init(neuralNetworkTab);
+
+	drawNetwork(surface, neuralNetworkTab);
+	renderSurface(renderer, surface);
+
+	learnTab(tab, DRAWTAB_RESOLUTION, DRAWTAB_RESOLUTION, CNNTab, neuralNetworkTab, 2);
 
 	while (!quit)
 	{
@@ -440,7 +359,7 @@ int main(int argc, char **argv)
 				if (e.key.keysym.sym == SDLK_ESCAPE)
 					quit = 1;
 				if (e.key.keysym.sym == SDLK_s) {
-					windows = CNNStep(CNNSurface, CNN, neuralNetwork, 1, RGBmode);
+					CNNStep(CNNSurface, CNN, neuralNetwork, 1, RGBmode, (float[1]) {-1});
 					drawNetwork(surface, neuralNetwork);
 					renderSurface(renderer, surface);
 
@@ -450,38 +369,71 @@ int main(int argc, char **argv)
 						drawNetwork(surface, neuralNetwork);
 						renderSurface(renderer, surface);
 					}
-					
-				}
 
+				}
+				if (e.key.keysym.sym == SDLK_c)
+					clearTab(drawSurface, drawRenderer, tab);
+				if (e.key.keysym.sym >= SDLK_0 && e.key.keysym.sym <= SDLK_9) {
+					saveTab(tab, e.key.keysym.sym - SDLK_0);
+					clearTab(drawSurface, drawRenderer, tab);
+				}
+				if (e.key.keysym.sym == SDLK_l) {
+					FILE* f = fopen("database_chiffres2.txt", "r");
+					readLine(f, tab);
+					fclose(f);
+					displayTab(drawSurface ,tab);
+					renderSurface(drawRenderer, drawSurface);
+				}
+				if (e.key.keysym.sym == SDLK_g) {
+					guessTab(tab, CNNTab, neuralNetworkTab);
+				}
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				SDL_GetMouseState(&mousePos.x, &mousePos.y);
+				SDL_Rect rect = drawSurface->clip_rect;
+				drawing = mousePos.x > rect.x && mousePos.x < rect.x + rect.w && mousePos.y > rect.y && mousePos.y < rect.y + rect.h;
+				break;
+			case SDL_MOUSEBUTTONUP:
+				if (drawing) {
+					//for (int j = 0; j < DRAWTAB_RESOLUTION; j++) {
+					//	printf("[ ");
+					//	for (int i = 0; i < DRAWTAB_RESOLUTION; i++)
+					//		printf("%.1f, ", tab[i + j * DRAWTAB_RESOLUTION]);
+					//	printf("\b ]\n");
+					//}
+					//printf("\n");
+					drawing = 0;
+				}
 				break;
 			}
 		}
 
-		if (0)
+		if (drawing)
 		{
-			drawNetwork(surface, neuralNetwork);
-			renderSurface(renderer, surface);
-
+			SDL_GetMouseState(&mousePos.x, &mousePos.y);
+			drawOnTab(drawSurface, mousePos, DRAWTAB_RESOLUTION, tab);
+			renderSurface(drawRenderer, drawSurface);
 		}
+
 	}
 
-	nbWindows = countNbWindows(CNN);
-	for (int i = 0; i < nbWindows; i++)
-		SDL_DestroyWindow(windows[i]);
-	free(windows);
+	// Free Memory
+	{
+		clear(neuralNetwork);
+		freeCNNLayer(CNN);
+		SDL_FreeSurface(surface);
+		SDL_DestroyRenderer(renderer);
+		SDL_DestroyWindow(window);
 
-	clear(neuralNetwork);
-	freeCNNLayer(CNN);
-	SDL_FreeSurface(surface);
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
+		SDL_FreeSurface(CNNSurface);
+		SDL_DestroyRenderer(CNNRenderer);
+		SDL_DestroyWindow(CNNview);
 
-	SDL_FreeSurface(CNNSurface);
-	SDL_DestroyRenderer(CNNRenderer);
-	SDL_DestroyWindow(CNNview);
+		SDL_FreeSurface(drawSurface);
+		SDL_DestroyRenderer(drawRenderer);
+		SDL_DestroyWindow(drawTab);
+		free(tab);
+	}
 
 	return EXIT_SUCCESS;
 }

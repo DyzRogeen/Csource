@@ -108,6 +108,10 @@
   <ItemGroup>
     <Image Include="..\dataset\10006.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="database_chiffres.txt" />
+    <Text Include="database_chiffres2.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

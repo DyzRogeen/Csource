@@ -38,7 +38,8 @@ void initOutputErrors(layer* l, float* t) {
 	float* e = l->e, * h = l->h, *y = l->nodeVals, size = l->size;
 	float (*deriv)(float) = l->deriv;
 
-	for (int i = 0; i < size; i++) e[i] = deriv(h[i]) * (y[i] - t[i]);
+	for (int i = 0; i < size; i++)
+		e[i] = deriv(h[i]) * (y[i] - t[i]);
 
 }
 
@@ -48,7 +49,6 @@ void propagate(NeuralNetwork* n) {
 		propagateLayer(ll->layer, ll->next->layer);
 		ll = ll->next;
 	}
-	printf("%f\n", *ll->layer->nodeVals);
 }
 
 void retroPropagate(NeuralNetwork* n, float* t) {
@@ -196,6 +196,22 @@ void normalize(float* y, int N, float mean) {
 	for (int i = 0; i < N; i++)
 		y[i] = (y[i] - mean) / std;
 
+}
+
+int maxIndex(float* v, int verbose) {
+	float max = *v;
+	int index_max = 0;
+
+	if (verbose) printf("[ %.3f", max);
+	for (int i = 1; i < 10; i++) {
+		if (verbose)printf(" %.3f", v[i]);
+		if (v[i] > max) {
+			max = v[i];
+			index_max = i;
+		}
+	}
+	if (verbose) printf(" ]\t: je dis %d\n", index_max);
+	return index_max;
 }
 
 void printNetwork(NeuralNetwork* n) {

@@ -3,6 +3,8 @@
 #include <math.h>
 
 #define E 2.71828
+#define max(a,b) a > b ? a : b
+#define min(a,b) a < b ? a : b
 
 typedef struct sLayer {
 
@@ -52,6 +54,7 @@ void retroPropagateLayer(layer* l_prec, layer* l);
 void clearLayer(layer* l);
 
 void normalize(float* y, int N, float mean);
+int maxIndex(float* v, int verbose);
 void printNetwork(NeuralNetwork* n);
 void printLayer(layer* l, int size_next);
 LayerList* createList(layer* l);

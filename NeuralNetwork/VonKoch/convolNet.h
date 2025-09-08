@@ -4,6 +4,8 @@
 #include <time.h>
 #include <stdio.h>
 #include "neuralNet.h"
+#include "../SDL2_image-2.6.3/include/SDL_image.h"
+#include "../SDL2-2.28.1/include/SDL.h"
 
 typedef enum POOLING_TYPE {AVERAGE, MIN, MAX} poolingType;
 typedef enum LAYER_TYPE {INITIAL, CONVOLUTIONAL, POOLING} layerType;
@@ -65,6 +67,16 @@ void updateFilter(sFilter* f, sData D_in, sData D_out);
 
 void updateLoss(sFilter* f, sData D, sData D_prec, float(*deriv)(float), int isFirstUpdate);
 
+void convolFromIMG(SDL_Surface* win, CNNLayer* l, int RGBmode);
+
+void convol(CNNLayer* l, int RGBmode);
+
+void CNNStepTab(float* tab, int height, int width, CNNLayer* l, NeuralNetwork* N, int nbIterations, float* y);
+
+void CNNStep(SDL_Surface* win, CNNLayer* CNN, NeuralNetwork* N, int nbIterations, int RGBmode, float* y);
+
+void guessTab(float* tab, CNNLayer* CNN, NeuralNetwork* N);
+
 // UTILS
 
 sData createCNNData(float* data, int height, int width);
@@ -86,3 +98,25 @@ void addCNNLayer(CNNLayer* L, CNNLayer* l);
 void freeFilters(sFilter* F);
 
 void freeCNNLayer(CNNLayer* L);
+
+int countNbWindows(CNNLayer* l);
+
+int countFlattenSize(CNNLayer* l, int w, int h);
+
+float mini(float a, float b);
+
+float maxi(float a, float b);
+
+// SDL UTILS
+
+void renderSurface(SDL_Renderer* renderer, SDL_Surface* surface);
+
+void mapImg(SDL_Surface* win, SDL_Surface* img);
+
+void mapDataOnSurface(SDL_Surface* s, sData dR, sData dG, sData dB);
+
+sData* getRGBDataFromPxls(SDL_Surface* win);
+
+sData* getDataFromPxls(SDL_Surface* win);
+
+SDL_Surface** displayDatas(sData* D, int nbDataPerCanal, int RGBmode);

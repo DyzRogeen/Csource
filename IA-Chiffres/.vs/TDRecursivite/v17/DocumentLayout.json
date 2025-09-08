@@ -7,12 +7,16 @@
       "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\NNetwork.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\NNetwork.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\NNetwork.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\database.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\database.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\NNetwork.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\NNetwork.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,11 +26,23 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
+              "Title": "database.txt",
+              "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\database.txt",
+              "RelativeDocumentMoniker": "VonKoch\\database.txt",
+              "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\database.txt",
+              "RelativeToolTip": "VonKoch\\database.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAChAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-07-27T11:20:41.54Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "NNetwork.h",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\NNetwork.h",
               "RelativeDocumentMoniker": "VonKoch\\NNetwork.h",
@@ -34,8 +50,7 @@
               "RelativeToolTip": "VonKoch\\NNetwork.h",
               "ViewState": "AgIAACUAAAAAAAAAAAAUwDYAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-05-30T09:05:26.264Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-30T09:05:26.264Z"
             },
             {
               "$type": "Document",
@@ -45,22 +60,23 @@
               "RelativeDocumentMoniker": "VonKoch\\NNetwork.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\NNetwork.c",
               "RelativeToolTip": "VonKoch\\NNetwork.c",
-              "ViewState": "AgIAAKEAAAAAAAAAAAAgwBYBAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAPQAAAAAAAAAAAAjwPQAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-05-30T08:37:43.614Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "main.c",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\main.c",
               "RelativeDocumentMoniker": "VonKoch\\main.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\IA-Chiffres\\VonKoch\\main.c",
               "RelativeToolTip": "VonKoch\\main.c",
-              "ViewState": "AgIAABIAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAowCEAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-05-30T08:35:05.416Z"
+              "WhenOpened": "2025-05-30T08:35:05.416Z",
+              "EditorCaption": ""
             }
           ]
         }
