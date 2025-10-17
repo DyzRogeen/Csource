@@ -1,0 +1,3 @@
+Changer le chemin dans utils_SDL.h
+changer le chemin dans Editeurs de Liens / Entree
+Changer le chemin dans Evenements de buil / Evenement post build

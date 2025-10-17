@@ -1,0 +1,18 @@
+﻿  graph.c
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(15,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(16,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(83,12): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(83,21): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(45,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(46,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(99,26): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(105,28): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(113,10): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(114,10): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(120,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(121,16): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(122,14): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(170,10): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\VonKoch\graph.c(171,10): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Laplace_Visualizer\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

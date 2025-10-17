@@ -46,8 +46,7 @@
               "RelativeToolTip": "VonKoch\\database_chiffres2.txt",
               "ViewState": "AgIAAK0AAAAAAAAAAAAAAMgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2025-08-01T08:55:18.276Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-01T08:55:18.276Z"
             },
             {
               "$type": "Document",
@@ -59,8 +58,7 @@
               "RelativeToolTip": "VonKoch\\neuralNet.c",
               "ViewState": "AgIAACcAAAAAAAAAAAAjwC0AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-07-06T08:17:31.928Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-06T08:17:31.928Z"
             },
             {
               "$type": "Document",
@@ -72,8 +70,7 @@
               "RelativeToolTip": "VonKoch\\neuralNet.h",
               "ViewState": "AgIAACYAAAAAAAAAAAAvwCwAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-05-28T07:31:12.451Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-28T07:31:12.451Z"
             },
             {
               "$type": "Document",
@@ -85,8 +82,7 @@
               "RelativeToolTip": "VonKoch\\convolNet.h",
               "ViewState": "AgIAAFEAAAAAAAAAAAAAAEsAAABnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-07-05T08:13:14.872Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-05T08:13:14.872Z"
             },
             {
               "$type": "Document",
@@ -98,8 +94,7 @@
               "RelativeToolTip": "VonKoch\\convolNet.c",
               "ViewState": "AgIAABYBAAAAAAAAAAAvwJIBAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-07-23T08:46:02.508Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-23T08:46:02.508Z"
             },
             {
               "$type": "Document",
@@ -109,7 +104,7 @@
               "RelativeDocumentMoniker": "VonKoch\\main.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\main.c",
               "RelativeToolTip": "VonKoch\\main.c",
-              "ViewState": "AgIAAE4BAAAAAAAAAAAswFoBAABSAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFoBAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-07-20T08:58:22.394Z",
               "EditorCaption": ""
