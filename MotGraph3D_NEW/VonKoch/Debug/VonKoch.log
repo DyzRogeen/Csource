@@ -1,4 +1,24 @@
-﻿  mot.c
+﻿  main.c
+  mot.c
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(47,20): warning C4133: 'fonction' : types incompatibles - de 'float *' à 'int *'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(47,32): warning C4133: 'fonction' : types incompatibles - de 'float *' à 'int *'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(48,20): warning C4133: 'fonction' : types incompatibles - de 'float *' à 'int *'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(48,29): warning C4133: 'fonction' : types incompatibles - de 'float *' à 'int *'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(64,59): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(64,70): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(130,38): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(130,67): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(136,24): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(138,57): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(139,5): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(140,57): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(146,29): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(147,41): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(148,44): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(157,15): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(158,15): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(40,36): warning C4101: 'dirx_z' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\main.c(40,44): warning C4101: 'diry_z' : variable locale non référencée
 C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\mot.c(66,9): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\mot.c(67,9): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\mot.c(177,47): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
@@ -83,5 +103,13 @@ C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\mot.c(1162,36): war
 C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\mot.c(1179,77): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\mot.c(1180,74): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\mot.c(1137,9): warning C4101: 'v' : variable locale non référencée
+  plan.c
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\plan.c(8,21): warning C4244: 'return' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\plan.c(17,8): warning C4244: 'fonction' : conversion de 'time_t' en 'unsigned int', perte possible de données
+  utils_SDL.c
+  Génération de code en cours...
+C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\VonKoch\plan.c(29,1): warning C4716: 'createPlan' : doit retourner une valeur
+MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB 'SDLmain.pdb' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur 'C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\bin\SDLmain.pdb' ; l'objet sera lié sans informations de débogage
   VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\MotGraph3D_NEW\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

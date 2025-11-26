@@ -1,13 +1,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "utils_SDL.h"
+#include "../../Common_Libs/SDL-1.2.15/include/SDL.h"
 
 #define PI	3.14159265359
+#define WIN_WIDTH 640
+#define WIN_HEIGHT 480
 
 typedef struct sPoint{
-	int m_x;
-	int m_y;
+	int x, y;
 }point;
 
 int main(int argc, char **argv)
@@ -23,10 +24,10 @@ int main(int argc, char **argv)
 	}
 
 	atexit(SDL_Quit);
-	window = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	window = SDL_SetVideoMode(WIN_WIDTH, WIN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
 	if (window == NULL) {
-		fprintf(stderr, "ERREUR - impossible de passer en : %dx%dx%d\n>>> %s\n", 640, 480, 32, SDL_GetError());
+		fprintf(stderr, "ERREUR - impossible de passer en : %dx%dx%d\n>>> %s\n", WIN_WIDTH, WIN_HEIGHT, 32, SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
 					quit = 1;
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				SDL_GetMouseState(&mousePos.m_x, &mousePos.m_y);
+				SDL_GetMouseState(&mousePos.x, &mousePos.y);
 				break;
 			}
 		}

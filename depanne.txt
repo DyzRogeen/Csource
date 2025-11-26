@@ -1,3 +1,7 @@
-Changer le chemin dans utils_SDL.h
+Changer le chemin dans utils_SDL.h vers Common_Libs
+
+changer le chemin dans Editeurs de Liens / Général
+OU (ou ?)
 changer le chemin dans Editeurs de Liens / Entree
-Changer le chemin dans Evenements de buil / Evenement post build
+
+Changer le chemin dans Evenements de build / Evenement post build

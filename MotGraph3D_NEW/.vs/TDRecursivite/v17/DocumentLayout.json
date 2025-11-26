@@ -54,8 +54,7 @@
               "RelativeToolTip": "VonKoch\\plan.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-27T09:16:58.604Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-27T09:16:58.604Z"
             },
             {
               "$type": "Document",
@@ -65,7 +64,7 @@
               "RelativeDocumentMoniker": "VonKoch\\mot.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\MotGraph3D_NEW\\VonKoch\\mot.c",
               "RelativeToolTip": "VonKoch\\mot.c",
-              "ViewState": "AgIAAJoCAAAAAAAAAADgv/sCAAAGAAAAAAAAAA==",
+              "ViewState": "AgIAAJoCAAAAAAAAAAAswPsCAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-11-07T08:53:02.872Z",
               "EditorCaption": ""
@@ -80,8 +79,7 @@
               "RelativeToolTip": "VonKoch\\plan.c",
               "ViewState": "AgIAAAEAAAAAAAAAAAAzwAoAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-12-27T09:17:11.231Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-27T09:17:11.231Z"
             },
             {
               "$type": "Document",
@@ -93,8 +91,7 @@
               "RelativeToolTip": "VonKoch\\main.c",
               "ViewState": "AgIAAIgAAAAAAAAAAAAAAKEAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-11-07T08:42:57.255Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-07T08:42:57.255Z"
             }
           ]
         }
