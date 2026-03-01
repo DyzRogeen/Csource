@@ -1,0 +1,37 @@
+﻿  graph.c
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(50,24): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(51,24): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(55,12): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(56,12): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(57,12): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(119,22): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(119,36): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(145,55): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(145,58): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(159,59): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(159,62): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(164,58): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(164,61): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(124,13): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(124,23): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(125,13): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(125,25): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(152,19): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(265,11): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(267,11): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(253,17): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(254,17): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(286,10): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(286,20): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(292,23): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(297,19): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(304,23): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(309,19): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(315,18): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(318,18): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(276,17): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(276,33): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(276,49): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Calc_3D\VonKoch\graph.c(276,65): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Calc_3D\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

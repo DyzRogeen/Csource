@@ -1,0 +1,8 @@
+﻿  graph.c
+  main.c
+  Génération de code en cours...
+C:\Users\Adrie\Desktop\source\Csource\Waves_Visualizer\VonKoch\main.c(35,10): warning C4133: '=' : types incompatibles - de 'SDL_Window *' à 'SDL_Surface *'
+C:\Users\Adrie\Desktop\source\Csource\Waves_Visualizer\VonKoch\main.c(43,33): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\Waves_Visualizer\VonKoch\main.c(77,20): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Waves_Visualizer\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

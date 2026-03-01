@@ -485,9 +485,8 @@ void drawLine(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color) {
 	for (int k = 0; k <= n; k++) {
 		slotx = p1.x + (int)(v.x * k);
 		sloty = p1.y + (int)(v.y * k);
-		if (slotx < 0 || sloty < 0) continue;
+		if (slotx < 0 || sloty < 0 || slotx >= w || sloty >= h) continue;
 		*(pxls + slotx + sloty * w) = color;
-		//*(pxls + slotx + 1 + sloty * w) = color;
 	}
 }
 void drawLine3(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color) {

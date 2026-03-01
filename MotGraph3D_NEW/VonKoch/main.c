@@ -83,8 +83,8 @@ int main(int argc, char** argv)
 
 	int* Z_Buffers = (int*)calloc(window->h * window->w, sizeof(int));
 	listS* S = createListS(createSphere(200, createPoint(400, 600, 0), SDL_MapRGB(window->format, 50, 50, 50)));
-	//for (int i = -8; i < 8; i++)
-	//	addSphere(&S, createSphere(100, createPoint(500 * (float)i/5, 1500, 500 * (i % 5)), SDL_MapRGB(window->format, 50 * i, 20, 70 * (25 - i))));
+	for (int i = -8; i < 8; i++)
+		addSphere(&S, createSphere(100, createPoint(500 * (float)i/5, 1500, 500 * (i % 5)), SDL_MapRGB(window->format, 50 * i, 20, 70 * (25 - i))));
 
 	// On met le titre sur la fenêtre
 	SDL_WM_SetCaption("VonKoch", NULL);

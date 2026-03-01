@@ -8,6 +8,7 @@ point* createPoint(point p) { // TODO SUPPR DEPENDANCE A L
 	pp->y = p.y;
 	pp->alt = 0;
 	pp->V = 0;
+	pp->id = -1;
 
 	return pp;
 }
@@ -30,10 +31,7 @@ elec* createElec(point p1, point p2, type t) {
 		//e->Freq = 1;
 	}
 	if (t == RESISTANCE) e->R = 1000;
-	if (t == CONDENSATEUR) {
-		e->R = 1;
-		e->C = 0.1;
-	}
+	if (t == CONDENSATEUR) e->C = 0.1;
 
 	return e;
 }
@@ -70,25 +68,26 @@ void addList(list** l, elec* e) {
 void deleteSelected(list** l) {
 	
 	if (!l || !*l) return;
-	list* tmp = NULL;
 	elec* e = (*l)->e;
-	if (e->selected) {
-		disconnect(e->p1);
-		disconnect(e->p2);
-		free(e);
-		tmp = *l;
-		if (tmp->next) (*l)->next->prec = (*l)->prec;
-		if (tmp->prec) {
-			(*l)->prec->next = (*l)->next;
-			deleteSelected(&(*l)->next);
-		}
-		else {
-			*l = (*l)->next;
-			deleteSelected(l);
-		}
+
+	if (!e->selected) {
+		deleteSelected(&(*l)->next);
+		return;
 	}
-	else deleteSelected(&(*l)->next);
-	if (tmp) free(tmp);
+		
+	freeElec(e);
+	(*l)->e = NULL;
+
+	list* tmp = *l;
+
+	if (tmp->prec) tmp->prec->next = tmp->next;
+	if (tmp->next) {
+		tmp->next->prec = tmp->prec;
+		*l = tmp->next;
+		deleteSelected(l);
+	}
+
+	free(tmp);
 }
 
 // On insère le maillon p dans la chaine pv
@@ -158,7 +157,7 @@ void printList(list* l) {
 void printElec(elec* e) {
 	const char* enumToString[8] = { "VCC", "GND", "GENERATEUR", "RESISTANCE", "BOBINE", "CONDENSATEUR", "DIODE", "WIRE"};
 	printf("[%s | U : %.1fV (p1:%.1fV,p2:%.1fV) | I : %.1fmA | R : %.1fO", enumToString[e->t], e->U, e->p1->V, e->p2->V, e->I * 1000, e->R);
-	if (e->t == CONDENSATEUR) printf(" | q : %.1fC", e->q);
+	if (e->t == CONDENSATEUR) printf(" | q : %.1fC | C : %.1fF", e->q, e->C);
 	printf("]\n");
 }
 void freeList(list* l) {
@@ -169,6 +168,11 @@ void freeList(list* l) {
 	free(l->e);
 	free(l);
 	l = NULL;
+}
+void freeElec(elec* e) {
+	disconnect(e->p1);
+	disconnect(e->p2);
+	free(e);
 }
 
 /*list* simulate(list* l) {
@@ -211,10 +215,11 @@ void initV(list* l, int alt) {
 
 	if (GNDorVCCfound) return;
 
+	// Générateurs et autres sources (si GND ou VCC non trouvés)
 	ltmp = l;
 	while (ltmp) {
 		e = ltmp->e;
-		if (e->amplU == 0) {
+		if (e->t != GENERATEUR) {
 			ltmp = ltmp->next;
 			continue;
 		}
@@ -222,7 +227,7 @@ void initV(list* l, int alt) {
 		e->p1->V = 0;
 		e->p2->V = e->U;
 
-		if (propagateV(e->p1, alt) == 0 || propagateV(e->p2, alt) == 0) printf("COURT CIRCUIT !\n");
+		if (propagateV(e->p1, alt) == 0 /* || propagateV(e->p2, alt) == 0*/) printf("COURT CIRCUIT !\n");
 
 		ltmp = ltmp->next;
 	}
@@ -261,74 +266,83 @@ void initV(list* l, int alt) {
 int propagateV(point* p, int alt) {
 	if (p->alt == alt) return 1;
 	p->alt = alt;
+	p->step = INIT_V;
 
-	int tmp = propagateForward(p, alt);
-	return propagateBackward(p, alt) && tmp;
+	int tmp = propagate(p, alt, 1);
+	return propagate(p, alt, -1) && tmp;
 }
-int propagateForward(point* p, int alt) {
+int propagate(point* p, int alt, int direction) {
 
 	float V = p->V;
 	elec* e = p->e, * e_;
 
-	point* pTmp = p->pnext_Connect, * pProp;
+	point* pTmp = direction == 1 ? p->pnext_Connect : p->pprec_Connect , * pProp;
 	type t;
 	int ret = 1;
 	while (pTmp) {
 		if (pTmp->alt == alt) return 0;
 		pTmp->alt = alt;
+		pTmp->step = INIT_V;
 
 		e_ = pTmp->e;
 		t = e_->t;
 		if (t == GND) return V == 0;
 		if (t == VCC) return V != 0;
 		pTmp->V = V;
-		if (t == WIRE) {
+
+		switch (t) {
+		case WIRE:
+			e_->U = 0;
+			break;
+		case CONDENSATEUR:
+			e_->amplU = e_->U = e_->q / e_->C;
+			break;
+		}
+
+		if (t == WIRE /* || t == CONDENSATEUR || t == GENERATEUR*/) { // Commenté pour MNA
 			pProp = poleSwitch(pTmp);
-			pProp->V = V;
+			pProp->V = (t == GENERATEUR ? -1 : 1) * (pProp == e_->p1 ? 1 : -1) * e_->U + V;
 			ret = propagateV(pProp, alt) && ret;
 		}
-		else if (t == GENERATEUR) {
-			pProp = poleSwitch(pTmp);
-			pProp->V = (pProp == e_->p1 ? -1 : 1) * e_->U + V;
-			ret = propagateV(pProp, alt) && ret;
-		}
-		pTmp = pTmp->pnext_Connect;
+
+		pTmp = direction == 1 ? pTmp->pnext_Connect : pTmp->pprec_Connect;
 	}
 
 	return ret;
 }
-int propagateBackward(point* p, int alt) {
 
-	float V = p->V;
-	elec* e = p->e, * e_;
-
-	point* pTmp = p->pprec_Connect, * pProp;
-	type t;
-	int ret = 1;
-	while (pTmp) {
-		if (pTmp->alt == alt) return 0;
-		pTmp->alt = alt;
-
-		e_ = pTmp->e;
-		t = e_->t;
-		if (t == GND) return V == 0;
-		if (t == VCC) return V != 0;
-		pTmp->V = V;
-		if (t == WIRE) {
-			pProp = poleSwitch(pTmp);
-			pProp->V = V;
-			ret = propagateV(pProp, alt) && ret;
-		}
-		else if (t == GENERATEUR) {
-			pProp = poleSwitch(pTmp);
-			pProp->V = (pProp == e_->p1 ? -1 : 1) * e_->U + V;
-			ret = propagateV(pProp, alt) && ret;
-		}
-		pTmp = pTmp->pprec_Connect;
-	}
-
-	return ret;
-}
+//int propagateBackward(point* p, int alt) {
+//
+//	float V = p->V;
+//	elec* e = p->e, * e_;
+//
+//	point* pTmp = p->pprec_Connect, * pProp;
+//	type t;
+//	int ret = 1;
+//	while (pTmp) {
+//		if (pTmp->alt == alt) return 0;
+//		pTmp->alt = alt;
+//
+//		e_ = pTmp->e;
+//		t = e_->t;
+//		if (t == GND) return V == 0;
+//		if (t == VCC) return V != 0;
+//		pTmp->V = V;
+//		if (t == WIRE) {
+//			pProp = poleSwitch(pTmp);
+//			pProp->V = V;
+//			ret = propagateV(pProp, alt) && ret;
+//		}
+//		else if (t == GENERATEUR) {
+//			pProp = poleSwitch(pTmp);
+//			pProp->V = (pProp == e_->p1 ? -1 : 1) * e_->U + V;
+//			ret = propagateV(pProp, alt) && ret;
+//		}
+//		pTmp = pTmp->pprec_Connect;
+//	}
+//
+//	return ret;
+//}
 
 void simuI(list* l, int alt) {
 	elec* e;
@@ -349,9 +363,9 @@ float propI(point* p, float V, float R, int alt) {
 	float Veq;
 	
 	if (p->e->t <= GND || p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4) Veq = p->V;	// Si le potentiel est set, on le met.
-	else p->V = Veq = getVeq(p, V, R, alt);										// Sinon, on va le chercher
+	else p->V = Veq = getVeq(p, V, R, alt);												    // Sinon, on va le chercher
 
-	float sumI = propIF(p, Veq, 0, alt);
+	float sumI = 0;// propIF(p, Veq, 0, alt);
 	p->alt = alt;
 
 	point* p_tmp = p->pnext_Connect;
@@ -443,21 +457,22 @@ float propIF(point* p, float V, float R, int alt) {
 	if (p->alt == alt) return p->e->I;
 
 	elec* e = p->e;
-	if (e->t <= GND) return 0;
+	if (e->t <= GND) return 0; // Si VCC ou GND, on ignore
 
 	float Vtmp = p->V;
 
-	// On traverse le dipôle voisin
+	// On traverse le dipôle
 	p = poleSwitch(p);
-	R += e->R; // On accumule les R
-	if (e->amplU != 0)
+	R += e->R;			// On accumule les R ...
+	if (e->amplU != 0)	// Et les V si le dipôle génère de la tension
 		V += (p->V > Vtmp ? 1 : -1) * e->U;
 
 	float I;
 	// Autre potentiel set trouvé
 	if ((e->t <= GND || p->alt == alt || p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4) && R != 0) I = (p->V - V) / R;
-	else if (isBifurc(p)) I = propI(p, V, R, alt); // Sinon on continue
-	else I = propIF(neighborSwitch(p), V, R, alt);
+	// Sinon on continue
+	else if (isBifurc(p)) I = propI(p, V, R, alt); // Cas bifurcation
+	else I = propIF(neighborSwitch(p), V, R, alt); // Cas série
 
 	if (p->alt == alt) return I;
 
@@ -465,18 +480,21 @@ float propIF(point* p, float V, float R, int alt) {
 	e->I = fabs(I);// * (e->p1->V > e->p1->V ? -1 : 1) * (e->t == GENERATEUR ? -1 : 1);
 
 	Vtmp = p->V;
-	// On calcule les potentiels avec l'intensité trouvée
 	p = poleSwitch(p);
-	if (!(p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4)) {
-		if (e->t == WIRE) p->V = Vtmp;
-		else if (e->amplU != 0) p->V = (p == e->p1 ? -1 : 1) * e->U + Vtmp;
-		else {
-			e->U = I * e->R;
-			p->V = Vtmp - e->U;
-		}
 
-		propV(p);
+	if (p->alt == 3 && alt == 4 || p->alt == -3 && alt == -4) {
+		p->alt = alt;
+		return I;
 	}
+
+	// On calcule les potentiels avec l'intensité trouvée
+	if (e->amplU != 0) p->V = (p == e->p1 ? -1 : 1) * e->U + Vtmp;
+	else {
+		e->U = I * e->R;
+		p->V = Vtmp - e->U;
+	}
+
+	propV(p);
 	
 	p->alt = alt;
 
@@ -773,3 +791,377 @@ int cntElecList(list* l) {
 }
 point* pnext(point* p) { return p->pnext_Connect; }
 point* pprec(point* p) { return p->pprec_Connect; }
+
+
+// NOUVELLE METHODE : MODIFIED NODAL ANALISIS, résolution par matrices de circuit (à creuser voir paint que j'ai fait dessus)
+
+/**
+* 1. Déterminer les potentiels et intensités inconnus, attribuer les ids.
+* 2. Construire la matrice MNA à partir des conductances des dipôles du circuit.
+* 3. Résoudre le système et attribuer les potentiels aux noeuds correspondants.
+* 4. Propager les courants trouvés aux dipôles.
+*/
+
+// Compte le nombre de potentiels inconnus
+// TODO : Gérer GENERATEUR
+int countNodes(list* l) {
+	resetIds(l);
+	initV(l, 2); // TODO : faire nouvelle version.
+
+	int nb_nodes = 0;
+
+	elec* e;
+	while (l) {
+		e = l->e;
+		if (e->t < GENERATEUR) {
+			l = l->next;
+			continue;
+		}
+		if (e->t == GENERATEUR) e->id = nb_nodes++;
+		setNodeId(e->p1, &nb_nodes, 1);
+		setNodeId(e->p2, &nb_nodes, 1);
+		l = l->next;
+	}
+
+	return nb_nodes;
+}
+
+void resetIds(list* l) {
+	// Reset des Ids
+	elec* e;
+	while (l) {
+		e = l->e;
+		e->id = -1;
+		e->p1->id = -1;
+		e->p2->id = -1;
+		e->p1->step = RESET;
+		e->p2->step = RESET;
+		l = l->next;
+	}
+}
+
+
+// Set l'id de tous les pôles du noeud
+void setNodeId(point* p, int* nb_nodes, int increment) {
+	if (p->id  != -1) return; // Si le noeud a déjà un id, on passe.
+	if (p->step == INIT_V) return; // Si l'on connaît son potentiel, on ne compte pas le noeud.
+
+	int id = p->id = *nb_nodes;
+
+	printf("V%d => ( %.1f ; %.1f )\n", id, p->x, p->y);
+
+	if (p->e->t == WIRE && increment) setNodeId(poleSwitch(p), nb_nodes, 0);
+	
+	point* ptmp = p->pnext_Connect;
+	while (ptmp) {
+		ptmp->id = id;
+		if (ptmp->e->t == WIRE) setNodeId(poleSwitch(ptmp), nb_nodes, 0);
+		ptmp = ptmp->pnext_Connect;
+	}
+	ptmp = p->pprec_Connect;
+	while (ptmp) {
+		ptmp->id = id;
+		if (ptmp->e->t == WIRE) setNodeId(poleSwitch(ptmp), nb_nodes, 0);
+		ptmp = ptmp->pprec_Connect;
+	}
+
+	*nb_nodes += increment;
+}
+
+
+float* buildMNAMatrix(list* l, int nb_nodes, float dt) {
+
+	float* M = (float*)calloc(nb_nodes * nb_nodes, sizeof(float));
+	float* F = (float*)calloc(nb_nodes, sizeof(float));
+
+	elec* e;
+	point *p1, *p2;
+	while (l) {
+
+		e = l->e;
+		if (e->t < GENERATEUR) {
+			l = l->next;
+			continue;
+		}
+
+		p1 = e->p1;
+		p2 = e->p2;
+
+		// Recherche des potentiels à définir
+		fillMNARow(p1, M, F, nb_nodes, dt);
+		fillMNARow(p2, M, F, nb_nodes, dt);
+
+		if (e->t == GENERATEUR && e->id != -1) {
+			float* row = M + e->id * nb_nodes;
+			if (p1->id != -1) row[p1->id] =  1;
+			if (p2->id != -1) row[p2->id] = -1;
+			F[e->id] += -e->U;
+		}
+
+		l = l->next;
+	}
+
+	printMatrix(M, nb_nodes);
+
+	printf("[ ");
+	for (int i = 0; i < nb_nodes; i++) printf(F[i] < 0 ? "%.3f " : " %.3f ", F[i]);
+	printf(" ]\n\n");
+
+	float* M_inv = inverse(M, nb_nodes);
+
+	printMatrix(M_inv, nb_nodes);
+
+	float* f = matrixVectorProduct(M_inv, F, nb_nodes);
+
+	free(M);
+	free(M_inv);
+	free(F);
+
+	for (int i = 0; i < nb_nodes; i++) printf( "%.3f ", f[i]);
+	printf("\n\n");
+
+	return f;
+
+}
+
+void fillMNARow(point* p, float* M, float* F, int nb_nodes, float dt) {
+	if (p->step == MNA) return; // Si le noeud est déjà traité, on passe.
+	if (p->step == INIT_V) return; // Si l'on connaît son potentiel, on ne compte pas le noeud.
+
+	// Potentiel pas encore identifié, on associe l'id au pôle et on incrémente l'id max.
+	int id = p->id;
+
+	// Pour chaque dipôle rattaché au noeud, on remplit la ligne de la matrice MNA.
+	float* row = M + id * nb_nodes;
+	handlePole(p, id, row, F, dt);
+
+	point* ptmp = p->pnext_Connect;
+	while (ptmp) {
+		handlePole(ptmp, id, row, F, dt);
+		ptmp = ptmp->pnext_Connect;
+	}
+	ptmp = p->pprec_Connect;
+	while (ptmp) {
+		handlePole(ptmp, id, row, F, dt);
+		ptmp = ptmp->pprec_Connect;
+	}
+
+}
+
+void handlePole(point* p, int id, float* row, float* F, float dt) {
+	p->step = MNA;
+
+	elec* e = p->e;
+
+	if (e->t == WIRE) return;
+
+	if (e->t == GENERATEUR) {
+		// Cas particulier, la logique est la même mais on indique maintenant le sens du courant. (et F pointe sur la ligne du générateur)
+		int dir = (p == e->p1 ? 1 : -1);
+		row[e->id] += dir;
+
+		point* p2 = poleSwitch(p);
+		if (p2->step == INIT_V) F[e->id] += p2->V * dir;
+
+		return;
+	} 
+
+	float G = 1.f / e->R;
+
+	// On ajoute la conductance à la colonne du potentiel et on la soustrait à celle du potentiel du second pôle.
+	// In = Gn * Un avec Un = (v - v')
+	row[id] += G;
+
+	point* p2 = poleSwitch(p);
+	if (p2->step == INIT_V) F[id] += p2->V * G;
+	else row[p2->id] -= G;
+
+}
+
+
+void setVoltage(list* l, float* F) {
+
+	elec* e;
+	point *p1, *p2;
+	list* ltmp = l;
+	while (ltmp) {
+		e = ltmp->e;
+
+		if (e->t < GENERATEUR) {
+			ltmp = ltmp->next;
+			continue;
+		}
+
+		p1 = e->p1;
+		p2 = e->p2;
+
+		if (p1->id != -1) setNodePotential(p1, F[p1->id]);
+		if (p2->id != -1) setNodePotential(p2, F[p2->id]);
+
+		if (e->t == GENERATEUR) e->I = F[e->id];
+		else if (e->t > GENERATEUR && e->t != WIRE) {// TODO : Gérer les courants des fils ici ou ailleurs ?
+			e->U = p2->V - p1->V; // TODO : laisser ca là ? Définir signe ?
+			e->I = e->U / e->R;
+		}
+	
+		ltmp = ltmp->next;
+	}
+
+}
+
+void setNodePotential(point* p, float V) {
+	if (p->step == SET_VOLTAGE) return;
+	if (p->step == INIT_V) return;
+
+	p->V = V;
+	p->step = SET_VOLTAGE;
+	if (p->e->t == WIRE) setNodePotential(poleSwitch(p), V);
+
+	point* ptmp = p->pnext_Connect;
+	while (ptmp) {
+		ptmp->V = V;
+		ptmp->step = SET_VOLTAGE;
+		if (ptmp->e->t == WIRE) setNodePotential(poleSwitch(ptmp), V);
+		ptmp = ptmp->pnext_Connect;
+	}
+	ptmp = p->pprec_Connect;
+	while (ptmp) {
+		ptmp->V = V;
+		ptmp->step = SET_VOLTAGE;
+		if (ptmp->e->t == WIRE) setNodePotential(poleSwitch(ptmp), V);
+		ptmp = ptmp->pprec_Connect;
+	}
+
+}
+
+
+void printMatrix(float* M, int size) {
+
+	if (!M) return;
+
+	float mTmp;
+	for (int i = 0; i < size; i++) {
+		printf("[ ");
+		for (int j = 0; j < size; j++) {
+			mTmp = M[j + i * size];
+			printf( mTmp < 0 ? "%.3f " : " %.3f ", mTmp);
+		}
+		printf(" ]\n");
+	}
+	printf("\n");
+}
+
+float* matrixVectorProduct(float* M, float* v, int size) {
+	float* f = (float*)calloc(size, sizeof(float));
+
+	for (int i = 0; i < size; i++) {
+		f[i] = 0;
+		for (int j = 0; j < size; j++)
+			f[i] += M[j + i * size] * v[j];
+	}
+	return f;
+}
+
+float* inverse(float* M, int dim) { // TODOO PROCHAINE FOIS : Corriger algo
+
+	float d = 0, det_res;
+
+	float* M_inv = (float*)calloc(dim * dim, sizeof(float));
+
+	int* skip_col = (int*)calloc(dim, sizeof(int));
+
+	for (int j = 0; j < dim; j++)
+		for (int i = 0; i < dim; i++) {
+			skip_col[0] = i;
+
+			det_res = ((i + j) % 2 ? 1 : -1) * det(M, dim, j, skip_col, 0);
+			if (j == 0) d += M[i + j * dim] * det_res;
+
+			M_inv[i + j * dim] = det_res;
+		}
+
+	free(skip_col);
+
+	if (d == 0) return NULL;
+
+	scaleMatrix(M_inv, dim * dim, 1.f / d);
+
+	return M_inv;
+
+}
+
+
+float det(float* M, int dim, int skip_row, int* skip_col, int row) {
+
+	if (skip_row == row) row++;
+	if (row == dim) return 1;
+
+	float d = 0;
+	int cnt = 0, not_row_skipped = (skip_row > row);
+
+	for (int i = 0; i < dim; i++) {
+		if (isInArray(i, skip_col, row + not_row_skipped)) continue;
+
+		skip_col[row + not_row_skipped] = i;
+
+		d += (cnt % 2 ? 1 : -1) * M[i + row * dim] * det(M, dim, skip_row, skip_col, row + 1);
+		cnt++;
+	}
+
+	return d;
+
+}
+
+//float det(float* M, int dim, int skip_col, int skip_row) {
+//
+//	if (dim == 2) return M[0] * M[3] - M[1] * M[2];
+//
+//	float d = 0, product;
+//	int col, row, skip = skip_col != -1 || skip_row != -1;
+//	// Diagonales positives
+//	for (int i = 0; i < dim - skip; i++) {
+//
+//		product = 1;
+//		col = i; row = 0;
+//		for (int j = 0; j < dim - skip; j++) {
+//
+//			if (col % dim == skip_col) col++;
+//			if (row == skip_row) row++;
+//
+//			product *= M[col % dim + row * dim];
+//			col++; row++;
+//
+//		}
+//
+//		d += product;
+//	}
+//	// Diagonales Négatives
+//	for (int i = 0; i < dim - skip; i++) {
+//
+//		product = -1;
+//		col = i; row = 0;
+//		for (int j = 0; j < dim - skip; j++) {
+//
+//			if (col < 0) col += dim;
+//
+//			if (col == skip_col) col--;
+//			if (row == skip_row) row++;
+//
+//			if (j != skip_row) product *= M[col + row * dim];
+//			col--; row++;
+//		}
+//
+//		d += product;
+//	}
+//	return d;
+//}
+
+int isInArray(int val, int* array, int size) {
+	for (int i = 0; i < size; i++)
+		if (array[i] == val) return 1;
+	return 0;
+}
+
+void scaleMatrix(float* M, int size, float val) {
+	for (int i = 0; i < size; i++) M[i] *= val;
+}

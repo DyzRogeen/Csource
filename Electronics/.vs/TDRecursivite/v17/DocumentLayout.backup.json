@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "VonKoch\\graph.h",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.h",
               "RelativeToolTip": "VonKoch\\graph.h",
-              "ViewState": "AgIAAA8AAAAAAAAAAADgvxwAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE8AAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-09-21T15:02:10.669Z"
             },
@@ -52,7 +52,7 @@
               "RelativeDocumentMoniker": "VonKoch\\graph.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.c",
               "RelativeToolTip": "VonKoch\\graph.c",
-              "ViewState": "AgIAAGgDAAAAAAAAAAAkwOcBAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAABQCAAAAAAAAAAASwB4CAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-09-21T15:02:18.318Z"
             },
@@ -64,7 +64,7 @@
               "RelativeDocumentMoniker": "VonKoch\\elec.h",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.h",
               "RelativeToolTip": "VonKoch\\elec.h",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAUwFAAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAFgAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-09-21T15:02:09.441Z"
             },
@@ -76,10 +76,9 @@
               "RelativeDocumentMoniker": "VonKoch\\elec.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.c",
               "RelativeToolTip": "VonKoch\\elec.c",
-              "ViewState": "AgIAANsCAAAAAAAAAAAswAUDAAANAAAAAAAAAA==",
+              "ViewState": "AgIAALIDAAAAAAAAAAAuwMADAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2024-09-21T15:02:03.429Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-21T15:02:03.429Z"
             },
             {
               "$type": "Document",
@@ -89,7 +88,7 @@
               "RelativeDocumentMoniker": "VonKoch\\main.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\main.c",
               "RelativeToolTip": "VonKoch\\main.c",
-              "ViewState": "AgIAAMsAAAAAAAAAAAAcwCgAAABAAAAAAAAAAA==",
+              "ViewState": "AgIAANoAAAAAAAAAAAAswPQAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-09-21T14:51:44.191Z",
               "EditorCaption": ""

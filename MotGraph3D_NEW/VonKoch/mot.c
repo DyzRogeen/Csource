@@ -537,6 +537,8 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		}
 
 		k = (d - dir.x * p->x - dir.y * p->y - dir.z * p->z) / n;
+
+		// TODO euh tu me vires ca hein, je crois que c'était pour les lignes au sol
 		if (0 && k > 1) {
 			/*p->p.display = 0;
 			p = p->next;
@@ -624,10 +626,10 @@ void pointsTo2dProjection(int screenW, int screenH, point3* p, cam c) {
 		/*
 		* x*i + y*j = (X ; Y ; Z) => x*v1.x + y*v2.x = X | x*v1.y + y*v2.y = Y | x*v1.z + y*v2.z = Z
 		* 
-		* x*(v1.x - v2.x/v2.y) = X - pcamX - (Y - pcamY)*v2.x/v2.y
+		* x*(v1.x - v2.x/v2.y) = X - Y * v2.x/v2.y
 		* with r = v2.x/v2.y
-		* x = (X - pcamX - (Y - pcamY)*r) / (v1.x - r)
-		* y = (Y - pcamY - x*v1.x) / v2.y
+		* x = (X - Y * r) / (v1.x - r)
+		* y = (Y - x*v1.x) / v2.y
 		* 
 		[        Cam PLANE       ]
 		[            ^ v2        ] > and ^ are the i and j unit vectors of the plane

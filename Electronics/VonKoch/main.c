@@ -39,18 +39,24 @@ void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, in
 			continue;
 		}
 		if (e->t == CONDENSATEUR && isSimuOn && fabs(e->I) > 0.0001) {
-			e->q += e->I * ((float)(clock()) / 100 - Ttmp);	// dq = I * dt
-			e->amplU = e->U = e->q / e->C;					// U = q / C
-			e->R = e->U / e->I;								// R = U / I
+			float ttmp = clock();
+			e->q += e->I * (ttmp / 100 - Ttmp);	// dq = I * dt
+			e->amplU = e->U = e->q / e->C;		// U = q / C
+			e->R = e->U / e->I;					// R = U / I
 			printElec(e);
 		}
 		draw(s, *e->p1, *e->p2, e->t, LGREY, e->selected, 0);
 		tmpL = tmpL->next;
 	}
-	if (isSimuOn) {
-		initV(L, 3 * alt_glob);
+	if (0 && isSimuOn) {
+		int nb_nodes = countNodes(L);
+		float* f = buildMNAMatrix(L, nb_nodes);
+
+		setVoltage(L, f);
+		free(f);
+		//initV(L, 3 * alt_glob);
 		//initI(L, 4 * alt_glob);
-		simuI(L, 4 * alt_glob);
+		//simuI(L, 4 * alt_glob);
 		alt_glob *= -1;
 	}
 
@@ -98,6 +104,7 @@ void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, in
 
 	if (isSimuOn) drawCurrent(s, L, Ttmp);
 
+	// Dessin de l'interface utilisateur
 	drawGUI(s, I);
 	if (selection) {
 		drawParamBar(s, selection);
@@ -164,14 +171,18 @@ int main(int argc, char **argv)
 				break;
 			case SDL_KEYDOWN:
 				k = e.key.keysym.sym;
-				if (k == SDLK_ESCAPE) quit = 1;
+
+				switch (k) {
+
+				case SDLK_ESCAPE: quit = 1; break;
 				// Suppression des éléments sélectionnés
-				if (k == SDLK_DELETE) deleteSelected(&L);
-				if (k == SDLK_LSHIFT || k == SDLK_RSHIFT) shiftMode = 1;
+				case SDLK_DELETE: deleteSelected(&L); break;
+				case SDLK_LSHIFT:
+				case SDLK_RSHIFT: shiftMode = 1; break;
 				// Navigation sur la map
-				if (k == SDLK_UP) s.offsety -= 28;
-				if (k == SDLK_DOWN) s.offsety += 28;
-				if (k == SDLK_LEFT) {
+				case SDLK_UP: s.offsety -= 28; break;
+				case SDLK_DOWN: s.offsety += 28; break;
+				case SDLK_LEFT:
 					if (selection && neighborSwitch(selection->p2)) {
 						selection->selected = 0;
 						selection = neighborSwitch(selection->p2)->e;
@@ -180,8 +191,9 @@ int main(int argc, char **argv)
 						break;
 					}
 					s.offsetx -= 28;
-				}
-				if (k == SDLK_RIGHT) {
+					break;
+				
+				case SDLK_RIGHT:
 					if (selection && neighborSwitch(selection->p1)) {
 						selection->selected = 0;
 						selection = neighborSwitch(selection->p1)->e;
@@ -190,34 +202,51 @@ int main(int argc, char **argv)
 						break;
 					}
 					s.offsetx += 28;
-				}
+					break;
+
 				// Zoom et Dézoom
-				if (k == SDLK_w && s.zoom < 50) {
+				case SDLK_w: 
+					if (s.zoom >= 50) break;
 					s.zoom += 5;
 					zoomRatio = (float)(s.zoom + 4) / s.zoom + 4;
 					SDL_GetMouseState(&mPosx, &mPosy);
 					p = getSimuPoint(s, setPoint(mPosx, mPosy), 0);
 					s.offsetx += p.x * zoomRatio;
 					s.offsety += p.y * zoomRatio;
-				}
-				if (k == SDLK_q && s.zoom > 5) {
+					break;
+				
+				case SDLK_q:
+					if (s.zoom <= 5) break;
 					s.zoom -= 5;
 					zoomRatio = (float)(s.zoom - 4) / s.zoom - 4;
 					SDL_GetMouseState(&mPosx, &mPosy);
 					p = getSimuPoint(s, setPoint(mPosx, mPosy), 0);
 					s.offsetx += p.x * zoomRatio;
 					s.offsety += p.y * zoomRatio;
-				}
+					break;
+				
 				// Init Simultation
-				if (k == SDLK_i) {
+				case SDLK_i:
 					initV(L, 3);
 					simuI(L, 4);
+					break;
+
+				case SDLK_r: resetElecs(L); break;
+				case SDLK_t: L = makeSerialEqCirc(L, 2); break;
+				case SDLK_u: L = makeDerivEqCirc(L, 3); break;
+				case SDLK_p: isSimuOn = !isSimuOn; break;
+				case SDLK_n: drawAll(s, L, mPos1, mPos2, 0, 0, 1, selection, pole_selection, I, 0); break;
+				case SDLK_o:
+					if (1) {
+						int nb_nodes = countNodes(L);
+						float* f = buildMNAMatrix(L, nb_nodes);
+						setVoltage(L, f);
+						free(f);
+						isSimuOn = !isSimuOn;
+					}
+					break;
 				}
-				if (k == SDLK_r) resetElecs(L);
-				if (k == SDLK_t) L = makeSerialEqCirc(L, 2);
-				if (k == SDLK_u) L = makeDerivEqCirc(L, 3);
-				if (k == SDLK_p) isSimuOn = !isSimuOn;
-				if (k == SDLK_n) drawAll(s, L, mPos1, mPos2, 0, 0, 1, selection, pole_selection, I, 0);
+
 				break;
 			case SDL_KEYUP:
 				k = e.key.keysym.sym;
