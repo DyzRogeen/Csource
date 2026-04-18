@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\elec.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\graph.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\elec.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\elec.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\graph.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|solutionrelative:VonKoch\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2FC06459-9D2B-4A2A-8451-FFB4BDE192C3}|VonKoch\\VonKoch.vcxproj|C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
@@ -40,19 +40,20 @@
               "RelativeDocumentMoniker": "VonKoch\\graph.h",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.h",
               "RelativeToolTip": "VonKoch\\graph.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE8AAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAuwEwAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-09-21T15:02:10.669Z"
+              "WhenOpened": "2024-09-21T15:02:10.669Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "graph.c",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.c",
               "RelativeDocumentMoniker": "VonKoch\\graph.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\graph.c",
               "RelativeToolTip": "VonKoch\\graph.c",
-              "ViewState": "AgIAAFcAAAAAAAAAAAAIwB4CAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJUDAAAAAAAAAAAuwKEDAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-09-21T15:02:18.318Z",
               "EditorCaption": ""
@@ -65,33 +66,33 @@
               "RelativeDocumentMoniker": "VonKoch\\elec.h",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.h",
               "RelativeToolTip": "VonKoch\\elec.h",
-              "ViewState": "AgIAAE4AAAAAAAAAAAAAAFgAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAgwBoAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-09-21T15:02:09.441Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "elec.c",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.c",
               "RelativeDocumentMoniker": "VonKoch\\elec.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\elec.c",
               "RelativeToolTip": "VonKoch\\elec.c",
-              "ViewState": "AgIAALIDAAAAAAAAAAAIwLsDAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAADsEAAAAAAAAAAAuwEcEAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-09-21T15:02:03.429Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "main.c",
               "DocumentMoniker": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\main.c",
               "RelativeDocumentMoniker": "VonKoch\\main.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\Electronics\\VonKoch\\main.c",
               "RelativeToolTip": "VonKoch\\main.c",
-              "ViewState": "AgIAACMAAAAAAAAAAAAswAgAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAuwGwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-09-21T14:51:44.191Z",
               "EditorCaption": ""

@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define PI	3.14159265359
 
@@ -21,6 +22,7 @@ typedef struct sPoint {
 }point;
 
 typedef struct sElec {
+	struct sList* l;
 	point *p1, *p2;
 	float U, I, R, L, C, q, Freq, amplU;
 	type t;
@@ -81,12 +83,12 @@ void resetIds(list* l);
 void setNodeId(point* p, int* nb_nodes, int increment);
 
 // Traîtement
-float* buildMNAMatrix(list* l, int nb_nodes);
-void fillMNARow(point* p, float* M, float* F, int nb_nodes);
-void handlePole(point* p, int id, float* row, float* F);
+float* buildMNAMatrix(list* l, int nb_nodes, float dt);
+void fillMNARow(point* p, float* M, float* F, int nb_nodes, float dt);
+void handlePole(point* p, int id, float* row, float* F, float dt);
 
 // Restitution
-void setVoltage(list* l, float* F);
+void setVoltage(list* l, float* F, float dt);
 void setNodePotential(point* p, float V);
 
 // UTILS

@@ -328,7 +328,67 @@ void drawR(screen s, point p1, point p2, Uint32 color, int selected, int isIcon)
 	if (isIcon) for (int k = b_sup; k <= n; k++) line(p1, v, k, w, h, pxls, color);
 	else for (int k = b_sup; k <= n; k++) line3(p1, v, o, k, w, h, pxls, color2);
 }
-void drawL(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {}
+void drawL(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
+	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
+	int slotx, sloty;
+
+	if (isIcon) s.zoom = 8;
+	else {
+		p1 = getScreenPoint(s, p1);
+		p2 = getScreenPoint(s, p2);
+	}
+	point v = sum(p2, p1, -1), p; float n = norm(v); v = scale(v, 1. / n); point o = orthogonal(v);
+
+	int b_inf = isIcon ? n / 6 : n / 2 - (n < 150 ? n / 3 : 50) * s.zoom / 25, b_sup = isIcon ? n * 5.f / 6 : n / 2 + (n < 150 ? n / 3 : 50) * s.zoom / 25;
+	float l = b_sup - b_inf;
+
+	// Gestion des couleurs
+	Uint32 color1, color2;
+	if (selected) {
+		color1 = color2 = color = CYAN;
+		drawBox(s, p1, color);
+		drawBox(s, p2, color);
+	}
+	else if (isIcon) color1 = color2 = color;
+	else {
+		color1 = getColor(p1.V);
+		color2 = getColor(p2.V);
+	}
+
+	// Première patte
+	if (isIcon) for (int k = 0; k < b_inf; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = 0; k < b_inf; k++) line3(p1, v, o, k, w, h, pxls, color1);
+
+	float r = l / 8, l_arc, height = isIcon ? 1.5 : 1.2;
+	point p1_left, p2_left, p1_right, p2_right;
+	for (int k = 0; k < 4; k++) {
+		p = sum(p1, scale(v, b_inf + k * l / 4 + r), 1);
+		int pxl_pos = p.x + (int)(p.y) * w;
+
+		for (float i = 0; i <= r; i++) {
+			l_arc = sin(acos(i / r) / 1.1) * r;
+			p2_right = sum(sum(p, scale(v, l_arc), 1), scale(o, i * height), -1);
+			if (i) isIcon ?
+				drawLine(p1_right, p2_right, w, h, pxls, isIcon ? color1 : addColor(scaleColor(color1, (float)(l + 1 - (k + 1) * r - l_arc) / (l + 2)), scaleColor(color2, (float)((k + 1) * r - l_arc + 1) / (l + 2)))) :
+				drawLine3(p1_right, p2_right, w, h, pxls, isIcon ? color1 : addColor(scaleColor(color1, (float)(l + 1 - (k + 1) * r - l_arc) / (l + 2)), scaleColor(color2, (float)((k + 1) * r - l_arc + 1) / (l + 2))));
+			p1_right = p2_right;
+			//pxl_pos = p_.x + (int)(p_.y) * w;
+			//*(pxls + pxl_pos) = WHITE;
+
+			p2_left = sum(sum(p, scale(v, l_arc), -1), scale(o, i * height), -1);
+			if (i) isIcon ?
+				drawLine(p1_left, p2_left, w, h, pxls, isIcon ? color1 : addColor(scaleColor(color1, (float)(l + 1 - (k + 1) * r + l_arc) / (l + 2)), scaleColor(color2, (float)((k + 1) * r + l_arc + 1) / (l + 2)))) :
+				drawLine3(p1_left, p2_left, w, h, pxls, isIcon ? color1 : addColor(scaleColor(color1, (float)(l + 1 - (k + 1) * r + l_arc) / (l + 2)), scaleColor(color2, (float)((k + 1) * r + l_arc + 1) / (l + 2))));
+			p1_left = p2_left;
+
+		}
+		drawLine(p2_right, p2_left, w, h, pxls, addColor(scaleColor(color1, (float)(l + 1 - (k + 1) * r ) / (l + 2)), scaleColor(color2, (float)((k + 1) * r + 1) / (l + 2))));
+	}
+
+	// Seconde patte
+	if (isIcon) for (int k = b_sup; k <= n; k++) line(p1, v, k, w, h, pxls, color);
+	else for (int k = b_sup; k <= n; k++) line3(p1, v, o, k, w, h, pxls, color2);
+}
 void drawC(screen s, point p1, point p2, Uint32 color, int selected, int isIcon) {
 
 	SDL_Surface* win = s.w; int w = win->w, h = win->h; Uint32* pxls = win->pixels;
@@ -482,7 +542,7 @@ void drawLine(point p1, point p2, int w, int h, Uint32* pxls, Uint32 color) {
 	v = scale(v, 1.f / n);
 
 	int slotx, sloty;
-	for (int k = 0; k <= n; k++) {
+	for (int k = 1; k <= n+1; k++) {
 		slotx = p1.x + (int)(v.x * k);
 		sloty = p1.y + (int)(v.y * k);
 		if (slotx < 0 || sloty < 0 || slotx >= w || sloty >= h) continue;
@@ -864,10 +924,10 @@ void drawCurrent(screen s, list* L, int T) {
 	float I, n;
 	int slotx, sloty, start;
 	while (L) {
-		e = L->e; p1 = getScreenPoint(s, *e->p1); p2 = getScreenPoint(s, *e->p2); I = -enterOrExitNode(e->p1);
+		e = L->e; p1 = getScreenPoint(s, *e->p1); p2 = getScreenPoint(s, *e->p2); I = enterOrExitNode(e->p1);
 		v = sum(p2, p1, -1);
 		n = norm(v); v = scale(v, 1.f / n);
-		start = (int)(200 * I * T)%25;
+		start = (int)(100 * I * T)%25;
 		if (start < 0) start += 25;
 
 		for (int k = start; k <= n - start; k += 25) {

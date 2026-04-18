@@ -7,6 +7,7 @@ point* createPoint(point p) { // TODO SUPPR DEPENDANCE A L
 	pp->x = p.x;
 	pp->y = p.y;
 	pp->alt = 0;
+	pp->step = RESET;
 	pp->V = 0;
 	pp->id = -1;
 
@@ -21,23 +22,26 @@ elec* createElec(point p1, point p2, type t) {
 	e->p1->e = e;
 	e->p2->e = e;
 	e->t = t;
-	e->I = 0;
+	e->I = 0; // A
+	e->U = 0; // V
 	e->amplU = 0;
 	e->selected = 1;
 	if (t == GENERATEUR) {
 		e->U = e->amplU = 12;
 		e->p1->V = -e->U / 2;
 		e->p2->V =  e->U / 2;
-		//e->Freq = 1;
+		e->Freq = 0; // Hz
 	}
-	if (t == RESISTANCE) e->R = 1000;
-	if (t == CONDENSATEUR) e->C = 0.1;
+	if (t == RESISTANCE) e->R = 1000; // O
+	if (t == CONDENSATEUR) e->C = 0.0001; // F
+	if (t == BOBINE) e->L = 100; // H
 
 	return e;
 }
 list* createList(elec* e) {
 	list* l = (list*)calloc(1, sizeof(list));
 	l->e = e;
+	e->l = l;
 	l->next = NULL;
 	l->prec = NULL;
 	return l;
@@ -88,6 +92,7 @@ void deleteSelected(list** l) {
 	}
 
 	free(tmp);
+	// TODO : FIX *l = NULL;
 }
 
 // On insère le maillon p dans la chaine pv
@@ -157,7 +162,7 @@ void printList(list* l) {
 void printElec(elec* e) {
 	const char* enumToString[8] = { "VCC", "GND", "GENERATEUR", "RESISTANCE", "BOBINE", "CONDENSATEUR", "DIODE", "WIRE"};
 	printf("[%s | U : %.1fV (p1:%.1fV,p2:%.1fV) | I : %.1fmA | R : %.1fO", enumToString[e->t], e->U, e->p1->V, e->p2->V, e->I * 1000, e->R);
-	if (e->t == CONDENSATEUR) printf(" | q : %.1fC | C : %.1fF", e->q, e->C);
+	if (e->t == CONDENSATEUR) printf(" | q : %.1fC | C : %.1fF", e->C);
 	printf("]\n");
 }
 void freeList(list* l) {
@@ -208,12 +213,12 @@ void initV(list* l, int alt) {
 
 		e->p1->V = e->t == VCC ? 5 : 0;
 
-		if (propagateV(e->p1, alt) == 0) printf("COURT CIRCUIT !\n");
+		if (propagateV(e->p1, alt) == 0);// printf("COURT CIRCUIT !\n");
 		
 		ltmp = ltmp->next;
 	}
 
-	if (GNDorVCCfound) return;
+	if (1 && GNDorVCCfound) return;
 
 	// Générateurs et autres sources (si GND ou VCC non trouvés)
 	ltmp = l;
@@ -264,7 +269,7 @@ void initV(list* l, int alt) {
 
 }
 int propagateV(point* p, int alt) {
-	if (p->alt == alt) return 1;
+	if (p->alt == alt && p->step == INIT_V) return 1;
 	p->alt = alt;
 	p->step = INIT_V;
 
@@ -299,7 +304,7 @@ int propagate(point* p, int alt, int direction) {
 			break;
 		}
 
-		if (t == WIRE /* || t == CONDENSATEUR || t == GENERATEUR*/) { // Commenté pour MNA
+		if (t == WIRE /* || t == GENERATEUR || t == CONDENSATEUR*/) { // Commenté pour MNA
 			pProp = poleSwitch(pTmp);
 			pProp->V = (t == GENERATEUR ? -1 : 1) * (pProp == e_->p1 ? 1 : -1) * e_->U + V;
 			ret = propagateV(pProp, alt) && ret;
@@ -597,7 +602,7 @@ void nodeSum(point* p, int alt) {
 }*/
 float enterOrExitNode(point* p) {
 	elec* e = p->e;
-	return e->I * (e->p1->V > e->p1->V ? -1 : 1) * (e->t == GENERATEUR ? -1 : 1);
+	return e->I * (e->p1->V > e->p2->V ? -1 : 1) * (e->t == GENERATEUR ? -1 : 1);
 }
 
 list* makeDerivEqCirc(list* l, int alt) {
@@ -750,8 +755,10 @@ void resetElecs(list* l) {
 	while (l) {
 		e = l->e;
 
-		if (e->t == CONDENSATEUR) {
-			e->amplU = e->U = e->q = 0;
+		if (e->t == CONDENSATEUR || e->t == BOBINE) {
+			e->amplU = e->U = e->I = e->q = 0;
+			e->p1->V = 0;
+			e->p2->V = 0;
 		}
 
 		l = l->next;
@@ -803,7 +810,6 @@ point* pprec(point* p) { return p->pprec_Connect; }
 */
 
 // Compte le nombre de potentiels inconnus
-// TODO : Gérer GENERATEUR
 int countNodes(list* l) {
 	resetIds(l);
 	initV(l, 2); // TODO : faire nouvelle version.
@@ -817,7 +823,7 @@ int countNodes(list* l) {
 			l = l->next;
 			continue;
 		}
-		if (e->t == GENERATEUR) e->id = nb_nodes++;
+		if (e->t == GENERATEUR || e->t == BOBINE) e->id = nb_nodes++;
 		setNodeId(e->p1, &nb_nodes, 1);
 		setNodeId(e->p2, &nb_nodes, 1);
 		l = l->next;
@@ -829,13 +835,20 @@ int countNodes(list* l) {
 void resetIds(list* l) {
 	// Reset des Ids
 	elec* e;
+	point* p1, * p2;
 	while (l) {
 		e = l->e;
 		e->id = -1;
-		e->p1->id = -1;
-		e->p2->id = -1;
-		e->p1->step = RESET;
-		e->p2->step = RESET;
+		p1 = e->p1; p2 = e->p2;
+		p1->id = -1;
+		p2->id = -1;
+		if (1 || e->t <= GENERATEUR) {
+			p1->step = RESET;
+			p2->step = RESET;
+			p1->alt = -1;
+			p2->alt = -1;
+			
+		}
 		l = l->next;
 	}
 }
@@ -848,7 +861,7 @@ void setNodeId(point* p, int* nb_nodes, int increment) {
 
 	int id = p->id = *nb_nodes;
 
-	printf("V%d => ( %.1f ; %.1f )\n", id, p->x, p->y);
+	//printf("V%d => ( %.1f ; %.1f )\n", id, p->x, p->y);
 
 	if (p->e->t == WIRE && increment) setNodeId(poleSwitch(p), nb_nodes, 0);
 	
@@ -870,7 +883,7 @@ void setNodeId(point* p, int* nb_nodes, int increment) {
 
 
 float* buildMNAMatrix(list* l, int nb_nodes, float dt) {
-
+	
 	float* M = (float*)calloc(nb_nodes * nb_nodes, sizeof(float));
 	float* F = (float*)calloc(nb_nodes, sizeof(float));
 
@@ -891,34 +904,60 @@ float* buildMNAMatrix(list* l, int nb_nodes, float dt) {
 		fillMNARow(p1, M, F, nb_nodes, dt);
 		fillMNARow(p2, M, F, nb_nodes, dt);
 
-		if (e->t == GENERATEUR && e->id != -1) {
+		if ((e->t == GENERATEUR || e->t == BOBINE) && e->id != -1) {
 			float* row = M + e->id * nb_nodes;
-			if (p1->id != -1) row[p1->id] =  1;
-			if (p2->id != -1) row[p2->id] = -1;
-			F[e->id] += -e->U;
+			switch (e->t) {
+			case GENERATEUR:
+
+				if (p1->id != -1) row[p1->id] = 1;
+				else if (p1->step == INIT_V) F[e->id] -= p1->V;
+
+				if (p2->id != -1) row[p2->id] = -1;
+				else if (p2->step == INIT_V) F[e->id] += p2->V;
+
+				F[e->id] += -e->U;
+
+				break;
+			case BOBINE:
+			{
+				float Ldt = e->L / dt;
+
+				if (p1->id != -1) row[p1->id] = 1;
+				else if (p1->step == INIT_V) F[e->id] += p1->V;
+
+				if (p2->id != -1) row[p2->id] = -1;
+				else if (p2->step == INIT_V) F[e->id] -= p2->V;
+				F[e->id] -= e->I * Ldt;
+
+				row[e->id] = Ldt;
+				break;
+			}
+			}
+			
 		}
 
 		l = l->next;
 	}
 
-	printMatrix(M, nb_nodes);
+	
+	/*printMatrix(M, nb_nodes);
 
 	printf("[ ");
 	for (int i = 0; i < nb_nodes; i++) printf(F[i] < 0 ? "%.3f " : " %.3f ", F[i]);
-	printf(" ]\n\n");
+	printf(" ]\n\n");*/
 
 	float* M_inv = inverse(M, nb_nodes);
 
-	printMatrix(M_inv, nb_nodes);
+	/*printMatrix(M_inv, nb_nodes);*/
 
 	float* f = matrixVectorProduct(M_inv, F, nb_nodes);
 
 	free(M);
-	free(M_inv);
+	if (M_inv) free(M_inv);
 	free(F);
 
-	for (int i = 0; i < nb_nodes; i++) printf( "%.3f ", f[i]);
-	printf("\n\n");
+	/*if (f) for (int i = 0; i < nb_nodes; i++) printf( "%.3f ", f[i]);
+	printf("\n\n");*/
 
 	return f;
 
@@ -950,36 +989,73 @@ void fillMNARow(point* p, float* M, float* F, int nb_nodes, float dt) {
 
 void handlePole(point* p, int id, float* row, float* F, float dt) {
 	p->step = MNA;
-
 	elec* e = p->e;
 
-	if (e->t == WIRE) return;
-
-	if (e->t == GENERATEUR) {
+	switch (e->t) {
+	case WIRE: return;
+	case GENERATEUR:
+	{
 		// Cas particulier, la logique est la même mais on indique maintenant le sens du courant. (et F pointe sur la ligne du générateur)
 		int dir = (p == e->p1 ? 1 : -1);
 		row[e->id] += dir;
 
-		point* p2 = poleSwitch(p);
-		if (p2->step == INIT_V) F[e->id] += p2->V * dir;
+		//point* p2 = poleSwitch(p);
+		//if (p2->step == INIT_V) F[e->id] += p2->V * dir;
 
 		return;
-	} 
+	}
+	case CONDENSATEUR:
+	{
+		float Cdt = e->C / dt;
 
-	float G = 1.f / e->R;
+		// On discrétise la relation entre le courant, la capacité et la tension
+		// In = Cn * dUn / dt avec Un = (v - v') et dUn = v - v[t-1] - v' + v'[t-1]
+		row[id] += Cdt;
 
-	// On ajoute la conductance à la colonne du potentiel et on la soustrait à celle du potentiel du second pôle.
-	// In = Gn * Un avec Un = (v - v')
-	row[id] += G;
+		point* p2 = poleSwitch(p);
+		
+		if (p2->step == INIT_V) F[id] += p->V * Cdt; // v' constant donc dv' = 0
+		else {
+			row[p2->id] -= Cdt;
+			F[id] += (p->V - p2->V) * Cdt;
+		}
+		break;
+	}
+	case BOBINE:
+	{
 
-	point* p2 = poleSwitch(p);
-	if (p2->step == INIT_V) F[id] += p2->V * G;
-	else row[p2->id] -= G;
+		int dir = (p == e->p1 ? -1 : 1); // TODO : sens du courant ?
+
+
+		// On discrétise la relation entre le courant, l'inductance et la tension
+		// dIn / dt = Un / L avec Un = (v - v') et dIn = In - In[t-1] => In = (v - v') * dt / L + In[t-1]
+		row[e->id] += dir;
+
+		//float Ldt = dt / e->L;
+		//point* p2 = poleSwitch(p);
+		//if (p2->step == INIT_V) F[e->id] += dir * (p->V * Ldt + e->I);
+		//else F[e->id] += dir * e->I;
+		
+		break;
+	}
+	default:
+	{
+		float G = 1.f / e->R;
+
+		// On ajoute la conductance à la colonne du potentiel et on la soustrait à celle du potentiel du second pôle.
+		// In = Gn * Un avec Un = (v - v')
+		row[id] += G;
+
+		point* p2 = poleSwitch(p);
+		if (p2->step == INIT_V) F[id] += p2->V * G;
+		else row[p2->id] -= G;
+	}
+	}
 
 }
 
 
-void setVoltage(list* l, float* F) {
+void setVoltage(list* l, float* F, float dt) {
 
 	elec* e;
 	point *p1, *p2;
@@ -998,14 +1074,48 @@ void setVoltage(list* l, float* F) {
 		if (p1->id != -1) setNodePotential(p1, F[p1->id]);
 		if (p2->id != -1) setNodePotential(p2, F[p2->id]);
 
-		if (e->t == GENERATEUR) e->I = F[e->id];
-		else if (e->t > GENERATEUR && e->t != WIRE) {// TODO : Gérer les courants des fils ici ou ailleurs ?
+		switch (e->t) {
+		case GENERATEUR:
+			e->I = F[e->id];
+			break;
+		case CONDENSATEUR:
+		{
+			float dU = p2->V - p1->V - e->U;
+			e->U = p2->V - p1->V;
+			e->I = e->C * dU / dt;
+			break;
+		}
+		case BOBINE:
+		{
+			e->U = p2->V - p1->V;
+			e->I = dt * e->U / e->L + e->I;
+			break;
+		}
+		case WIRE:// TODO : Gérer les courants des fils ici ou ailleurs ?
+		{
+			float sumI = 0;
+			point* ptmp = p1->pnext_Connect;
+			while (ptmp) {
+				sumI += ptmp->e->I;
+				ptmp = ptmp->pnext_Connect;
+			}
+			ptmp = p1->pprec_Connect;
+			while (ptmp) {
+				sumI += ptmp->e->I;
+				ptmp = ptmp->pprec_Connect;
+			}
+			e->I = -sumI;
+			break;
+		}
+		default:
 			e->U = p2->V - p1->V; // TODO : laisser ca là ? Définir signe ?
 			e->I = e->U / e->R;
 		}
 	
 		ltmp = ltmp->next;
 	}
+
+	free(F);
 
 }
 
@@ -1052,6 +1162,8 @@ void printMatrix(float* M, int size) {
 }
 
 float* matrixVectorProduct(float* M, float* v, int size) {
+
+	if (!M) return NULL;
 	float* f = (float*)calloc(size, sizeof(float));
 
 	for (int i = 0; i < size; i++) {
@@ -1062,7 +1174,7 @@ float* matrixVectorProduct(float* M, float* v, int size) {
 	return f;
 }
 
-float* inverse(float* M, int dim) { // TODOO PROCHAINE FOIS : Corriger algo
+float* inverse(float* M, int dim) {
 
 	float d = 0, det_res;
 
@@ -1082,7 +1194,10 @@ float* inverse(float* M, int dim) { // TODOO PROCHAINE FOIS : Corriger algo
 
 	free(skip_col);
 
-	if (d == 0) return NULL;
+	if (d == 0) {
+		free(M_inv);
+		return NULL;
+	}
 
 	scaleMatrix(M_inv, dim * dim, 1.f / d);
 

@@ -6,12 +6,12 @@
 #include "graph.h"
 #include "elec.h"
 
-float Ttmp = 0;
+float Ttmp = 0, t = 0;
 int alt_glob = 1;
 
 void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, int area_selection, int isSimuOn, elec* selection, point* pole_selection, icon* I, type typeMode) {
 	
-	if (isSimuOn) Ttmp = (float)(clock()) / 100 ;
+	if (isSimuOn) Ttmp = (float)(clock()) / 100;
 
 	SDL_Surface* w = s.w;
 
@@ -34,26 +34,30 @@ void drawAll(screen s, list* L, point mPos1, point mPos2, int isMousePressed, in
 		e = tmpL->e;
 		if (e->t == GENERATEUR && e->Freq != 0) {
 			drawAD(s, *e->p1, *e->p2, LGREY, e->selected, 0);
-			if (isSimuOn) e->U = e->amplU * cos(Ttmp / (20 * PI));
+			if (isSimuOn) e->U = e->amplU * cos(Ttmp * e->Freq * 2.f / PI);
 			tmpL = tmpL->next;
 			continue;
 		}
-		if (e->t == CONDENSATEUR && isSimuOn && fabs(e->I) > 0.0001) {
-			float ttmp = clock();
-			e->q += e->I * (ttmp / 100 - Ttmp);	// dq = I * dt
-			e->amplU = e->U = e->q / e->C;		// U = q / C
-			e->R = e->U / e->I;					// R = U / I
-			printElec(e);
+		if (e->t == CONDENSATEUR && isSimuOn/* && fabs(e->I) > 0.0001*/) {
+			//float ttmp = clock();
+			//e->q += e->I * (ttmp / 100 - Ttmp);	// dq = I * dt
+			//e->amplU = e->U = e->q / e->C;		// U = q / C
+			//e->R = e->U / e->I;					// R = U / I
+			//printElec(e);
 		}
 		draw(s, *e->p1, *e->p2, e->t, LGREY, e->selected, 0);
 		tmpL = tmpL->next;
 	}
-	if (0 && isSimuOn) {
-		int nb_nodes = countNodes(L);
-		float* f = buildMNAMatrix(L, nb_nodes);
+	if (isSimuOn) {
+		float dt = 0.001;
+		//if (t != 0) dt = (float)(clock() - t) / 1000;
 
-		setVoltage(L, f);
-		free(f);
+		int nb_nodes = countNodes(L);
+		float* f = buildMNAMatrix(L, nb_nodes, dt);
+
+		if (f) setVoltage(L, f, dt);
+
+		t = clock();
 		//initV(L, 3 * alt_glob);
 		//initI(L, 4 * alt_glob);
 		//simuI(L, 4 * alt_glob);
@@ -151,7 +155,7 @@ int main(int argc, char **argv)
 	s.offsetx = 0;
 	s.offsety = 0;
 	s.w = window;
-	s.g = createGraph(5, 5, 10);
+	s.g = createGraph(5, 5, 100);
 
 	s.w->clip_rect.x = 50;
 
@@ -176,16 +180,19 @@ int main(int argc, char **argv)
 
 				case SDLK_ESCAPE: quit = 1; break;
 				// Suppression des éléments sélectionnés
-				case SDLK_DELETE: deleteSelected(&L); break;
+				case SDLK_DELETE:
+					deleteSelected(&L);
+					selection = NULL;
+					break;
 				case SDLK_LSHIFT:
 				case SDLK_RSHIFT: shiftMode = 1; break;
 				// Navigation sur la map
 				case SDLK_UP: s.offsety -= 28; break;
 				case SDLK_DOWN: s.offsety += 28; break;
 				case SDLK_LEFT:
-					if (selection && neighborSwitch(selection->p2)) {
+					if (selection && selection->l->next) {
 						selection->selected = 0;
-						selection = neighborSwitch(selection->p2)->e;
+						selection = selection->l->next->e;
 						selection->selected = 1;
 						printElec(selection);
 						break;
@@ -194,9 +201,9 @@ int main(int argc, char **argv)
 					break;
 				
 				case SDLK_RIGHT:
-					if (selection && neighborSwitch(selection->p1)) {
+					if (selection && selection->l->prec) {
 						selection->selected = 0;
-						selection = neighborSwitch(selection->p1)->e;
+						selection = selection->l->prec->e;
 						selection->selected = 1;
 						printElec(selection);
 						break;
@@ -234,15 +241,17 @@ int main(int argc, char **argv)
 				case SDLK_r: resetElecs(L); break;
 				case SDLK_t: L = makeSerialEqCirc(L, 2); break;
 				case SDLK_u: L = makeDerivEqCirc(L, 3); break;
-				case SDLK_p: isSimuOn = !isSimuOn; break;
+				case SDLK_p: {
+					t = 0;
+					isSimuOn = !isSimuOn; break;
+				}
 				case SDLK_n: drawAll(s, L, mPos1, mPos2, 0, 0, 1, selection, pole_selection, I, 0); break;
 				case SDLK_o:
 					if (1) {
 						int nb_nodes = countNodes(L);
-						float* f = buildMNAMatrix(L, nb_nodes);
-						setVoltage(L, f);
-						free(f);
-						isSimuOn = !isSimuOn;
+						float* f = buildMNAMatrix(L, nb_nodes, 0.01);
+						if (f) setVoltage(L, f, 0.01);
+						//isSimuOn = !isSimuOn;
 					}
 					break;
 				}
