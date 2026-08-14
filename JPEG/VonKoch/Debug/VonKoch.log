@@ -41,8 +41,10 @@ C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(697,40): warning C4244
 C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(698,30): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(679,13): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(679,55): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(839,23): warning C4305: 'fonction' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(849,33): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(770,54): warning C4244: 'initialisation' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(771,29): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(855,23): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(865,33): warning C4305: 'fonction' : troncation de 'double' à 'float'
 C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(332,1): warning C4715: 'blackWhite' : les chemins de contrôle ne retournent pas tous une valeur
 C:\Users\Adrie\Desktop\source\Csource\JPEG\VonKoch\main.c(370,1): warning C4715: 'chrominance' : les chemins de contrôle ne retournent pas tous une valeur
   VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\JPEG\bin\VonKoch_d.exe

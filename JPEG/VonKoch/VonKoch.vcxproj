@@ -106,6 +106,9 @@
   <ItemGroup>
     <Image Include="cammile.jpg" />
     <Image Include="camol.jpg" />
+    <Image Include="starmap_2020_1k.jpg" />
+    <Image Include="starmap_2020_2k.jpg" />
+    <Image Include="starmap_2020_4k.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="compressed.txt" />

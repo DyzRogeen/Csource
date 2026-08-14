@@ -1,0 +1,35 @@
+﻿  main.c
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.h(8,9): warning C4005: 'max' : redéfinition de macro
+  (compiler le fichier source 'main.c')
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h(1282,17):
+      voir la définition précédente de « max »
+  
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.h(9,9): warning C4005: 'min' : redéfinition de macro
+  (compiler le fichier source 'main.c')
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h(1283,17):
+      voir la définition précédente de « min »
+  
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(89,98): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(89,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(90,103): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(90,114): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(90,134): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(105,10): warning C4133: '=' : types incompatibles - de 'SDL_Window *' à 'SDL_Surface *'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(113,33): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(125,8): warning C4244: '=' : conversion de 'clock_t' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(202,120): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(202,134): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(250,20): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(70,38): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(73,13): warning C4244: 'initialisation' : conversion de 'clock_t' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(79,9): warning C4101: 'p0' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(84,24): warning C4101: 'pZ2' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(81,9): warning C4101: 'pY' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(80,9): warning C4101: 'pX' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(84,14): warning C4101: 'pX2' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(82,9): warning C4101: 'pZ' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(84,9): warning C4101: 'p02' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(84,19): warning C4101: 'pY2' : variable locale non référencée
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Planetaire\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).
+          1 fichier(s) copié(s).

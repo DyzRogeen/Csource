@@ -5,3 +5,8 @@ OU (ou ?)
 changer le chemin dans Editeurs de Liens / Entree
 
 Changer le chemin dans Evenements de build / Evenement post build
+
+Check Répertoires VC++ (5e fenetre)
+
+vcpkg install {package}
+vcpkg integrate install

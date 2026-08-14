@@ -102,7 +102,7 @@ point pojectPoint(camera cam, point3 p, int w2, int h2) {
 	// Z = uz * m +	vz * n	
 	// 
 	// 3 equations pour 2 inconnues mais il existe bien une unique solution.
-	// On réduit les dimentions avec une matrice de Gram
+	// On réduit les dimensions avec une matrice de Gram
 	// A^T * P = (A^T * A) * I
 	// Avec A^T * A = [ u*u u*v ] = [ u*u  0  ] (car u et v sont orthogonaux)
 	//				  [ v*u v*v ] = [  0  v*v ]

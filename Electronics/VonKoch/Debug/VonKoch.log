@@ -1,4 +1,18 @@
-﻿  graph.c
+﻿  elec.c
+  graph.c
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(36,32): warning C4305: '=' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(165,35): warning C4473: 'printf' : nombre insuffisant d'arguments passés pour la chaîne de format
+      C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(165,35):
+      les espaces réservés et leurs paramètres attendent des arguments 2 variadiques, mais des arguments 1 ont été fournis
+      C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(165,35):
+      l'argument variadique manquant 2 est demandé par la chaîne de format '%.1f'
+  
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(214,26): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(366,21): warning C4033: 'propI' doit retourner une valeur
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(485,9): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(610,15): warning C4101: 'ptmp2' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(610,9): warning C4101: 'ptmp' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(750,2): warning C4098: 'fuseLists' : fonction 'void' retournant une valeur
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(27,22): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(125,67): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(119,6): warning C4101: 'slotx' : variable locale non référencée
@@ -131,5 +145,36 @@ C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(981,19): warni
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(1000,47): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(1001,47): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
 C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\graph.c(1002,47): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+  main.c
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(37,34): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(60,7): warning C4244: '=' : conversion de 'clock_t' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(78,40): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(78,56): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(109,34): warning C4244: 'fonction' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(52,14): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(132,28): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(132,36): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(220,35): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(220,42): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(221,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(222,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(230,35): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(230,42): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(231,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(232,23): warning C4244: '+=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(252,46): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(253,31): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(266,58): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(266,66): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(276,22): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(276,30): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(330,80): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(330,88): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(338,45): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\main.c(338,53): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+  utils_SDL.c
+  Génération de code en cours...
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(392,1): warning C4715: 'propI' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\Adrie\Desktop\source\Csource\Electronics\VonKoch\elec.c(438,1): warning C4715: 'getVeq' : les chemins de contrôle ne retournent pas tous une valeur
   VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Electronics\bin\VonKoch_d.exe
           1 fichier(s) copié(s).

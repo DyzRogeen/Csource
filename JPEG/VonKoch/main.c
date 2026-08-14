@@ -760,6 +760,22 @@ void JPEGComp(SDL_Surface* window, Uint8* Q, int dSample, int limFreq, float ran
 
 }
 
+void celestialToPolar(SDL_Surface* window, SDL_Surface* img) {
+
+	int w = window->w, h = window->h - 1;
+	Uint32* pxls = window->pixels;
+
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			int d = (1 + 0.8 * cos(x * 2.f * PI / w)) * h / 2 + y;
+			int i = 255 * ((float)y) / h;
+			//*(pxls + x + (d % h) * 1024) = i << 16 | i << 8 | i | 255 << 24;
+			*(pxls + x + y * w) = getPixel(img, x, d % h, 3);
+		}
+	}
+
+}
+
 int main(int argc, char **argv)
 {
 
@@ -797,7 +813,7 @@ int main(int argc, char **argv)
 
 	atexit(SDL_Quit);
 
-	if (!(img = IMG_Load("camol.jpg"))) {
+	if (!(img = IMG_Load("starmap_2020_1k.jpg"))) {
 		printf("Unable to open jpg file.\n");
 		exit(EXIT_FAILURE);
 	}

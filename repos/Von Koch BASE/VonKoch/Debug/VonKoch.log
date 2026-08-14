@@ -1,0 +1,18 @@
+﻿  main.c
+  utils_SDL.c
+  Génération de code en cours...
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(21,29): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(61,65): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(62,65): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(42,17): warning C4101: 'f' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(116,9): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(118,16): warning C4244: '*=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(119,16): warning C4244: '*=' : conversion de 'float' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(92,12): warning C4101: 'CE' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(91,17): warning C4101: 'f' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(197,20): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\VonKoch\main.c(198,20): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
+MSVCRTD.lib(initializers.obj) : warning LNK4098: conflit entre la bibliothèque par défaut 'msvcrt.lib' et les autres bibliothèques ; utilisez /NODEFAULTLIB:library
+SDLmain.lib(SDL_win32_main.obj) : warning LNK4099: PDB '' n'a pu être trouvé avec 'SDLmain.lib(SDL_win32_main.obj)' ou sur '' ; l'objet sera lié sans informations de débogage
+  VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Von Koch BASE\bin\VonKoch_d.exe
+          1 fichier(s) copié(s).

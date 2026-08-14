@@ -40,6 +40,15 @@
     <Image Include="camol.jpg">
       <Filter>Fichiers sources</Filter>
     </Image>
+    <Image Include="starmap_2020_4k.jpg">
+      <Filter>Fichiers sources</Filter>
+    </Image>
+    <Image Include="starmap_2020_2k.jpg">
+      <Filter>Fichiers sources</Filter>
+    </Image>
+    <Image Include="starmap_2020_1k.jpg">
+      <Filter>Fichiers sources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="huffman.txt">
