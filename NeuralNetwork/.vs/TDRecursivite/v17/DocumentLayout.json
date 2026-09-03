@@ -50,8 +50,7 @@
               "RelativeToolTip": "VonKoch\\graph.c",
               "ViewState": "AgIAAEIAAAAAAAAAAAAAAGsAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-11-24T09:12:33.364Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-24T09:12:33.364Z"
             },
             {
               "$type": "Document",
@@ -73,7 +72,7 @@
               "RelativeDocumentMoniker": "VonKoch\\neuralNet.c",
               "ToolTip": "C:\\Users\\Adrie\\Desktop\\source\\Csource\\NeuralNetwork\\VonKoch\\neuralNet.c",
               "RelativeToolTip": "VonKoch\\neuralNet.c",
-              "ViewState": "AgIAABIAAAAAAAAAAAAgwC0AAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAywC0AAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2025-07-06T08:17:31.928Z",
               "EditorCaption": ""
@@ -88,8 +87,7 @@
               "RelativeToolTip": "VonKoch\\neuralNet.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-05-28T07:31:12.451Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-28T07:31:12.451Z"
             },
             {
               "$type": "Document",
@@ -101,8 +99,7 @@
               "RelativeToolTip": "VonKoch\\convolNet.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAEsAAABnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-07-05T08:13:14.872Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-05T08:13:14.872Z"
             },
             {
               "$type": "Document",
@@ -114,8 +111,7 @@
               "RelativeToolTip": "VonKoch\\convolNet.c",
               "ViewState": "AgIAAJUCAAAAAAAAAAAowKYCAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-07-23T08:46:02.508Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-23T08:46:02.508Z"
             },
             {
               "$type": "Document",
@@ -127,8 +123,7 @@
               "RelativeToolTip": "VonKoch\\main.c",
               "ViewState": "AgIAACwBAAAAAAAAAAAowDMBAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
-              "WhenOpened": "2025-07-20T08:58:22.394Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-20T08:58:22.394Z"
             }
           ]
         }

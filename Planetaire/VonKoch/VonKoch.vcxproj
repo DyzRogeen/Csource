@@ -45,7 +45,7 @@
     <OutDir>$(SolutionDir)\bin\</OutDir>
     <TargetName>$(ProjectName)_d</TargetName>
     <IncludePath>..\..\Common_Libs\SDL2_image-2.6.3\include;..\..\Common_Libs\SDL-1.2.15\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\Common_Libs\SDL-1.2.15\lib\x86;..\..\Common_Libs\SDL2_image-2.6.3\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\..\Common_Libs\SDL2_image-2.6.3\lib\x86;..\..\Common_Libs\SDL-1.2.15\include;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

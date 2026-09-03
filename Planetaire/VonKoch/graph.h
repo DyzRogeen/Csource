@@ -85,6 +85,7 @@ float norm3(point3 p);
 float norm2(point2 p);
 point3 unit3(point3 p);
 point2 unit2(point2 p);
+float dot3(point3 p1, point3 p2);
 point3 polaireToCartesien(float lat, float lon);
 
 Uint32 scalePxl(Uint8* pxl, float coef, float val);

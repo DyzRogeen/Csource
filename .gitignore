@@ -1,1 +1,6 @@
 Common_Libs/
+**/.vs
+**/SDL-1.2.15
+**/SDL2_image-2.6.3
+**/SDL2-2.26.3
+**/SDL2-2.28.1

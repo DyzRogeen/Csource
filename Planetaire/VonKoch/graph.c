@@ -189,7 +189,7 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 
 	float p_x = p_screen.x;
 	float p_y = p_screen.y;
-	
+
 	point3 v_ac = sum3(c->pos, a_pos, -1);
 	float dist = norm3(v_ac);
 	float radius = a->radius * pow(10, a->radiusOrder);
@@ -200,20 +200,163 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 
 	// TODO : rotation selon l'axe astre caméra
 	v_ac = scale3(v_ac, 1.f / dist);
-	float lat, lat1, init_lat = asinf(v_ac.z) - a->latRotAxis;
-	float lon, lon1, init_lon = atanf(v_ac.y / v_ac.x);
+	float lat, lat1, init_lat = asinf(v_ac.z);// -a->latRotAxis;
+	float lon, lon1, init_lon = -atanf(v_ac.y / v_ac.x);
 	if (v_ac.x < 0) init_lon -= PI;
 
+	// v_ac.x   v_ac.y
+	// v_ac.y  -v_ac.x
+	// v_ac.z     0
 	// Vecteur pour la rotation latitudinale
-	point3 v_rot_lat = { v_ac.y, -v_ac.x, 0 };
+	point3 v_rot_lat = unit3((point3) { v_ac.y, -v_ac.x, 0 });
+
+	float angle = (c->lon > PI ? PI2 - c->lon : c->lon) * asinf(v_ac.z);
+	float cos_angle = cosf(angle), sin_angle = sinf(angle);
+
+	float latX = v_rot_lat.x;
+	float latY = v_rot_lat.y;
+	float latZ = v_rot_lat.z;
+
+	v_rot_lat = c->Vx;
+	v_rot_lat = unit3(sum3(v_rot_lat, scale3(v_ac, dot3(v_rot_lat, v_ac)), -1));
+
+	point3 v_rot_lon = { v_ac.z * v_rot_lat.y - v_ac.y * v_rot_lat.z, v_ac.x * v_rot_lat.z - v_ac.z * v_rot_lat.x ,v_ac.y * v_rot_lat.x - v_ac.x * v_rot_lat.y };
+
 
 	float init_cos_lon = cosf(init_lon), init_sin_lon = sinf(init_lon);
 	float init_cos_lat = cosf(init_lat), init_sin_lat = sinf(init_lat);
 
-	//if (v_ac.x > 0) init_lon = init_lon + PI;
-	//init_lon *= (1.f + cosf(2.f * asinf(v_ac.z) + PI)) / 2.f;
+	//if (a->type != ETOILE) printf("[ %.2f ; %.2f ] et [ %.2f ; %.2f ; %.2f ]\n", init_lon, init_lat, c->pos.x, c->pos.y, c->pos.z);
+	//if (a->type != ETOILE) printf("[ %.2f ; %.2f ; %.2f ] et [ %.2f ; %.2f ; %.2f ] %.2f \n", v_rot_lat.x, v_rot_lat.y, v_rot_lat.z, v_rot_lon.x, v_rot_lon.y, v_rot_lon.z, angle);
+	if (a->type != ETOILE) printf("![ %.2f ; %.2f ; %.2f ] - [ %.2f ; %.2f ; %.2f ] \n", dot3(v_ac, v_rot_lon), dot3(v_ac, v_rot_lat), dot3(v_rot_lon, v_rot_lat), norm3(v_ac), norm3(v_rot_lat), norm3(v_rot_lon));
 
-	//printf("[ %.2f ; %.2f ] et [ %.2f ; %.2f ; %.2f ]\n", init_lon, init_lat, c->pos.x, c->pos.y, c->pos.z);
+	point3 a_dir = unit3(a_pos);
+
+	// Problèmes
+	// - init_lon change brusquemment quand on passe au dessus du pôle
+	// - faire tourner selon l'axe ac en fonction de la longitude de c
+	// - Eclairage du soleil -> à faire selon coordonnées indépendantes
+
+	// Rotation d'un point
+	//		[ cos(ϕ) * cos(θ) ]   [ x ]
+	// P =  [ cos(ϕ) * sin(θ) ] = [ y ]
+	//		[	   sin(ϕ)	  ]   [ z ]
+	// 
+	// ϕ = asin(z) et θ = acos(x / cos(asin(z))
+	// 
+	//		[ cos(a)   0   sin(a) ] [ x ]
+	// Ry = [   0      1     0    ] [ y ]
+	//		[ sin(a)   0  -cos(a) ] [ z ]
+
+	float X, Y, Z;
+	int x_texture, y_texture;
+	int x_start = p_x - screen_radius, x_end = p_x + screen_radius;
+	int y_start = p_y - screen_radius, y_end = p_y + screen_radius;
+	for (float y = y_start; y <= y_end; y++) {
+
+		if (y <= 0 || y > h) continue;
+
+		Z = (float)(y - p_y) / screen_radius;
+
+		for (float x = x_start; x <= x_end; x++) {
+
+			if (screen_radius < norm2((point2) { x - p_x, y - p_y })) continue;
+			if (x <= 0 || x >= w) continue;
+
+			Y = -(float)(x - p_x) / screen_radius;
+			X = -sqrtf(1 - Y * Y - Z * Z);
+			float nrotX = X * v_ac.x + Y * v_rot_lat.x + Z * v_rot_lon.x;
+			float nrotY = X * v_ac.y + Y * v_rot_lat.y + Z * v_rot_lon.y;
+			float nrotZ = X * v_ac.z + Y * v_rot_lat.z + Z * v_rot_lon.z;
+
+			lat = fast_asin(nrotZ);
+			lon = fast_atan(nrotY / nrotX) + PI_2 * (nrotX < 0 ? -1 : 1);
+
+			x_texture = w_texture - (lon/* - a->lonRotAxis*/) * w_texture / PI2; // TODO : inclure lonRotAxis dans init_lon ?
+			y_texture = lat * h_texture / PI + h_texture / 2.f;
+
+			x_texture = (x_texture + w_texture) % w_texture;
+			y_texture = (y_texture + h_texture) % h_texture;
+			pxl = pxls_texture + (x_texture + y_texture * w_texture) * 3;
+
+			pxls[(int)x + (int)(y * w)] = 0xFF << 24 | pxl[0] << 16 | pxl[1] << 8 | pxl[2];
+			continue;
+
+
+			point3 pxl_dir = unit3((point3) { 0, 0, 0 });
+			//point3 pxl_dir = unit3((point3) { zrotX , zrotY , zrotZ });
+			// Lumière diffuse
+			float dot_ap = a_dir.x * pxl_dir.x + a_dir.y * pxl_dir.y + a_dir.z * pxl_dir.z; // TODO : Tweaker selon la distance au soleil
+			// Lumière réfléchie
+			point3 v_reflect = unit3(sum3(a_dir, scale3(pxl_dir, 2), 1));
+			float dot_cp = v_reflect.x * v_ac.x + v_reflect.y * v_ac.y + v_reflect.z * v_ac.z;
+
+			float coef_diffuse = a->type == ETOILE ? 1 : sigmoid(10 * dot_ap) * 0.95f; // Sigmoide ? euuuh ca lag ca non ?
+			float coef_reflect = a->type == ETOILE ? 0 : dot_cp;
+
+			point3 pxl_col = unit3((point3) { ((Uint8*)pxl)[0], ((Uint8*)pxl)[1], ((Uint8*)pxl)[2] });
+
+			//pxls[(int)x + (int)(y * w)] = scalePxl(pxl, coef_diffuse,  powf(coef_reflect * pxl_col.z, 7) * 255);
+
+		}
+	}
+
+
+	if (a->type != ETOILE) {
+		point2 p_v = projectPoint(c, sum3(a_pos, scale3(v_ac, dist / 2), 1), w, h);
+		point2 p_lat = projectPoint(c, sum3(a_pos, scale3(v_rot_lat, dist / 2), 1), w, h);
+		point2 p_lon = projectPoint(c, sum3(a_pos, scale3(v_rot_lon, dist / 2), 1), w, h);
+		drawLine(surface, p_screen, p_v, GREEN);
+		drawLine(surface, p_screen, p_lat, RED);
+		drawLine(surface, p_screen, p_lon, BLUE);
+	}
+
+}
+
+
+void renderAstre4(SDL_Surface* surface, cam* c, astre* a) {
+
+	SDL_Surface* texture = a->texture;
+	if (!texture) return;
+
+	int w = surface->w, h = surface->h, w_texture = texture->w, h_texture = texture->h;
+	Uint32* pxls = surface->pixels;
+	Uint8* pxls_texture = texture->pixels, * pxl;
+
+
+	point3 a_pos = a->position;
+	point2 p_screen = projectPoint(c, a_pos, w, h);
+	if (p_screen.x == -1 && p_screen.y == -1) return;
+
+	float p_x = p_screen.x;
+	float p_y = p_screen.y;
+
+	point3 v_ac = sum3(c->pos, a_pos, -1);
+	float dist = norm3(v_ac);
+	float radius = a->radius * pow(10, a->radiusOrder);
+
+	int screen_radius = radius * c->d_plan / (dist * c->window_ratio);
+
+	if (screen_radius <= 0) return;
+
+	// TODO : rotation selon l'axe astre caméra
+	v_ac = scale3(v_ac, 1.f / dist);
+	float lat, lat1, init_lat = asinf(v_ac.z);// -a->latRotAxis;
+	float lon, lon1, init_lon = -atanf(v_ac.y / v_ac.x);
+	if (v_ac.x < 0) init_lon -= PI;
+
+	// v_ac.x   v_ac.y
+	// v_ac.y  -v_ac.x
+	// v_ac.z     0
+	// Vecteur pour la rotation latitudinale
+	point3 v_rot_lat = unit3((point3) { v_ac.y, v_ac.x, 0 });
+	point3 v_rot_lon = { v_ac.z * v_rot_lat.y, -v_ac.z * v_rot_lat.x ,v_ac.y * v_rot_lat.x - v_ac.x * v_rot_lat.y };
+
+	float init_cos_lon = cosf(init_lon), init_sin_lon = sinf(init_lon);
+	float init_cos_lat = cosf(init_lat), init_sin_lat = sinf(init_lat);
+
+	//if (a->type != ETOILE) printf("[ %.2f ; %.2f ] et [ %.2f ; %.2f ; %.2f ]\n", init_lon, init_lat, c->pos.x, c->pos.y, c->pos.z);
+	if (a->type != ETOILE) printf("[ %.2f ; %.2f ; %.2f ] et [ %.2f ; %.2f ; %.2f ] \n", v_rot_lat.x, v_rot_lat.y, v_rot_lat.z, v_rot_lon.x, v_rot_lon.y, v_rot_lon.z);
 
 	point3 a_dir = unit3(a_pos);
 
@@ -233,8 +376,8 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 	//		[ cos(a)   0   sin(a) ] [ x ]
 	// Ry = [   0      1     0    ] [ y ]
 	//		[ sin(a)   0  -cos(a) ] [ z ]
-	
-	float X, Y, Z, den;
+
+	float X, Y, Z;
 	int x_texture, y_texture;
 	int x_start = p_x - screen_radius, x_end = p_x + screen_radius;
 	int y_start = p_y - screen_radius, y_end = p_y + screen_radius;
@@ -249,17 +392,17 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 			if (screen_radius < norm2((point2) { x - p_x, y - p_y })) continue;
 			if (x <= 0 || x >= w) continue;
 
-			X = (float)(x - p_x) / screen_radius;
-			Y = sqrtf(1 - X * X - Z * Z);
+			Y = (float)(x - p_x) / screen_radius;
+			X = sqrtf(1 - Y * Y - Z * Z);
 
 			//float zrotX = X;
 			//float zrotY = Y;
 			//float zrotZ = Z;
 
-			//// Rotation autour de Z
-			//float zrotX = X * init_sin_lon + Y * init_cos_lon;
-			//float zrotY = X * init_cos_lon - Y * init_sin_lon;
-			//float zrotZ = Z;
+			// Rotation autour de Z
+			float zrotX = X * init_cos_lon - Y * init_sin_lon;
+			float zrotY = X * init_sin_lon + Y * init_cos_lon;
+			float zrotZ = Z;
 
 			// Rotation de Rodrigues
 			// On recherche à effectuer la rotation d'un vecteur U sur un axe défini par le vecteur quelconque N
@@ -289,20 +432,18 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 			//float nrotY = Y * init_cos_lat + (1 - init_cos_lat) * (v_rot_lat.y * v_rot_lat.x * X + v_rot_lat.y * v_rot_lat.y * Y) - init_sin_lat * v_rot_lat.x * Z;
 			//float nrotZ = Z * init_cos_lat + init_sin_lat * (v_rot_lat.x * Y - v_rot_lat.y * X);
 
-			// v_ac.x   v_ac.y
-			// v_ac.y  -v_ac.x
-			// v_ac.z     0
-			// Rotation autour de Z
-			v_rot_lat = (point3){ v_ac.x * v_ac.z, v_ac.z * v_ac.y ,v_ac.y * v_ac.y + v_ac.x * v_ac.x };
-			float zrotX = X * init_cos_lon + (1.f - init_cos_lon) * (v_rot_lat.x * v_rot_lat.x * X + v_rot_lat.x * v_rot_lat.y * Y + v_rot_lat.x * v_rot_lat.z * Z) + init_sin_lon * (v_rot_lat.y * Z - v_rot_lat.z * Y);
-			float zrotY = Y * init_cos_lon + (1.f - init_cos_lon) * (v_rot_lat.y * v_rot_lat.x * X + v_rot_lat.y * v_rot_lat.y * Y + v_rot_lat.y * v_rot_lat.z * Z) + init_sin_lon * (v_rot_lat.z * X - v_rot_lat.x * Z);
-			float zrotZ = Z * init_cos_lon + (1.f - init_cos_lon) * (v_rot_lat.z * v_rot_lat.x * X + v_rot_lat.z * v_rot_lat.y * Y + v_rot_lat.z * v_rot_lat.z * Z) + init_sin_lon * (v_rot_lat.x * Y - v_rot_lat.y * X);
+			//// Rotation autour de Z
+			//float zrotY = X * init_cos_lon + (1.f - init_cos_lon) * (v_rot_lon.x * v_rot_lon.x * X + v_rot_lon.x * v_rot_lon.y * Y + v_rot_lon.x * v_rot_lon.z * Z) + init_sin_lon * (v_rot_lon.y * Z - v_rot_lon.z * Y);
+			//float zrotX = Y * init_cos_lon + (1.f - init_cos_lon) * (v_rot_lon.y * v_rot_lon.x * X + v_rot_lon.y * v_rot_lon.y * Y + v_rot_lon.y * v_rot_lon.z * Z) + init_sin_lon * (v_rot_lon.z * X - v_rot_lon.x * Z);
+			//float zrotZ = Z * init_cos_lon + (1.f - init_cos_lon) * (v_rot_lon.z * v_rot_lon.x * X + v_rot_lon.z * v_rot_lon.y * Y + v_rot_lon.z * v_rot_lon.z * Z) + init_sin_lon * (v_rot_lon.x * Y - v_rot_lon.y * X);
 
-			v_rot_lat = (point3){ -v_ac.x, -v_ac.y, 0.f };
-			////v_rot_lat = (point3){ 1, -1, 0 };
 			float nrotX = zrotX * init_cos_lat + (1.f - init_cos_lat) * (v_rot_lat.x * v_rot_lat.x * zrotX + v_rot_lat.x * v_rot_lat.y * zrotY + v_rot_lat.x * v_rot_lat.z * zrotZ) + init_sin_lat * (v_rot_lat.y * zrotZ - v_rot_lat.z * zrotY);
 			float nrotY = zrotY * init_cos_lat + (1.f - init_cos_lat) * (v_rot_lat.y * v_rot_lat.x * zrotX + v_rot_lat.y * v_rot_lat.y * zrotY + v_rot_lat.y * v_rot_lat.z * zrotZ) + init_sin_lat * (v_rot_lat.z * zrotX - v_rot_lat.x * zrotZ);
 			float nrotZ = zrotZ * init_cos_lat + (1.f - init_cos_lat) * (v_rot_lat.z * v_rot_lat.x * zrotX + v_rot_lat.z * v_rot_lat.y * zrotY + v_rot_lat.z * v_rot_lat.z * zrotZ) + init_sin_lat * (v_rot_lat.x * zrotY - v_rot_lat.y * zrotX);
+
+			//float nrotX = X * init_cos_lat + (1.f - init_cos_lat) * (v_rot_lat.x * v_rot_lat.x * X + v_rot_lat.x * v_rot_lat.y * Y + v_rot_lat.x * v_rot_lat.z * Z) + init_sin_lat * (v_rot_lat.y * Z - v_rot_lat.z * Y);
+			//float nrotY = Y * init_cos_lat + (1.f - init_cos_lat) * (v_rot_lat.y * v_rot_lat.x * X + v_rot_lat.y * v_rot_lat.y * Y + v_rot_lat.y * v_rot_lat.z * Z) + init_sin_lat * (v_rot_lat.z * X - v_rot_lat.x * Z);
+			//float nrotZ = Z * init_cos_lat + (1.f - init_cos_lat) * (v_rot_lat.z * v_rot_lat.x * X + v_rot_lat.z * v_rot_lat.y * Y + v_rot_lat.z * v_rot_lat.z * Z) + init_sin_lat * (v_rot_lat.x * Y - v_rot_lat.y * X);
 
 			//// Rotation autour de Z
 			//float zrotX = nrotX * init_sin_lon + nrotY * init_cos_lon;
@@ -314,9 +455,9 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 			//float zrotY = X * init_cos_lon - Y * init_sin_lon;
 			//float zrotZ = Z;
 			//// Rotation autour de Y
-			//float yrotX =  zrotX * init_cos_lat + zrotZ * init_sin_lat;
-			//float yrotY =  zrotY;
-			//float yrotZ = -zrotX * init_sin_lat + zrotZ * init_cos_lat;
+			//float yrotX =  zrotX;
+			//float yrotY =  zrotY * init_cos_lat + zrotZ * init_sin_lat;
+			//float yrotZ = -zrotY * init_sin_lat + zrotZ * init_cos_lat;
 
 			//// Rotation autour de Y
 			//float yrotX =  X * init_cos_lat + Z * init_sin_lat;
@@ -330,7 +471,7 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 			lat = fast_asin(nrotZ);
 			lon = fast_atan(nrotY / nrotX) + PI_2 * (nrotX < 0 ? -1 : 1);
 
-			x_texture = w_texture - (lon/* - a->lonRotAxis*/) * w_texture / PI2; // TODO : inclure lonRotAxis dans init_lon ?
+			x_texture = w_texture - (lon/* - a->lonRotAxis*/)*w_texture / PI2; // TODO : inclure lonRotAxis dans init_lon ?
 			y_texture = lat * h_texture / PI + h_texture / 2.f;
 
 			x_texture = (x_texture + w_texture) % w_texture;
@@ -342,7 +483,7 @@ void renderAstre(SDL_Surface* surface, cam* c, astre* a) {
 			continue;
 
 
-			point3 pxl_dir = unit3((point3) { 0,0,0 });
+			point3 pxl_dir = unit3((point3) { 0, 0, 0 });
 			//point3 pxl_dir = unit3((point3) { zrotX , zrotY , zrotZ });
 			// Lumière diffuse
 			float dot_ap = a_dir.x * pxl_dir.x + a_dir.y * pxl_dir.y + a_dir.z * pxl_dir.z; // TODO : Tweaker selon la distance au soleil
@@ -802,6 +943,9 @@ point3 unit3(point3 p) {
 }
 point2 unit2(point2 p) {
 	return scale2(p, 1.f / norm2(p));
+}
+float dot3(point3 p1, point3 p2) {
+	return p1.x * p2.x + p1.y * p2.y + p1.z * p2.z;
 }
 point3 polaireToCartesien(float lat, float lon) {
 	return (point3) {

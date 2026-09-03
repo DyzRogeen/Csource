@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 	int quit = 0;
 	SDL_Event e;
 	int mPosX, mPosY, mPosPrecX, mPosPrecY;
-	float mouseSensitivity = 1.2 * PI_2 / WIN_HEIGHT;
+	float mouseSensitivity = 1.5 * PI_2 / WIN_HEIGHT;
 	int speed = 100, forward_mov = 0, lateral_mov = 0, upward_mov = 0;
 	int goingToAstre = 0, move, moveMouse;
 	float T0 = clock(), dT = 0;
@@ -236,7 +236,7 @@ int main(int argc, char **argv)
 
 		}
 
-		mapBackground(surface, starmap, c, 0.25);
+		//mapBackground(surface, starmap, c, 0.25);
 
 		renderAstres(surface, c, astres, nb_astres, dT);
 
