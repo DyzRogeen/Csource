@@ -20,6 +20,7 @@
 #define PI2		6.28318530718
 #define PI_2	1.57079632679
 #define E	2.718281828459
+#define G 6.6743 // ordre 10^-11
 
 typedef enum eAstreType {ETOILE, PLANETE, SATTELITE} astreType;
 
@@ -31,6 +32,12 @@ typedef struct sPoint3 {
 	float x, y, z;
 }point3;
 
+// Trace du mouvement des astres
+typedef struct sTrace {
+	struct sTrace* next;
+	point3 position;
+}trace;
+
 typedef struct sAstre {
 	point3 position, velocity, acceleration;
 	float mass, massOrder;
@@ -39,6 +46,7 @@ typedef struct sAstre {
 	astreType type;
 	SDL_Surface* texture;
 	char* name;
+	trace* p_trace;
 }astre;
 
 typedef struct sList {
@@ -50,6 +58,7 @@ typedef struct sList {
 typedef struct sCam {
 	point3 pos, normale, Vx, Vy;
 	float d_plan, window_ratio, lat, lon;
+	int shaders_on, trace_on;
 }cam;
 
 // Planétaire
@@ -67,6 +76,8 @@ int goToAstre(cam* c, astre* a);
 point2 projectPoint(cam* c, point3 p, int w, int h);
 void renderAstres(SDL_Surface* surface, cam* c, list* astres, int nb_astre, float dT);
 void renderAstre(SDL_Surface* surface, cam* c, astre* a);
+void traceAstre(list* l);
+void renderTrace(SDL_Surface* surface, cam* c, astre* a);
 
 // Graphics
 void mapBackground(SDL_Surface* surface, SDL_Surface* texture, cam* c, float ratio);
@@ -75,8 +86,17 @@ Uint32 getPxl32(Uint8* pxl);
 
 void drawLine(SDL_Surface* s, point2 p1, point2 p2, Uint32 color);
 
+// Physics
+void moveAstres(list* l, float dT);
+void updateAcceleration(astre* a1, astre* a2);
+
 // Util
+//Trace
+void addTrace(astre* a);
+int removeTraceTail(trace* t, int idx);
+//Point
 point3* createPoint(float x, float y, float z);
+//Operations
 point3 sum3(point3 p1, point3 p2, int diff);
 point2 sum2(point2 p1, point2 p2, int diff);
 point3 scale3(point3 p, float f);
@@ -86,10 +106,12 @@ float norm2(point2 p);
 point3 unit3(point3 p);
 point2 unit2(point2 p);
 float dot3(point3 p1, point3 p2);
+point3 product3(point3 p1, point3 p2);
 point3 polaireToCartesien(float lat, float lon);
 
 Uint32 scalePxl(Uint8* pxl, float coef, float val);
 float sigmoid(float x);
+float fast_sigmoid(float x);
 
 // Optimistaion Trigo
 void init_TUL();
@@ -102,3 +124,4 @@ float fast_atan(float x);
 // FREE
 void freeList(list* l);
 void freeAstre(astre* a);
+void freeTrace(trace* t);

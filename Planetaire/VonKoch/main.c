@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 	int speed = 100, forward_mov = 0, lateral_mov = 0, upward_mov = 0;
 	int goingToAstre = 0, move, moveMouse;
 	float T0 = clock(), dT = 0;
+	int flagTrace = 0;
 
 	init_TUL();
 
@@ -86,8 +87,10 @@ int main(int argc, char **argv)
 	list* astres = NULL, *astreFocus = NULL;
 
 	int nb_astres = 2;
-	addAstre(&astres, createAstre((point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, 1.989, 30, 6.963, 3, 25, 0, 0, ETOILE, "Textures/sunmap.jpg", "Soleil"));
-	addAstre(&astres, createAstre((point3) { 0, 149597, 0 }, (point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, 5.972, 24, 6.378, 3, 1, 0, -PI / 3.f, PLANETE, "Textures/earthmap.jpg", "Terre"));
+
+	// Distances en milliers de km (mega mètres, 10^6 m, etc...)
+	addAstre(&astres, createAstre((point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, 1.989, 30, 6.963, 3, 24.47, 0, 0, ETOILE, "Textures/sunmap.jpg", "Soleil"));
+	addAstre(&astres, createAstre((point3) { 0, 149597, 0 }, (point3) { 0.03029, 0, 0 }, (point3) { 0, 0, 0 }, 5.972, 24, 6.378, 3, -1, 0, -PI / 3.f, PLANETE, "Textures/earthmap.jpg", "Terre"));
 
 	// Initialisation des fenêtres
 	{
@@ -121,7 +124,7 @@ int main(int argc, char **argv)
 	SDL_Keycode key;
 	while (!quit)
 	{
-		dT = (clock() - T0) / (float)(1000 * 60); // 1 jour = 1 minute
+		dT = (clock() - T0) / 1000.f; // en secondes
 		T0 = clock();
 		while (SDL_PollEvent(&e))
 		{
@@ -159,6 +162,9 @@ int main(int argc, char **argv)
 					upward_mov = 2;
 					break;
 				}
+				case SDLK_l:
+					c->shaders_on = !c->shaders_on;
+					break;
 				case SDLK_LEFT:
 					if (!astreFocus) astreFocus = astres;
 					else if (!astreFocus->prec) while (astreFocus->next) astreFocus = astreFocus->next;
@@ -214,7 +220,6 @@ int main(int argc, char **argv)
 			
 			//rotateCam(c, -c->lat, -c->lon);
 
-
 			if (goingToAstre) {
 				goingToAstre = !goToAstre(c, astreFocus->p_astre);
 			}
@@ -236,9 +241,16 @@ int main(int argc, char **argv)
 
 		}
 
-		//mapBackground(surface, starmap, c, 0.25);
+		mapBackground(surface, starmap, c, 0.25);
 
-		renderAstres(surface, c, astres, nb_astres, dT);
+		moveAstres(astres, dT * 60 * 24 * 365);
+		renderAstres(surface, c, astres, nb_astres, dT / 60);  // 1 jour = 1 minute
+
+		if (clock() % 1000 > 500) {
+			if (flagTrace) traceAstre(astres);
+			flagTrace = 0;
+		} else flagTrace = 1;
+
 
 		renderSurface(renderer, surface);
 
