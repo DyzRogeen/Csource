@@ -1,95 +1,77 @@
-﻿  graph.c
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(71,38): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(72,33): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(86,36): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(87,33): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(82,44): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(83,43): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(106,27): warning C4305: '-=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(107,33): warning C4305: '-=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(98,27): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(126,50): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(179,29): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(261,65): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(263,26): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(264,37): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(279,39): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(208,27): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(236,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(236,49): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(237,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(237,49): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(240,17): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(246,18): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(231,51): warning C4101: 'pxl_col' : variable locale non référencée
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(304,9): warning C4101: 't' : variable locale non référencée
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(361,30): warning C4305: '-=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(487,35): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(489,26): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(490,37): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(351,27): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(353,41): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(397,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(397,49): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(398,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(398,49): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(399,17): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(405,18): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(360,13): warning C4101: 'lon1' : variable locale non référencée
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(359,13): warning C4101: 'lat1' : variable locale non référencée
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(512,11): warning C4101: 'pxl_col' : variable locale non référencée
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(552,38): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(595,17): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(604,56): warning C4305: '+=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(608,26): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(609,33): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(539,27): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(541,41): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(578,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(578,49): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(579,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(579,49): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(580,17): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(586,18): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(682,17): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(683,15): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(695,23): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(644,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(645,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(649,27): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(651,41): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(748,15): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(749,35): warning C4244: '=' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(757,28): warning C4305: '-=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(758,29): warning C4305: '+=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(761,45): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(729,28): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(729,60): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(836,28): warning C4305: '-=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(837,29): warning C4305: '+=' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(846,18): warning C4244: '=' : conversion de 'double' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(847,60): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(794,28): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(794,60): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(839,24): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(844,25): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(897,12): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(904,12): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(906,12): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(970,101): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(971,101): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(990,10): warning C4033: 'removeTraceTail' doit retourner une valeur
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1062,24): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1063,24): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1064,24): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1069,27): warning C4305: 'fonction' : troncation de 'double' à 'float'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1072,11): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1080,36): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1085,20): warning C4244: 'fonction' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1092,14): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1102,76): warning C4244: 'return' : conversion de 'double' en 'float', perte possible de données
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(1114,12): warning C4133: 'fonction' : types incompatibles - de 'astre *' à 'trace *'
-C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.c(997,1): warning C4715: 'removeTraceTail' : les chemins de contrôle ne retournent pas tous une valeur
+﻿  main.c
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.h(8,9): warning C4005: 'max' : redéfinition de macro
+  (compiler le fichier source 'main.c')
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h(1282,17):
+      voir la définition précédente de « max »
+  
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\graph.h(9,9): warning C4005: 'min' : redéfinition de macro
+  (compiler le fichier source 'main.c')
+      C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\ucrt\stdlib.h(1283,17):
+      voir la définition précédente de « min »
+  
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(96,98): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(96,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(96,119): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(97,69): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(97,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(97,120): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(97,140): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(98,70): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(98,110): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(98,121): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(98,144): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(99,70): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(99,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(99,120): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(99,141): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(100,70): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(100,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(100,119): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(100,129): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(100,144): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(101,70): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(101,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(101,120): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(101,129): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(101,144): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(102,70): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(102,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(102,120): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(102,130): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(102,145): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(103,71): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(103,110): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(103,121): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(103,131): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(103,146): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(103,164): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(103,171): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(104,71): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(104,109): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(104,120): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(104,130): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(104,144): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(105,71): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(105,110): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(105,121): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(105,131): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(105,146): warning C4305: 'fonction' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(120,10): warning C4133: '=' : types incompatibles - de 'SDL_Window *' à 'SDL_Surface *'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(128,33): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(140,8): warning C4244: '=' : conversion de 'clock_t' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(220,120): warning C4244: 'initialisation' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(220,134): warning C4244: 'fonction' : conversion de 'int' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(277,20): warning C4133: 'fonction' : types incompatibles - de 'SDL_Surface *' à 'SDL_Window *'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(73,38): warning C4305: 'initialisation' : troncation de 'double' à 'float'
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(76,13): warning C4244: 'initialisation' : conversion de 'clock_t' en 'float', perte possible de données
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(84,9): warning C4101: 'p0' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(89,24): warning C4101: 'pZ2' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(86,9): warning C4101: 'pY' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(85,9): warning C4101: 'pX' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(89,14): warning C4101: 'pX2' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(87,9): warning C4101: 'pZ' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(89,9): warning C4101: 'p02' : variable locale non référencée
+C:\Users\Adrie\Desktop\source\Csource\Planetaire\VonKoch\main.c(89,19): warning C4101: 'pY2' : variable locale non référencée
   VonKoch.vcxproj -> C:\Users\Adrie\Desktop\source\Csource\Planetaire\bin\VonKoch_d.exe
           1 fichier(s) copié(s).
           1 fichier(s) copié(s).

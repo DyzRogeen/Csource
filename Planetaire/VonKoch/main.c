@@ -33,6 +33,8 @@ void drawshit(SDL_Surface* surface, cam* c) {
 	//drawline(surface, p1, p2, C_RED);
 	//drawline(surface, p1, p3, C_BLUE);
 	//drawline(surface, p1, p4, C_GREEN);
+
+	/*
 	float r = 10;
 	int w2 = WIN_WIDTH, h2 = WIN_HEIGHT;
 	point2 P1 = projectPoint(c, (point3) { r, r, r }, w2, h2);
@@ -56,6 +58,7 @@ void drawshit(SDL_Surface* surface, cam* c) {
 	drawLine(surface, P7, P5, WHITE);
 	drawLine(surface, P3, P4, WHITE);
 	drawLine(surface, P5, P6, WHITE);
+	*/
 
 }
 
@@ -72,10 +75,11 @@ int main(int argc, char **argv)
 	int goingToAstre = 0, move, moveMouse;
 	float T0 = clock(), dT = 0;
 	int flagTrace = 0;
+	int* z_array = malloc(WIN_WIDTH * WIN_HEIGHT * sizeof(int));
 
 	init_TUL();
 
-	cam* c = createCam((point3) { -20000, 149597, 0 }, 0, 0, 4, 1.f / 150);
+	cam* c = createCam((point3) { -20000, 1426700, 0 }, 0, 0, 4, 1.f / 150);
 
 	point3 p0 = (point3){ 0, 0, 0 };
 	point3 pX = (point3){ 10, 0, 0 };
@@ -89,8 +93,16 @@ int main(int argc, char **argv)
 	int nb_astres = 2;
 
 	// Distances en milliers de km (mega mètres, 10^6 m, etc...)
-	addAstre(&astres, createAstre((point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, 1.989, 30, 6.963, 3, 24.47, 0, 0, ETOILE, "Textures/sunmap.jpg", "Soleil"));
-	addAstre(&astres, createAstre((point3) { 0, 149597, 0 }, (point3) { 0.03029, 0, 0 }, (point3) { 0, 0, 0 }, 5.972, 24, 6.378, 3, -1, 0, -PI / 3.f, PLANETE, "Textures/earthmap.jpg", "Terre"));
+	addAstre(&astres, createAstre((point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, (point3) { 0, 0, 0 }, 1.989, 30, 6.963, 4, 24.47, 0, 0, NULL, ETOILE, "Textures/sunmap.jpg", "Soleil"));
+	addAstre(&astres, createAstre((point3) { 0, 57909, 0 }, (point3) { 0.047362, 0, 0 }, (point3) { 0, 0, 0 }, 3.301, 23, 2.44, 3, -8, 0, -PI / 3.f, NULL, PLANETE, "Textures/mercurymap2.jpg", "Mercure"));
+	addAstre(&astres, createAstre((point3) { 0, 108209, 0 }, (point3) { 0.035026, 0, 0 }, (point3) { 0, 0, 0 }, 4.867, 24, 6.052, 3, -243, 0, -PI / 3.f, NULL, PLANETE, "Textures/venusmap.jpg", "Vénus"));
+	addAstre(&astres, createAstre((point3) { 0, 149597, 0 }, (point3) { 0.03029, 0, 0 }, (point3) { 0, 0, 0 }, 5.972, 24, 6.378, 3, -1, 0, -PI / 3.f, NULL, PLANETE, "Textures/earthmap.jpg", "Terre"));
+	addAstre(&astres, createAstre((point3) { 0, 149981, 0 }, (point3) { 0.03131, 0, 0 }, (point3) { 0, 0, 0 }, 7.35, 22, 1.736, 3, -1.138, 0, -PI / 3.f, NULL, SATTELITE, "Textures/moonmap.jpg", "Lune"));
+	addAstre(&astres, createAstre((point3) { 0, 227944, 0 }, (point3) { 0.02408, 0, 0 }, (point3) { 0, 0, 0 }, 6.418, 23, 3.39, 3, -1.026, 0, -PI / 3.f, NULL, PLANETE, "Textures/marsmap.jpg", "Mars"));
+	addAstre(&astres, createAstre((point3) { 0, 778340, 0 }, (point3) { 0.01306, 0, 0 }, (point3) { 0, 0, 0 }, 1.897, 27, 6.917, 4, -0.414, 0, -PI / 3.f, NULL, PLANETE, "Textures/jupitermap.jpg", "Jupiter"));
+	addAstre(&astres, createAstre((point3) { 0, 1426700, 0 }, (point3) { 0.00964, 0, 0 }, (point3) { 0, 0, 0 }, 5.685, 26, 5.731, 4, -0.448, 0, -PI / 3.f, createRing(7.466, 13.677, 0, 0, "Textures/saturnrings.jpg"), PLANETE, "Textures/saturnmap.jpg", "Saturne"));
+	addAstre(&astres, createAstre((point3) { 0, 2870700, 0 }, (point3) { 0.0068, 0, 0 }, (point3) { 0, 0, 0 }, 8.681, 25, 2.523, 4, 0.718, 0, -PI / 3.f, NULL, PLANETE, "Textures/uranusmap.jpg", "Uranus"));
+	addAstre(&astres, createAstre((point3) { 0, 4498400, 0 }, (point3) { 0.00543, 0, 0 }, (point3) { 0, 0, 0 }, 1.024, 26, 2.462, 4, -0.671, 0, -PI / 3.f, NULL, PLANETE, "Textures/neptunemap.jpg", "Neptune"));
 
 	// Initialisation des fenêtres
 	{
@@ -241,21 +253,24 @@ int main(int argc, char **argv)
 
 		}
 
+		for (int idx = 0; idx < WIN_WIDTH * WIN_HEIGHT; idx++) z_array[idx] = -1;
+
 		mapBackground(surface, starmap, c, 0.25);
 
-		moveAstres(astres, dT * 60 * 24 * 365);
-		renderAstres(surface, c, astres, nb_astres, dT / 60);  // 1 jour = 1 minute
+		moveAstres(astres, dT * 60 * 24);// *365);
 
-		if (clock() % 1000 > 500) {
+		if (clock() % 1000 >= 500) {
 			if (flagTrace) traceAstre(astres);
 			flagTrace = 0;
 		} else flagTrace = 1;
 
+		renderAstres(surface, z_array, c, astres, nb_astres, dT / 60, (float)((clock() + 500) % 1000) / 1000.f);  // 1 jour = 1 minute
 
 		renderSurface(renderer, surface);
 
 	}
 
+	free(z_array);
 	SDL_FreeSurface(starmap);
 	SDL_FreeSurface(surface);
 	SDL_DestroyRenderer(renderer);

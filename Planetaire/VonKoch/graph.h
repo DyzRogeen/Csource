@@ -12,9 +12,10 @@
 #define LGREY 0xFFC0C0C0
 #define GREY 0xFF808080
 #define DGREY 0xFF404040
-#define RED 0xFFFF0000
+#define BLUE 0xFFFF0000
 #define GREEN 0xFF00FF00
-#define BLUE 0xFF0000FF
+#define RED 0xFF0000FF
+#define TRAIL_COLOR 0xFFFFBBBB
 
 #define PI	3.14159265359
 #define PI2		6.28318530718
@@ -38,6 +39,12 @@ typedef struct sTrace {
 	point3 position;
 }trace;
 
+typedef struct sRing {
+	float in_radius, out_radius;
+	float lon_tilt, lat_tilt;
+	SDL_Surface* texture;
+}ring;
+
 typedef struct sAstre {
 	point3 position, velocity, acceleration;
 	float mass, massOrder;
@@ -47,6 +54,7 @@ typedef struct sAstre {
 	SDL_Surface* texture;
 	char* name;
 	trace* p_trace;
+	ring* p_ring;
 }astre;
 
 typedef struct sList {
@@ -62,9 +70,10 @@ typedef struct sCam {
 }cam;
 
 // Planétaire
-astre* createAstre(point3 position, point3 velocity, point3 acceleration, float mass, float massOrder, float radius, float radiusOrder, float tRotation, float lonRotAxis, float latRotAxis, astreType type, char* texture, char name[100]);
+astre* createAstre(point3 position, point3 velocity, point3 acceleration, float mass, float massOrder, float radius, float radiusOrder, float tRotation, float lonRotAxis, float latRotAxis, ring* pRing, astreType type, char* texture, char name[100]);
 list* createList(astre* astre);
 void addAstre(list** l, astre* astre);
+ring* createRing(float in_radius, float out_radius, float lon_tilt, float lat_tilt, char* texture);
 
 // Camera and movement
 cam* createCam(point3 pos, float lat, float lon, float zoom, float window_ratio);
@@ -73,18 +82,20 @@ void rotateCam(cam* c, float d_lat, float d_lon);
 int goToAstre(cam* c, astre* a);
 
 // Rendering
-point2 projectPoint(cam* c, point3 p, int w, int h);
-void renderAstres(SDL_Surface* surface, cam* c, list* astres, int nb_astre, float dT);
-void renderAstre(SDL_Surface* surface, cam* c, astre* a);
+point3 projectPoint(cam* c, point3 p, int w, int h);
+void renderAstres(SDL_Surface* surface, int* z_array, cam* c, list* astres, int nb_astre, float dT, float traceFadeRatio);
+void renderAstre(SDL_Surface* surface, int* z_array, cam* c, astre* a);
 void traceAstre(list* l);
-void renderTrace(SDL_Surface* surface, cam* c, astre* a);
+void renderTrace(SDL_Surface* surface, cam* c, astre* a, float traceFadeRatio);
+void renderRing(SDL_Surface* surface, int* z_array, cam* c, astre* a, float p_x, float p_y, float dist, float zAstre);
+
 
 // Graphics
 void mapBackground(SDL_Surface* surface, SDL_Surface* texture, cam* c, float ratio);
 void mapPxls(SDL_Surface* destination, SDL_Surface* source);
 Uint32 getPxl32(Uint8* pxl);
 
-void drawLine(SDL_Surface* s, point2 p1, point2 p2, Uint32 color);
+void drawLine(SDL_Surface* s, point3 p1, point3 p2, Uint32 color1, Uint32 color2, float offsetRatio);
 
 // Physics
 void moveAstres(list* l, float dT);
@@ -108,6 +119,8 @@ point2 unit2(point2 p);
 float dot3(point3 p1, point3 p2);
 point3 product3(point3 p1, point3 p2);
 point3 polaireToCartesien(float lat, float lon);
+
+Uint32 blendColors(Uint8* c1, Uint8* c2, float ratio);
 
 Uint32 scalePxl(Uint8* pxl, float coef, float val);
 float sigmoid(float x);
